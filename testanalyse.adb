@@ -1,6 +1,3 @@
-with simple_io, mstring;
-use simple_io, mstring;
-
 package body testanalyse is
 
 
