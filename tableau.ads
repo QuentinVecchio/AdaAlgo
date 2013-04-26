@@ -1,9 +1,13 @@
-package Tableau is
+with mstring; use mstring;
+with definitions; use definitions;
+package tableau is
 
 	type Bloc is private;
-	type T_Tab_Bloc is array(1..10) of Bloc;
+	type T_Tab_Bloc is private;
+	
+	--TabBloc : T_Tab_Bloc;
 
-
+	procedure Add_comm(comm : chaine);
 	
 
 
@@ -31,6 +35,14 @@ package Tableau is
 			end case;
 	
 		end record;
+		
+		type T_Tab_Bloc is array (Integer range 1..10) of Bloc;
+		
+		type Struct_Bloc is record
+			L : natural;
+			Tab_bloc : T_Tab_Bloc;
+		end record;
+			
 
 
 end Tableau;

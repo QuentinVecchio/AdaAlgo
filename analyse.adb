@@ -1,3 +1,5 @@
+with tableau; use tableau;
+with mstring; use mstring;
 package body analyse is
 	
 	-------------------------
