@@ -43,6 +43,8 @@ package gestionbloc is
 	
 	procedure afficheTypeElt(L: in T_Tab_Bloc);
 	
+	procedure donneTete(L: T_Tab_Bloc; elt: in out Bloc);
+	
 	private
 	
 		type T_Tab_Bloc is record
