@@ -74,7 +74,9 @@ package gestionbloc is
 	--
 	procedure enleveTete(L: in out T_Tab_Bloc);
 	
-	
+	--
+	--	Ajout un bloc commentaire en fin de liste
+	--
 	procedure ajoutCommentaire(L: in out T_Tab_Bloc; com: chaine);
 	
 	private
