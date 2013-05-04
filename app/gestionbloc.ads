@@ -69,6 +69,11 @@ package gestionbloc is
 	--
 	procedure donneTete(L: T_Tab_Bloc; elt: in out Bloc);
 	
+	--
+	--	Enleve le premier élément de la liste
+	--
+	procedure enleveTete(L: in out T_Tab_Bloc);
+	
 	private
 	
 		--
