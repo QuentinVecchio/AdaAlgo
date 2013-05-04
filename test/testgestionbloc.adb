@@ -16,7 +16,10 @@ procedure testgestionbloc is
 		begin
 			
 			creerListe(l1);
-			aReussi := estVide(l1);
+			creerListe(l2);
+			ajoutElt(l1, monBloc);
+			
+			aReussi := estVide(l2) AND NOT estVide(l1);
 			
 			return aReussi;
 			

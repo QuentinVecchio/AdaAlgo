@@ -51,4 +51,13 @@ package body gestionbloc is
 		
 	end afficheTypeElt;
 	
+	procedure donneTete(L: T_Tab_Bloc; elt: in out Bloc)is
+	
+		begin
+		
+			if(NOT estVide(L))then
+				elt := L.courant.all;
+			end if;
+	end donneTete;
+	
 end gestionbloc;
