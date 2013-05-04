@@ -26,7 +26,6 @@ procedure testgestionbloc is
 			
 	end testEstVide;
 	
-	
 	begin
 	
 		Put_line("Début de test");
@@ -35,6 +34,15 @@ procedure testgestionbloc is
 		ajoutElt(maListe, monBloc2);
 		ajoutElt(maListe, monBloc2);
 		ajoutElt(maListe, monBloc);
+		
+		
+		afficheTypeElt(maListe);
+		put_line("enleve");
+		enleveTete(maListe);
+		enleveTete(maListe);
+
+		enleveTete(maListe);
+		enleveTete(maListe);
 		afficheTypeElt(maListe);
 		if(testEstVide)then
 			put_line("testEstVide accomplit avec succes");

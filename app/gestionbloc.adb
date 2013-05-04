@@ -56,4 +56,16 @@ package body gestionbloc is
 			end if;
 	end donneTete;
 	
+	procedure enleveTete(L: in out T_Tab_Bloc)is
+		begin
+			if(NOT estFinListe(L) or estVide(L))then
+				L.suivant := null;
+				L.courant := null;
+			else
+				L.courant := new Bloc'(L.suivant.all.courant.all);
+				L.suivant.all := L.suivant.all.suivant.all;
+			end if;
+	end enleveTete;
+	
+	
 end gestionbloc;
