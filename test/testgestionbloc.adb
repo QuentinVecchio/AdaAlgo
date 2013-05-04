@@ -1,5 +1,5 @@
-with simple_io, gestionbloc, definitions;
-use simple_io, gestionbloc, definitions;
+with simple_io, gestionbloc, definitions, mstring;
+use simple_io, gestionbloc, definitions, mstring;
 
 procedure testgestionbloc is
 
@@ -35,7 +35,7 @@ procedure testgestionbloc is
 		ajoutElt(maListe, monBloc2);
 		ajoutElt(maListe, monBloc);
 		
-		
+		ajoutCommentaire(maListe, "coucou"+ " comment vas");
 		afficheTypeElt(maListe);
 		put_line("enleve");
 		enleveTete(maListe);
