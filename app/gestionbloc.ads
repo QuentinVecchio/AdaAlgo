@@ -35,18 +35,44 @@ package gestionbloc is
 
 	end record;
 
+	liste_deja_cree: exception;
+	
+	--
+	--	Crée une nouvelle liste
+	--	peut lancer liste_deja_cree 
+	--
 	procedure creerListe(L: out T_Tab_Bloc);
 	
+	--
+	--	Renvoit vrai si le bloc est null
+	--
 	function estVide(L: T_Tab_Bloc)return boolean;
 	
+	--
+	--	Renvoit vrai si dernier element de la liste
+	--
+	function estFinListe(L: T_Tab_Bloc) return boolean;
+	
+	--
+	--	Ajoute un element en fin de liste
+	--
 	procedure ajoutElt(L: in out T_Tab_Bloc; elt: Bloc);
 	
+	--
+	-- Affiche tout les éléments du dernier ajouté au premier
+	--
 	procedure afficheTypeElt(L: in T_Tab_Bloc);
 	
+	--
+	--	Donne le premier élément de la liste, sans l'enlever
+	--
 	procedure donneTete(L: T_Tab_Bloc; elt: in out Bloc);
 	
 	private
 	
+		--
+		-- Modélise l'élément d'une chaine
+		--
 		type T_Tab_Bloc is record
 			
 			courant: ACCESS Bloc;

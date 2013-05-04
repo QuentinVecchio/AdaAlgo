@@ -4,6 +4,9 @@ package body gestionbloc is
 	procedure creerListe(L: out T_Tab_Bloc) is
 		begin
 		
+			if(NOT estFinListe(L) and NOT estVide(L))then
+				raise liste_deja_cree;
+			end if;
 			L.courant := null;
 			L.suivant := null;
 		
