@@ -3,6 +3,7 @@ use definitions, mstring;
 
 package gestionbloc is
 
+	-- Permet d'affiche le type d'élément pour la fonction afficheElt
 	package AfficheT_elt is new typeEnum(T_elmt);
 	use AfficheT_elt;
 	

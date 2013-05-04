@@ -3,7 +3,6 @@ package body gestionbloc is
 
 	procedure creerListe(L: out T_Tab_Bloc) is
 		begin
-		
 			if(NOT estFinListe(L) and NOT estVide(L))then
 				raise liste_deja_cree;
 			end if;
@@ -14,9 +13,7 @@ package body gestionbloc is
 
 	function estVide(L: T_Tab_Bloc)return boolean is
 		begin
-		
 			return (L.courant = null);
-		
 	end estVide;
 	
 	function estFinListe(L: T_Tab_Bloc) return boolean is
@@ -33,9 +30,7 @@ package body gestionbloc is
 			L.courant := new Bloc'(elt);
 			declare
 				newL: T_Tab_Bloc;
-				
 				begin
-				
 				creerListe(newL);
 				L.suivant:= new T_Tab_Bloc'(newL);
 			end;
@@ -44,7 +39,6 @@ package body gestionbloc is
 
 	procedure afficheTypeElt(L: in T_Tab_Bloc)is
 		begin
-			
 			if(NOT estVide(L)) then
 				put_line(L.courant.all.forme);
 				if(NOT estFinListe(L))then
@@ -54,10 +48,9 @@ package body gestionbloc is
 		
 	end afficheTypeElt;
 	
-	procedure donneTete(L: T_Tab_Bloc; elt: in out Bloc)is
 	
+	procedure donneTete(L: T_Tab_Bloc; elt: in out Bloc)is
 		begin
-		
 			if(NOT estVide(L))then
 				elt := L.courant.all;
 			end if;
