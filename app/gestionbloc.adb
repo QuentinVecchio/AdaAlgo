@@ -67,5 +67,15 @@ package body gestionbloc is
 			end if;
 	end enleveTete;
 	
+	procedure ajoutCommentaire(L: in out T_Tab_Bloc; com: chaine)is
+		b:Bloc(commentaire);
+		
+		begin
+			b.MonCom := com;
+			ajoutElt(L, b);
+		
+			
+	end ajoutCommentaire;
+	
 	
 end gestionbloc;

@@ -74,6 +74,9 @@ package gestionbloc is
 	--
 	procedure enleveTete(L: in out T_Tab_Bloc);
 	
+	
+	procedure ajoutCommentaire(L: in out T_Tab_Bloc; com: chaine);
+	
 	private
 	
 		--
