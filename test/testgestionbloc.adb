@@ -1,10 +1,13 @@
-with simple_io, gestionbloc;
-use simple_io, gestionbloc;
+with simple_io, gestionbloc, definitions;
+use simple_io, gestionbloc, definitions;
 
 procedure testgestionbloc is
 
 	maListe: T_Tab_Bloc;
 
+	monBloc: Bloc(commentaire);
+	monBloc2: Bloc(module);
+	
 	function testEstVide return boolean is
 	
 		aReussi: boolean := true;
@@ -25,7 +28,11 @@ procedure testgestionbloc is
 	
 		Put_line("Début de test");
 		creerListe(maListe);
-		
+		ajoutElt(maListe, monBloc);
+		ajoutElt(maListe, monBloc2);
+		ajoutElt(maListe, monBloc2);
+		ajoutElt(maListe, monBloc);
+		afficheTypeElt(maListe);
 		if(testEstVide)then
 			put_line("testEstVide accomplit avec succes");
 		end if;

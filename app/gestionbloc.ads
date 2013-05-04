@@ -1,8 +1,12 @@
-with definitions, mstring;
+with definitions, mstring, typeEnum;
 use definitions, mstring;
 
 package gestionbloc is
 
+	package AfficheT_elt is new typeEnum(T_elmt);
+	use AfficheT_elt;
+	
+	
 	-- type contenant la liste des blocs 
 	type T_Tab_Bloc is private;
 
@@ -10,7 +14,7 @@ package gestionbloc is
 	type T_ACCESS_Tab_Bloc is ACCESS T_Tab_Bloc;
 	
 	-- type bloc regroupant tout les types que l'on peut rencontrer dans un algo
-	type Bloc(forme: T_elmt) is record
+	type Bloc(Forme: T_elmt) is record
 		case Forme is
 			when commentaire 	=> MonCom : chaine;
 			when module 		=> MonMod: chaine;
@@ -36,6 +40,9 @@ package gestionbloc is
 	function estVide(L: T_Tab_Bloc)return boolean;
 	
 	procedure ajoutElt(L: in out T_Tab_Bloc; elt: Bloc);
+	
+	procedure afficheTypeElt(L: in T_Tab_Bloc);
+	
 	private
 	
 		type T_Tab_Bloc is record
