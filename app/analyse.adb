@@ -3,7 +3,7 @@ package body analyse is
 	-------------------------
 	-- Procedure d'analyse --
 	-------------------------
-	procedure analyse(tab: in out T_tab_ligne; l_cour: natural; res: out T_Tab_Bloc) is
+	procedure analyse(tab: in out T_tab_ligne; l_cour: in out natural; res: out T_Tab_Bloc) is
 
 	type_ligne: T_type_ligne;
 	begin
@@ -11,18 +11,17 @@ package body analyse is
 		while tab'last /= L_cour loop
 		        type_ligne := GetType(Tab(l_cour));
 		        case type_ligne is
--- 		                when commentaire => Ajout_com(tab(l_cour), Res);
--- 		                when affectation => Ajout_aff(tab(l_cour), Res);
--- 		                when module      => Ajout_Mod(tab(l_cour), Res);
--- 		                when pour | tq   => Ajout_pour_tq (tab(l_cour), Res);
--- 		                when repeter     => Ajout_rep(tab, l_cour,Res);
--- 		                when cond        => Ajout_cond(tab, l_cour, Res);
+ 		                when commentaire => Ajout_com(tab(l_cour), Res);
+ 		                when affectation => Ajout_aff(tab(l_cour), Res);
+		                when module      => Ajout_Mod(tab(l_cour), Res);
+		                when pour | tq   => Ajout_pour_tq (tab, l_cour,Res);
+		                when repeter     => Ajout_rep(tab, l_cour,Res);
+		                when cond        => Ajout_cond(tab, l_cour, Res);
 		                when others      => NULL;
 		        end case;
 		end loop;
-	end analyse;
-
-
+	end analyse;	
+	
 	function GetType(ligne: chaine)return T_type_ligne is
 	
 		typeligne : T_type_ligne;
@@ -79,6 +78,29 @@ package body analyse is
 	
 	end Ajout_com;
 
+	procedure Ajout_aff(L: chaine; res: T_Tab_Bloc)is
+		begin
+			null;
+	end Ajout_aff;
+	
+	procedure Ajout_Mod(L: chaine; res: T_Tab_Bloc)is
+		begin
+			null;
+	end Ajout_Mod;
+	
+	procedure Ajout_pour_tq (tab: T_tab_ligne ; l_cour: in out natural; Res: T_Tab_Bloc) is
+		begin
+			null;
+	end Ajout_pour_tq;
 
-
+	procedure Ajout_rep (tab: T_tab_ligne ; l_cour: in out natural; Res: T_Tab_Bloc) is
+		begin
+			null;
+	end Ajout_rep;
+	
+	procedure Ajout_cond (tab: T_tab_ligne ; l_cour: in out natural; Res: T_Tab_Bloc) is
+		begin
+			null;
+	end Ajout_cond;
+	
 end analyse;
