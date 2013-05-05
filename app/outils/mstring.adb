@@ -202,6 +202,22 @@ package body mstring is
 		
 	end startWith;
   
+  function strpos(c: chaine; motif: character) return l_chaine is
+		pos: l_chaine := -1;
+		i:l_chaine := 1;
+		begin
+		
+		while(c.text(i) /= motif and i < c.L) loop
+			i := i+1;
+		end loop;
+		
+		if(c.text(i) = motif) then
+			pos := i;
+		end if;
+		
+		return pos;
+	end strpos;
+  
   
 end mstring;
 
