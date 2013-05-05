@@ -1,3 +1,5 @@
+with mstring;
+use mstring;
 package definitions is
 
 	--
@@ -8,5 +10,9 @@ package definitions is
 	type T_elmt is (si, sinonsi, sinon, pour, tq, repeter, affectation, module, commentaire, blocCond, blocCase, defaut);
 
 	type T_type_ligne is(commentaire,affectation, module, pour, tq, repeter, cond, jqa, fpour, ftq, sinonsi, sinon, fsi, testcase);
+	
+	type T_Tab_Ligne is array (Positive range <>) of chaine;
+	
+	
 	
 end definitions;
