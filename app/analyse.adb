@@ -59,7 +59,6 @@ package body analyse is
 			
 			return typeligne;
 	
-	
 	end GetType;
 
 	-----------
