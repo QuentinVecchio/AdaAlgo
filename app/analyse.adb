@@ -74,7 +74,7 @@ package body analyse is
 		L_courant:= substring(L_courant, 2, length(L_courant));
 		L_courant := trimLeft(L_courant);
 		blocCom.MonCom := L_courant;
-		--utiliser une fonction pour la manipulation du type T_Tab_Bloc
+		ajoutCommentaire(Res, L);
 	
 	end Ajout_com;
 
