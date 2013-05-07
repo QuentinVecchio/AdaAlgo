@@ -202,8 +202,8 @@ package body mstring is
 		
 	end startWith;
   
-  function strpos(c: chaine; motif: character) return l_chaine is
-		pos: l_chaine := -1;
+  function strpos(c: chaine; motif: character) return indice_chaine is
+		pos: indice_chaine := 0;
 		i:l_chaine := 1;
 		begin
 		
