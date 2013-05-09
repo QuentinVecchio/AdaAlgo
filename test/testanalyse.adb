@@ -1,5 +1,5 @@
-with simple_io, mstring, definitions, analyse;
-use simple_io, mstring, definitions, analyse;
+with simple_io, mstring, definitions, analyse, gestionbloc;
+use simple_io, mstring, definitions, analyse, gestionbloc;
 
 
 procedure testanalyse is
@@ -118,15 +118,28 @@ procedure testanalyse is
 		
 	end testGettype;
 	
-	function testAjoutCom
+	function testAjoutCom return boolean is
 		passeTest : Boolean := True;
-		commentaire : string := "UN PETIT COMMENTAIRE";
+		comm : chaine;
+		testbloc : bloc(commentaire);
+		Tab_bloctest : T_Tab_Bloc;
 		
 	begin
+		comm := CreateChaine("UN PETIT COMMENTAIRE");
+		creerListe(Tab_bloctest);
+
+
+		Ajout_com(comm, Tab_bloctest);	
 		
-		Ajout_com(commentaire, bloctest);
+
+		donneTete(Tab_bloctest, testbloc);
+
+		if testbloc.MonCom /=comm then
+			passeTest := false;
+			put(testbloc.moncom);
+		end if;
 	
-		return passTest;
+		return passeTest;
 	
 	end testAjoutCom;
 	

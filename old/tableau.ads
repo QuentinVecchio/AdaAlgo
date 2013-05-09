@@ -2,10 +2,9 @@ with mstring; use mstring;
 with definitions; use definitions;
 package tableau is
 
-	type Bloc is private;
 	type T_Tab_Bloc is private;
 	
-	--TabBloc : T_Tab_Bloc;
+
 
 	procedure Add_comm(comm : chaine);
 	
