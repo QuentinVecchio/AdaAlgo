@@ -1,8 +1,8 @@
 procedure struc is
-Programmation
+
 	type Bloc;
 	
-	type T_Tab_Bloc is array(1..10) of Integer;
+	type T_Tab_Bloc is array(1..10) of Bloc;
 	
 	type T_elmt is (si, sinonsi, sinon, pour, tq, repeter, affectation, module, commentaire, blocCond, blocCase, defaut);
 	
