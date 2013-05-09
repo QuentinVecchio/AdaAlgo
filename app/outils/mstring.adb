@@ -75,7 +75,7 @@ package body mstring is
   end "+";
 
   function "+"(s: string; c: chaine) return chaine is
-      ch: chaine :=CreateChaine(s);
+      ch: chaine :=CreateChaine(s) + c;
       
       begin
       
@@ -154,8 +154,8 @@ package body mstring is
 	
 	begin
 	
-	if(debut < fin) then
-	  if(debut < c.L AND THEN fin < c.L) then
+	if(debut <= fin) then
+	  if(debut <= c.L AND THEN fin <= c.L) then
 	    ch := CreateChaine(c.text(debut..fin));
 	  end if;
 	
@@ -218,7 +218,60 @@ package body mstring is
 		return pos;
 	end strpos;
   
+	function replaceStr(depart, recherche, remplace : chaine) return chaine is
+		
+		i: l_chaine := 1;
+		c: chaine := depart;
+		tmp1, tmp2 : chaine;
+		begin
+		
+			if(depart.L = recherche.L)then
+				return remplace;
+			end if;
+		
+			while (i+recherche.L <= c.L+1) loop
+				if(c.text(i..i+recherche.L-1) = recherche.text) then
+					tmp1 := substring(c, 1, i-1);
+					if(i+recherche.L <= c.L)then
+						tmp2 := substring(c, i+recherche.L, c.L);
+						c := tmp1 + remplace + tmp2;
+					else
+						c := tmp1 + remplace;
+					end if;
+					
+					i := i+remplace.L;
+				else
+					i := i+1;
+				end if;
+			end loop;
+			return c;
+	end replaceStr;
   
+	function replaceStr(depart,recherche: chaine; remplace: string) return chaine is
+		begin
+			return replaceStr(depart, recherche, CreateChaine(remplace));
+	end replaceStr;
+  
+	function replaceStr(depart: chaine; recherche, remplace: string) return chaine is
+		begin
+			return replaceStr(depart, CreateChaine(recherche), CreateChaine(remplace));
+	end replaceStr;
+	
+	function replaceStr(depart, recherche, remplace: string) return chaine is
+		begin
+			return replaceStr(CreateChaine(depart), CreateChaine(recherche), CreateChaine(remplace));
+	end replaceStr;
+	
+	function replaceStr(depart: chaine; recherche: string; remplace: chaine) return chaine is
+		begin
+			return replaceStr(depart, CreateChaine(recherche), remplace);
+	end replaceStr;
+	
+	function replaceStr(depart: string; recherche: chaine; remplace: string) return chaine is
+		begin
+			return replaceStr( CreateChaine(depart),recherche,  CreateChaine(remplace));
+	end replaceStr;
+	
 end mstring;
 
 
