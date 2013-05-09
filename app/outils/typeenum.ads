@@ -14,7 +14,7 @@ package typeEnum is
 	procedure get(elt: out montype);
 	
 	--
-	-- Permet l'acquisition sécurié de l'élément, gestion de l'exception
+	-- Permet l'acquisition sécurisé de l'élément, gestion de l'exception
 	--
 	procedure getSecure(elt: out montype);
 	

@@ -118,13 +118,32 @@ procedure testanalyse is
 		
 	end testGettype;
 	
+	function testAjoutCom
+		passeTest : Boolean := True;
+		commentaire : string := "UN PETIT COMMENTAIRE";
+		
+	begin
+		
+		Ajout_com(commentaire, bloctest);
+	
+		return passTest;
+	
+	end testAjoutCom;
+	
 	begin
 		
 		if(testGettype)then
 			put_line("Fonction testGettype a passé tout les tests !");
 		else
-			put_line("La fonction n'est pas encore parfaite !, il y a des errreurs! ");
+			put_line("La fonction testGettype n'est pas encore parfaite !, il y a des errreurs! ");
 		end if;
+		
+		if testAjoutCom then
+			put_line("Fonction testAjoutCom a passé tout les tests !");
+		else
+			put_line("La fonction testAjoutCom n'est pas encore parfaite !, il y a des errreurs! ");
+		end if;
+					
 	
 	
 end testanalyse;
