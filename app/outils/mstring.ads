@@ -2,6 +2,7 @@ package mstring is
 
 	type chaine is private;
 	subtype l_chaine is Integer range 1..1000;
+	subtype indice_chaine is Integer range 0..l_chaine'last;
 
 	--
 	--	Creer une chaine à partir d'un string
@@ -100,7 +101,7 @@ package mstring is
 	--
 	--	Renvoit la position de la première occurence d'un caractère dans une chaine
 	--
-	function strpos(c: chaine; motif: character) return l_chaine;
+	function strpos(c: chaine; motif: character) return indice_chaine;
 
 	private
 
