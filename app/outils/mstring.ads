@@ -103,6 +103,23 @@ package mstring is
 	--
 	function strpos(c: chaine; motif: character) return indice_chaine;
 
+	
+	--
+	--	Permet de remplacer un morceau de chaine par un autre
+	--	Ex replaceStr("coucou", "ou", hi") donne chichi
+	--
+	function replaceStr(depart, recherche, remplace : chaine) return chaine;
+	
+	function replaceStr(depart,recherche: chaine; remplace: string) return chaine;
+	
+	function replaceStr(depart: chaine; recherche, remplace: string) return chaine;
+	
+	function replaceStr(depart, recherche, remplace: string) return chaine;
+	
+	function replaceStr(depart: chaine; recherche: string; remplace: chaine) return chaine;
+	
+	function replaceStr(depart: string; recherche: chaine; remplace: string) return chaine;
+	
 	private
 
 	type chaine(L: l_chaine:= 1) is record
