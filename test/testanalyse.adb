@@ -167,23 +167,25 @@ procedure testanalyse is
 	
 	function testAjoutCom return boolean is
 		passeTest : Boolean := True;
-		comm : chaine;
+		comm : chaine:= CreateChaine("c: UN PETIT COMMENTAIRE");
 		testbloc : bloc(commentaire);
 		Tab_bloctest : T_Tab_Bloc;
 		
 	begin
-		comm := CreateChaine("UN PETIT COMMENTAIRE");
 		creerListe(Tab_bloctest);
-
 
 		Ajout_com(comm, Tab_bloctest);	
 		
-
+		-- Le résultat du commentaire si tout fonctionne
+		comm := CreateChaine("UN PETIT COMMENTAIRE");
 		donneTete(Tab_bloctest, testbloc);
 
+		
 		if testbloc.MonCom /=comm then
 			passeTest := false;
-			put(testbloc.moncom);
+			Put_line("Le résultat attendu: "+comm);
+			Put_line("Le résultat obtenu : "+testbloc.MonCom);
+			new_line;
 		end if;
 	
 		return passeTest;

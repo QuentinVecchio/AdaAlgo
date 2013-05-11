@@ -66,15 +66,13 @@ package body analyse is
 	
 	--ajout d'un commentaire
 	procedure Ajout_com(L: chaine; Res : in out T_Tab_Bloc) is
-		blocCom : Bloc(commentaire);
 		L_courant : chaine := L;
 	begin
 		L_courant := trimLeft(L_courant);
 		L_courant := trimRight(L_courant);
-		L_courant:= substring(L_courant, 2, length(L_courant));
+		L_courant:= substring(L_courant, 3, length(L_courant));
 		L_courant := trimLeft(L_courant);
-		blocCom.MonCom := L_courant;
-		ajoutCommentaire(Res, L);
+		ajoutCommentaire(Res, L_courant);
 	
 	end Ajout_com;
 
