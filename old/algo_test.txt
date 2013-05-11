@@ -1,0 +1,14 @@
+lire (a, b, c)
+discr <- (b * b) - (4 * a * c)
+
+si discr < 0 alors
+	ecrire ("il n'y a pas de solution dans R")
+SinonSi discr = 0 alors
+	res <- (-b)/(2 * a)
+	ecrire("la fonction admet une solution : x = ", res)
+Sinon
+	racine <- sqrt(discr)
+	res1 <- (-b + racine)/(2 * a)
+	res2 <- (-b - racine)/(2 * a)
+	ecrire ("l'equation admet deux solution : x1 = ", res1, " et x2 = ", res2);
+fsi
