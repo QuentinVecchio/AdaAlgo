@@ -3,12 +3,12 @@ package body analyse is
 	-------------------------
 	-- Procedure d'analyse --
 	-------------------------
-	procedure analyse(tab: in out T_tab_ligne;res: out T_Tab_Bloc) is
+	procedure Analyse_Code(tab: in out T_tab_ligne;res: out T_Tab_Bloc) is
 
 	type_ligne: T_type_ligne;
 	begin
 		--while trouver une condition and tab'last /= L_cour loop
-		while estVide(tab) loop
+		while NOT estVide(tab) loop
 		        type_ligne := GetType(donne_tete(tab));
 		        case type_ligne is
  		                when commentaire => Ajout_com(donne_tete(tab), Res);
@@ -19,8 +19,9 @@ package body analyse is
 		                when cond        => Ajout_cond(tab, Res);
 		                when others      => NULL;
 		        end case;
+		        enleve_enTete(tab);
 		end loop;
-	end analyse;	
+	end Analyse_Code;	
 	
 	function GetType(ligne: chaine)return T_type_ligne is
 	

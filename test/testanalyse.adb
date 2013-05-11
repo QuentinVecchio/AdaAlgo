@@ -192,8 +192,38 @@ procedure testanalyse is
 	
 	end testAjoutCom;
 	
-	begin
+	function testAnalyseCom return boolean is
+	
+		passeTest : boolean := true;
+		Tab_bloctest: T_Tab_Bloc;
+		Algo: T_Tab_Ligne;
+		courant : Bloc(commentaire);
 		
+	begin
+		creerListe(Tab_bloctest);
+
+		
+		Creer_liste(Algo, CreateChaine("c: coucou"));
+		Ajout_queue(Algo, CreateChaine("c: discr <- (b * b) - (4 * a * c)"));
+		
+		Analyse_Code(Algo, Tab_bloctest);
+
+		donneTete(Tab_bloctest, courant);
+		if(courant.Forme /= commentaire)then
+			put_line("La première ligne n'a pas été ajouté en tant que commentaire");
+			passeTest := false;
+		end if;
+		enleveTete(Tab_bloctest);
+		donneTete(Tab_bloctest, courant);
+		if(courant.Forme /= commentaire)then
+			put_line("La seconde ligne n'a pas été ajouté en tant que commentaire");
+			passeTest := false;
+		end if;
+		
+		return passeTest;
+	end testAnalyseCom;
+	
+	begin
 		
 		init;
 		
@@ -209,6 +239,11 @@ procedure testanalyse is
 			put_line("La fonction testAjoutCom n'est pas encore parfaite !, il y a des errreurs! ");
 		end if;
 					
+		if testAnalyseCom then
+			put_line("La fonction analyse fonctionne !");
+		else
+			put_line("Il reste des erreurs");
+		end if;
 	
 	
 end testanalyse;

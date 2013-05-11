@@ -6,7 +6,7 @@ use mstring, gestionbloc, definitions;
 
 Package analyse is
 
-	procedure analyse(tab: in out T_tab_ligne; res: out T_Tab_Bloc);
+	procedure Analyse_Code(tab: in out T_tab_ligne; res: out T_Tab_Bloc);
 	-- analyse une ligne du code et envoie les information aux differentes procedures
 	
 	--
