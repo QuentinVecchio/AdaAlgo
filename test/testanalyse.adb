@@ -240,7 +240,7 @@ procedure testanalyse is
 		if testAnalyseCom then
 			put_line("La fonction analyse fonctionne !");
 		else
-			put_line("Il reste des erreurs");
+			put_line("Il reste des erreurs dans la fonction analyse");
 		end if;
 	
 	
