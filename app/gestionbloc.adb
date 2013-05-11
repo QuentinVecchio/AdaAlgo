@@ -77,6 +77,16 @@ package body gestionbloc is
 			
 	end ajoutCommentaire;
 	
+	
+	procedure ajoutModule(L: in out T_Tab_Bloc; modaAjouter: chaine)is
+		b: Bloc(module);
+		
+		begin
+			b.MonMod := modaAjouter;
+			ajoutElt(L, b);
+	end ajoutModule;
+	
+	
 	function "="(L1, L2 : T_Tab_Bloc) return boolean is
 		begin
 		

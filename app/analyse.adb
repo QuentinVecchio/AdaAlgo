@@ -7,7 +7,6 @@ package body analyse is
 
 	type_ligne: T_type_ligne;
 	begin
-		--while trouver une condition and tab'last /= L_cour loop
 		while NOT estVide(tab) loop
 		        type_ligne := GetType(donne_tete(tab));
 		        case type_ligne is

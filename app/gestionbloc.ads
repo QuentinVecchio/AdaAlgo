@@ -79,6 +79,12 @@ package gestionbloc is
 	--
 	procedure ajoutCommentaire(L: in out T_Tab_Bloc; com: chaine);
 	
+	--
+	--	Ajout un bloc module en fin de liste
+	--
+	procedure ajoutModule(L: in out T_Tab_Bloc; modaAjouter: chaine);
+	
+	
 	function "="(L1, L2 : T_Tab_Bloc) return boolean;
 	
 	private
