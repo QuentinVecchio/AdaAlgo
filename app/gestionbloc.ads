@@ -22,16 +22,16 @@ package gestionbloc is
 			when affectation 	=> vG, vD : chaine;
 			when blocCond 		=> MTab : T_Tab_Bloc;
 			when blocCase 		=> toto: chaine;
-							Liste_case : T_Tab_Bloc;
-							case Forme is
-								when defaut => null;
-								when others => CondCase: chaine;
-							end case;
+									Liste_case : T_Tab_Bloc;
+									case Forme is
+										when defaut => null;
+										when others => CondCase: chaine;
+									end case;
 			when others 		=> Liste: T_Tab_Bloc;
-							case Forme is
-								when sinon => null;
-								when others => cond: chaine;
-							end case;
+									case Forme is
+										when sinon => null;
+										when others => cond: chaine;
+									end case;
 		end case;
 
 	end record;
@@ -88,6 +88,14 @@ package gestionbloc is
 	--	Ajout un bloc affectation en fin de liste
 	--
 	procedure ajoutAffectation(L: in out T_Tab_Bloc;  partieGauche, partieDroite : chaine);
+	
+	
+	--
+	--	Ajout un bloc blocCond en fin de liste
+	--
+	procedure ajoutBlocCond(L: in out T_Tab_Bloc; tabBloc: T_Tab_Bloc);
+	
+	
 	
 	function "="(L1, L2 : T_Tab_Bloc) return boolean;
 	
