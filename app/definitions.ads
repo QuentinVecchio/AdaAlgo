@@ -1,4 +1,4 @@
-with mstring;
+with mstring, liste;
 use mstring;
 package definitions is
 
@@ -11,8 +11,9 @@ package definitions is
 
 	type T_type_ligne is(commentaire,affectation, module, pour, tq, repeter, cond, jqa, fpour, ftq, sinonsi, sinon, fsi, testcase);
 	
-	type T_Tab_Ligne is array (Positive range <>) of chaine;
+	package listeChaine is new liste(chaine, mstring.put_line);
+	use listeChaine;
 	
-	
+	type T_Tab_Ligne is new listeChaine.T_PTR_LISTE;
 	
 end definitions;

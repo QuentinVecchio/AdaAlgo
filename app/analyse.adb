@@ -3,24 +3,24 @@ package body analyse is
 	-------------------------
 	-- Procedure d'analyse --
 	-------------------------
-	procedure analyse(tab: in out T_tab_ligne; l_cour: in out natural; res: out T_Tab_Bloc) is
+	procedure Analyse_Code(tab: in out T_tab_ligne;res: out T_Tab_Bloc) is
 
 	type_ligne: T_type_ligne;
 	begin
-		--while trouver une condition and tab'last /= L_cour loop
-		while tab'last /= L_cour loop
-		        type_ligne := GetType(Tab(l_cour));
+		while NOT estVide(tab) loop
+		        type_ligne := GetType(donne_tete(tab));
 		        case type_ligne is
- 		                when commentaire => Ajout_com(tab(l_cour), Res);
- 		                when affectation => Ajout_aff(tab(l_cour), Res);
-		                when module      => Ajout_Mod(tab(l_cour), Res);
-		                when pour | tq   => Ajout_pour_tq (tab, l_cour,Res);
-		                when repeter     => Ajout_rep(tab, l_cour,Res);
-		                when cond        => Ajout_cond(tab, l_cour, Res);
+ 		                when commentaire => Ajout_com(donne_tete(tab), Res);
+ 		                when affectation => Ajout_aff(donne_tete(tab), Res);
+		                when module      => Ajout_Mod(donne_tete(tab), Res);
+		                when pour | tq   => Ajout_pour_tq (tab,Res);
+		                when repeter     => Ajout_rep(tab,Res);
+		                when cond        => Ajout_cond(tab, Res);
 		                when others      => NULL;
 		        end case;
+		        enleve_enTete(tab);
 		end loop;
-	end analyse;	
+	end Analyse_Code;	
 	
 	function GetType(ligne: chaine)return T_type_ligne is
 	
@@ -66,15 +66,13 @@ package body analyse is
 	
 	--ajout d'un commentaire
 	procedure Ajout_com(L: chaine; Res : in out T_Tab_Bloc) is
-		blocCom : Bloc(commentaire);
 		L_courant : chaine := L;
 	begin
 		L_courant := trimLeft(L_courant);
 		L_courant := trimRight(L_courant);
-		L_courant:= substring(L_courant, 2, length(L_courant));
+		L_courant:= substring(L_courant, 3, length(L_courant));
 		L_courant := trimLeft(L_courant);
-		blocCom.MonCom := L_courant;
-		ajoutCommentaire(Res, L);
+		ajoutCommentaire(Res, L_courant);
 	
 	end Ajout_com;
 
@@ -97,17 +95,17 @@ package body analyse is
 			null;
 	end Ajout_Mod;
 	
-	procedure Ajout_pour_tq (tab: T_tab_ligne ; l_cour: in out natural; Res: T_Tab_Bloc) is
+	procedure Ajout_pour_tq (tab: T_tab_ligne ; Res: T_Tab_Bloc) is
 		begin
 			null;
 	end Ajout_pour_tq;
 
-	procedure Ajout_rep (tab: T_tab_ligne ; l_cour: in out natural; Res: T_Tab_Bloc) is
+	procedure Ajout_rep (tab: T_tab_ligne ; Res: T_Tab_Bloc) is
 		begin
 			null;
 	end Ajout_rep;
 	
-	procedure Ajout_cond (tab: T_tab_ligne ; l_cour: in out natural; Res: T_Tab_Bloc) is
+	procedure Ajout_cond (tab: T_tab_ligne ; Res: T_Tab_Bloc) is
 		begin
 			null;
 	end Ajout_cond;

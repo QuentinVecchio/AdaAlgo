@@ -6,7 +6,7 @@ use mstring, gestionbloc, definitions;
 
 Package analyse is
 
-	procedure analyse(tab: in out T_tab_ligne; l_cour : in out natural; res: out T_Tab_Bloc);
+	procedure Analyse_Code(tab: in out T_tab_ligne; res: out T_Tab_Bloc);
 	-- analyse une ligne du code et envoie les information aux differentes procedures
 	
 	--
@@ -40,7 +40,7 @@ Package analyse is
 	--	Modifie l'indice de la ligne courant, pointe sur ftq ou fpour en fin de traitement
 	--	Renvoit l'ensemble des blocs contenus dans le bloc courant
 	--
-	procedure Ajout_pour_tq (tab: T_tab_ligne ; l_cour: in out natural; Res: T_Tab_Bloc);
+	procedure Ajout_pour_tq (tab: T_tab_ligne ; Res: T_Tab_Bloc);
 
 	
 	--
@@ -49,7 +49,7 @@ Package analyse is
 	--	Modifie l'indice de la ligne courant, pointe sur  jusqu'a
 	--	Renvoit l'ensemble des blocs contenus dans le bloc courant
 	--
-	procedure Ajout_rep (tab: T_tab_ligne ; l_cour: in out natural; Res: T_Tab_Bloc);
+	procedure Ajout_rep (tab: T_tab_ligne ; Res: T_Tab_Bloc);
 	
 	--
 	--	Permet d'ajouter un bloc conditionnel
@@ -57,7 +57,7 @@ Package analyse is
 	--	Modifie l'indice de la ligne courant, pointe sur  fsi
 	--	Renvoit l'ensemble des blocs contenus dans le bloc courant
 	--
-	procedure Ajout_cond (tab: T_tab_ligne ; l_cour: in out natural; Res: T_Tab_Bloc);
+	procedure Ajout_cond (tab: T_tab_ligne ;  Res: T_Tab_Bloc);
 	
 	
 end analyse;
