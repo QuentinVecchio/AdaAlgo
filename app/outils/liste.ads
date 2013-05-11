@@ -60,8 +60,10 @@ package liste is
 	--
 	function appartient_liste(L: T_PTR_LISTE; elt: T_elt) return boolean;
 	
-	private
+	function estVide(L: T_PTR_LISTE) return boolean;
 	
+	private
+-- 	
 		type T_Liste;
 	
 		type T_PTR_LISTE is ACCESS T_Liste;

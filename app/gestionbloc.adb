@@ -73,9 +73,49 @@ package body gestionbloc is
 		begin
 			b.MonCom := com;
 			ajoutElt(L, b);
-		
-			
+
 	end ajoutCommentaire;
 	
+	procedure ajoutModule(L: in out T_Tab_Bloc; modaAjouter: chaine)is
+		b: Bloc(module);
+		
+		begin
+			b.MonMod := modaAjouter;
+			ajoutElt(L, b);
+	end ajoutModule;
+	
+	procedure ajoutAffectation(L: in out T_Tab_Bloc;  partieGauche, partieDroite : chaine)is
+		b: Bloc(affectation);
+	
+		begin
+			b.vG := partieGauche;
+			b.vD := partieDroite;
+			ajoutElt(L, b);
+			
+	end ajoutAffectation;
+	
+	procedure ajoutBlocCond(L: in out T_Tab_Bloc; tabBloc: T_Tab_Bloc) is
+		b: Bloc(blocCond);
+		begin
+			b.MTab := tabBloc;
+			ajoutElt(L, b);
+	end ajoutBlocCond;
+	
+	function "="(L1, L2 : T_Tab_Bloc) return boolean is
+		begin
+		
+			if(NOT estVide(L1) and then NOT estVide(L2))then
+				if(L1.courant.forme /= L2.courant.forme)then
+					return false;
+				end if;
+				if(NOT estFinListe(L1))then
+					return L1.suivant.all = L2.suivant.all;
+				end if;
+			else
+				return estVide(L1) or else estVide(L2);
+			end if;
+			
+			return false;
+	end "=";
 	
 end gestionbloc;

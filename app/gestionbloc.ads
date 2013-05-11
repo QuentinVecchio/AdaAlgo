@@ -21,17 +21,17 @@ package gestionbloc is
 			when module 		=> MonMod: chaine;
 			when affectation 	=> vG, vD : chaine;
 			when blocCond 		=> MTab : T_Tab_Bloc;
-			when blocCase 		=> toto: chaine;
-							Liste_case : T_Tab_Bloc;
-							case Forme is
-								when defaut => null;
-								when others => CondCase: chaine;
-							end case;
+			when blocCase 		=> variableATester: chaine;
+									Liste_case : T_Tab_Bloc;
+									case Forme is
+										when defaut => null;
+										when others => CondCase: chaine;
+									end case;
 			when others 		=> Liste: T_Tab_Bloc;
-							case Forme is
-								when sinon => null;
-								when others => cond: chaine;
-							end case;
+									case Forme is
+										when sinon => null;
+										when others => cond: chaine;
+									end case;
 		end case;
 
 	end record;
@@ -78,6 +78,27 @@ package gestionbloc is
 	--	Ajout un bloc commentaire en fin de liste
 	--
 	procedure ajoutCommentaire(L: in out T_Tab_Bloc; com: chaine);
+	
+	--
+	--	Ajout un bloc module en fin de liste
+	--
+	procedure ajoutModule(L: in out T_Tab_Bloc; modaAjouter: chaine);
+	
+	--
+	--	Ajout un bloc affectation en fin de liste
+	--
+	procedure ajoutAffectation(L: in out T_Tab_Bloc;  partieGauche, partieDroite : chaine);
+	
+	
+	--
+	--	Ajout un bloc blocCond en fin de liste
+	--
+	procedure ajoutBlocCond(L: in out T_Tab_Bloc; tabBloc: T_Tab_Bloc);
+	
+	--
+	--	Test l'égalité entre deux T_Tab_Bloc (compare uniquement le type des éléments)
+	--
+	function "="(L1, L2 : T_Tab_Bloc) return boolean;
 	
 	private
 	
