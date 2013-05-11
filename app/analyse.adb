@@ -8,12 +8,12 @@ package body analyse is
 	type_ligne: T_type_ligne;
 	begin
 		--while trouver une condition and tab'last /= L_cour loop
-		while tab'last /= L_cour loop
-		        type_ligne := GetType(Tab(l_cour));
+		while estVide(tab) loop
+		        type_ligne := GetType(donne_tete(tab));
 		        case type_ligne is
- 		                when commentaire => Ajout_com(tab(l_cour), Res);
- 		                when affectation => Ajout_aff(tab(l_cour), Res);
-		                when module      => Ajout_Mod(tab(l_cour), Res);
+ 		                when commentaire => Ajout_com(donne_tete(tab), Res);
+ 		                when affectation => Ajout_aff(donne_tete(tab), Res);
+		                when module      => Ajout_Mod(donne_tete(tab), Res);
 		                when pour | tq   => Ajout_pour_tq (tab, l_cour,Res);
 		                when repeter     => Ajout_rep(tab, l_cour,Res);
 		                when cond        => Ajout_cond(tab, l_cour, Res);
