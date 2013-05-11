@@ -77,5 +77,21 @@ package body gestionbloc is
 			
 	end ajoutCommentaire;
 	
+	function "="(L1, L2 : T_Tab_Bloc) return boolean is
+		begin
+		
+			if(NOT estVide(L1) and then NOT estVide(L2))then
+				if(L1.courant.forme /= L2.courant.forme)then
+					return false;
+				end if;
+				if(NOT estFinListe(L1))then
+					return L1.suivant.all = L2.suivant.all;
+				end if;
+			else
+				return estVide(L1) or else estVide(L2);
+			end if;
+			
+			return false;
+	end "=";
 	
 end gestionbloc;

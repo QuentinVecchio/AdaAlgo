@@ -79,6 +79,8 @@ package gestionbloc is
 	--
 	procedure ajoutCommentaire(L: in out T_Tab_Bloc; com: chaine);
 	
+	function "="(L1, L2 : T_Tab_Bloc) return boolean;
+	
 	private
 	
 		--
