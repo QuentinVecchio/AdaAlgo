@@ -201,12 +201,10 @@ procedure testanalyse is
 		
 	begin
 		creerListe(Tab_bloctest);
-
 		
 		Creer_liste(Algo, CreateChaine("c: coucou"));
 		Ajout_queue(Algo, CreateChaine("c: discr <- (b * b) - (4 * a * c)"));
 		
-		Analyse_Code(Algo, Tab_bloctest);
 
 		donneTete(Tab_bloctest, courant);
 		if(courant.Forme /= commentaire)then
