@@ -84,6 +84,10 @@ package gestionbloc is
 	--
 	procedure ajoutModule(L: in out T_Tab_Bloc; modaAjouter: chaine);
 	
+	--
+	--	Ajout un bloc affectation en fin de liste
+	--
+	procedure ajoutAffectation(L: in out T_Tab_Bloc;  partieGauche, partieDroite : chaine);
 	
 	function "="(L1, L2 : T_Tab_Bloc) return boolean;
 	
