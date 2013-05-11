@@ -86,6 +86,15 @@ package body gestionbloc is
 			ajoutElt(L, b);
 	end ajoutModule;
 	
+	procedure ajoutAffectation(L: in out T_Tab_Bloc;  partieGauche, partieDroite : chaine)is
+		b: Bloc(affectation);
+	
+		begin
+			b.vG := partieGauche;
+			b.vD := partieDroite;
+			ajoutElt(L, b);
+	end ajoutAffectation;
+	
 	
 	function "="(L1, L2 : T_Tab_Bloc) return boolean is
 		begin
