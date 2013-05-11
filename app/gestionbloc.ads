@@ -21,7 +21,7 @@ package gestionbloc is
 			when module 		=> MonMod: chaine;
 			when affectation 	=> vG, vD : chaine;
 			when blocCond 		=> MTab : T_Tab_Bloc;
-			when blocCase 		=> toto: chaine;
+			when blocCase 		=> variableATester: chaine;
 									Liste_case : T_Tab_Bloc;
 									case Forme is
 										when defaut => null;
@@ -95,8 +95,9 @@ package gestionbloc is
 	--
 	procedure ajoutBlocCond(L: in out T_Tab_Bloc; tabBloc: T_Tab_Bloc);
 	
-	
-	
+	--
+	--	Test l'égalité entre deux T_Tab_Bloc (compare uniquement le type des éléments)
+	--
 	function "="(L1, L2 : T_Tab_Bloc) return boolean;
 	
 	private

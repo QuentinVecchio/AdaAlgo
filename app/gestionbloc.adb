@@ -73,10 +73,8 @@ package body gestionbloc is
 		begin
 			b.MonCom := com;
 			ajoutElt(L, b);
-		
-			
+
 	end ajoutCommentaire;
-	
 	
 	procedure ajoutModule(L: in out T_Tab_Bloc; modaAjouter: chaine)is
 		b: Bloc(module);
@@ -93,17 +91,15 @@ package body gestionbloc is
 			b.vG := partieGauche;
 			b.vD := partieDroite;
 			ajoutElt(L, b);
+			
 	end ajoutAffectation;
 	
 	procedure ajoutBlocCond(L: in out T_Tab_Bloc; tabBloc: T_Tab_Bloc) is
 		b: Bloc(blocCond);
 		begin
-		
 			b.MTab := tabBloc;
 			ajoutElt(L, b);
 	end ajoutBlocCond;
-	
-	
 	
 	function "="(L1, L2 : T_Tab_Bloc) return boolean is
 		begin
