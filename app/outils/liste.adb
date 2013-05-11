@@ -87,5 +87,10 @@ package body liste is
 			return false;
 	end appartient_liste;
 	
-	
+	function estVide(L: T_PTR_LISTE) return boolean is
+		begin
+		
+			return (L = null);
+		
+	end estVide;
 end liste;
