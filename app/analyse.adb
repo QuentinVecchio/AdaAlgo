@@ -78,16 +78,17 @@ package body analyse is
 
 	procedure Ajout_aff(L: chaine; res: T_Tab_Bloc)is
 		partGauche, partDroit: chaine;
-		L_courant: chaine := L
+		L_courant: chaine := L;
+		Tab_bloc : T_Tab_Bloc;
 	begin
-		L_coutant := trimLeft(L_courant);
+		L_courant := trimLeft(L_courant);
 		L_courant := trimRight(L_courant);
 		partGauche := substring(L_courant, 1, strpos(L_courant, '<'));
-		partDroit := substring(L_courant, strpos(L_courant, '<'));
+		partDroit := substring(L_courant, strpos(L_courant, '<'), length(L_courant));
 		partGauche := trimRight(partGauche);
 		partDroit := trimLeft(partDroit);
 		
-		--voir comment ajouter dans la liste suivant ce que matthieu va pondre pour ca refonte de gestion bloc
+		ajoutAffectation(Tab_bloc, partGauche, partDroit);
 	end Ajout_aff;
 	
 	procedure Ajout_Mod(L: chaine; res: T_Tab_Bloc)is
