@@ -65,13 +65,14 @@ package body analyse is
 	-----------
 	
 	--ajout d'un commentaire
-	procedure Ajout_com(L: chaine; Res : in out T_Tab_Bloc) is
+	procedure Ajout_com(L: chaine; Res: in out T_Tab_Bloc) is
 		L_courant : chaine := L;
 	begin
 		L_courant := trimLeft(L_courant);
 		L_courant := trimRight(L_courant);
 		L_courant:= substring(L_courant, 3, length(L_courant));
 		L_courant := trimLeft(L_courant);
+		
 		ajoutCommentaire(Res, L_courant);
 	
 	end Ajout_com;
@@ -79,7 +80,7 @@ package body analyse is
 	procedure Ajout_aff(L: chaine; res: T_Tab_Bloc)is
 		partGauche, partDroit: chaine;
 		L_courant: chaine := L;
-		Tab_bloc : T_Tab_Bloc;
+		Liste: T_Tab_Bloc;
 	begin
 		L_courant := trimLeft(L_courant);
 		L_courant := trimRight(L_courant);
@@ -88,7 +89,7 @@ package body analyse is
 		partGauche := trimRight(partGauche);
 		partDroit := trimLeft(partDroit);
 		
-		ajoutAffectation(Tab_bloc, partGauche, partDroit);
+		ajoutAffectation(Liste,  partGauche, partDroit);
 	end Ajout_aff;
 	
 	procedure Ajout_Mod(L: chaine; res: T_Tab_Bloc)is
