@@ -20,6 +20,8 @@ package gestionbloc is
 			when commentaire 	=> MonCom : chaine;
 			when module 		=> MonMod: chaine;
 			when affectation 	=> vG, vD : chaine;
+			when pour | tq | repeter=> CondContinu : chaine;
+						   Tab_Bloc : T_Tab_Bloc;
 			when blocCond 		=> MTab : T_Tab_Bloc;
 			when blocCase 		=> variableATester: chaine;
 									Liste_case : T_Tab_Bloc;
