@@ -14,9 +14,9 @@ package body liste is
 	
 	procedure Affiche_liste(L: T_PTR_LISTE)is
 		begin
-			if(L /= null)then
+			if(NOT estVide(L))then
 				affiche(L.all.courant);
-				if(L.all.suivant /= null) then
+				if(NOT estVide(L.all.suivant)) then
 					Affiche_liste(L.all.suivant);
 				end if;
 			end if;
@@ -31,8 +31,8 @@ package body liste is
 	
 	procedure Ajout_queue(L: in out T_PTR_LISTE; elt: T_elt)is
 		begin
-			if(L /= null)then
-				if(L.all.suivant /= null) then
+			if(NOT estVide(L))then
+				if(NOT estVide(L.all.suivant)) then
 					Ajout_queue(L.all.suivant, elt);
 				else
 					L.all.suivant := new T_Liste'((elt, null));
@@ -51,7 +51,7 @@ package body liste is
 		tmp: T_elt;
 		
 		begin
-			if(L /= null) then
+			if(NOT estVide(L)) then
 				donne_tete(L, tmp);
 			end if;
 			return tmp;
@@ -59,17 +59,17 @@ package body liste is
 	
 	procedure enleve_enTete(L: in out T_PTR_LISTE) is
 		begin
-			if(L /= null) then
+			if(NOT estVide(L)) then
 				L := L.suivant;			
 			end if;
 	end enleve_enTete;
 	
 	procedure enleve_queue(L: in out T_PTR_LISTE) is
 		begin
-			if(L /= null) then
-				if(L.all.suivant= null) then
+			if(NOT estVide(L)) then
+				if(estVide(L.all.suivant)) then
 					L := null;
-				elsif(L.all.suivant.all.suivant = null) then
+				elsif(estVide(L.all.suivant.all.suivant)) then
 					L.all.suivant := null;
 				else
 					enleve_queue(L.all.suivant);
@@ -79,10 +79,10 @@ package body liste is
 	
 	function appartient_liste(L: T_PTR_LISTE; elt: T_elt) return boolean is
 		begin
-			if(L /= null) then
+			if(NOT estVide(L)) then
 				if(L.all.courant = elt)then
 					return true;
-				elsif(L.all.suivant /= null)then
+				elsif(NOT estVide(L.all.suivant))then
 					return appartient_liste(L.all.suivant, elt);
 				end if;
 			end if;
