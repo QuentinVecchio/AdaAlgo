@@ -92,24 +92,31 @@ package body analyse is
 		ajoutAffectation(Liste,  partGauche, partDroit);
 	end Ajout_aff;
 	
+	
+	
 	procedure Ajout_Mod(L: chaine; res: T_Tab_Bloc)is
-		begin
-			null;
+		L_courant : chaine := L;
+		Liste : T_Tab_Bloc;
+	begin
+		L_courant := trimLeft(L_courant);
+		L_courant := trimRight(L_courant);
+		
+		 ajoutModule(Liste, L_courant);
 	end Ajout_Mod;
 	
 	procedure Ajout_pour_tq (tab: T_tab_ligne ; Res: T_Tab_Bloc) is
-		begin
-			null;
+	begin
+		null;
 	end Ajout_pour_tq;
 
 	procedure Ajout_rep (tab: T_tab_ligne ; Res: T_Tab_Bloc) is
-		begin
-			null;
+	begin
+		null;
 	end Ajout_rep;
 	
 	procedure Ajout_cond (tab: T_tab_ligne ; Res: T_Tab_Bloc) is
-		begin
-			null;
+	begin
+		null;
 	end Ajout_cond;
 	
 end analyse;
