@@ -11,6 +11,12 @@ package liste is
 	-- Pointeur de liste
 	type T_PTR_LISTE is private;
 	
+	
+	--
+	-- Retourne une liste vide
+	--
+	function Creer_liste return T_PTR_LISTE;
+	
 	--
 	--	Crée une liste avec un élément dedans
 	--

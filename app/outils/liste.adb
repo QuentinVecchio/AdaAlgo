@@ -1,5 +1,11 @@
 package body liste is
 
+	function Creer_liste return T_PTR_LISTE is
+		begin
+			return null;
+		
+	end Creer_liste;
+
 	procedure Creer_liste(L: out T_PTR_LISTE; elt: T_elt)is
 	
 		begin
