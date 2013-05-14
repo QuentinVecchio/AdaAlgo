@@ -11,7 +11,6 @@ package liste is
 	-- Pointeur de liste
 	type T_PTR_LISTE is private;
 	
-	
 	--
 	-- Retourne une liste vide
 	--
