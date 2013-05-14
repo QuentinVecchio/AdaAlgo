@@ -9,10 +9,7 @@ package body liste is
 	procedure Creer_liste(L: out T_PTR_LISTE; elt: T_elt)is
 	
 		begin
-			L := new T_Liste;
-			L.all.courant := elt;
-			L.all.suivant := null;
-	
+			L := new T_Liste'(elt, null);
 	end Creer_liste;
 	
 	procedure Affiche_liste(L: T_PTR_LISTE)is
