@@ -85,7 +85,7 @@ package body analyse is
 		L_courant := trimLeft(L_courant);
 		L_courant := trimRight(L_courant);
 		partGauche := substring(L_courant, 1, strpos(L_courant, '<'));
-		partDroit := substring(L_courant, strpos(L_courant, '<'), length(L_courant));
+		partDroit := substring(L_courant, strpos(L_courant, '<')+1, length(L_courant));
 		partGauche := trimRight(partGauche);
 		partDroit := trimLeft(partDroit);
 		
@@ -105,8 +105,13 @@ package body analyse is
 	end Ajout_Mod;
 	
 	procedure Ajout_pour_tq (tab: T_tab_ligne ; Res: T_Tab_Bloc) is
+		Liste, ListeInterne : T_tab_Bloc;
+		condition : chaine;
 	begin
-		null;
+		condition := donne_tete(tab); -- verifier avec matthieu si 'tab' est bien ce qu'il faut passer en parametre
+		Analyse_Code(tab, ListeInterne);
+		--les noms de fonction et leurs en-tetes risques fort de changer! 
+		ajoutPourTq(Liste, condition, ListeInterne);
 	end Ajout_pour_tq;
 
 	procedure Ajout_rep (tab: T_tab_ligne ; Res: T_Tab_Bloc) is
