@@ -84,7 +84,6 @@ procedure testgestionbloc is
 								aReussi := false;
 			end;
 			
-			
 			ajoutElt(l1, monBloc);
 			donneTete(l1, res);
 			if(res.forme /= commentaire)then
