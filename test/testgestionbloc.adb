@@ -1,4 +1,4 @@
-with simple_io, gestionbloc, definitions, mstring;
+with simple_io, gestionbloc, definitions, mstring, typeEnum;
 use simple_io, gestionbloc, definitions, mstring;
 
 procedure testgestionbloc is
@@ -48,6 +48,27 @@ procedure testgestionbloc is
 		return aReussi;
 	end testCreerListe;
 	
+	function testAfficheTypeElt return boolean is
+		aReussi: boolean := true;
+		l1: T_Tab_Bloc;
+		type confirm is (y,o,n);
+		package AfficheVerif is new typeEnum(confirm);
+		use AfficheVerif;
+		
+		rep: confirm;
+		
+		begin
+			creerListe(l1);
+			ajoutElt(l1, monBloc);
+			ajoutElt(l1, monBloc2);
+			put_line("Affichage des éléments de la liste");
+			afficheTypeelt(l1);
+			put_line("Affiche bien commentaire puis module ? (o/n)");
+			getSecure(rep);
+			aReussi := rep in y..o;
+			return aReussi;
+	end testAfficheTypeElt;
+	
 	begin
 	
 		if(testEstVide)then
@@ -58,6 +79,12 @@ procedure testgestionbloc is
 		
 		if(testCreerListe)then
 			put_line("testCreerListe accomplit avec succes");
+		else
+			put_line("Il reste encore des erreurs dans creerListe");
+		end if;
+		
+		if(testAfficheTypeElt) then
+			put_line("testAfficheTypeElt accomplit avec succes");
 		else
 			put_line("Il reste encore des erreurs dans creerListe");
 		end if;
