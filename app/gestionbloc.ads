@@ -97,6 +97,10 @@ package gestionbloc is
 	--
 	procedure ajoutBlocCond(L: in out T_Tab_Bloc; tabBloc: T_Tab_Bloc);
 	
+	
+	procedure ajoutPourTq (L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc);
+	
+	
 	--
 	--	Test l'égalité entre deux T_Tab_Bloc (compare uniquement le type des éléments)
 	--

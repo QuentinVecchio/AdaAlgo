@@ -101,6 +101,17 @@ package body gestionbloc is
 			ajoutElt(L, b);
 	end ajoutBlocCond;
 	
+	procedure ajoutPourTq (L: in out T_Tab_Bloc; Type_cond: T_elt; cond: chaine; Liste_Int : T_Tab_Bloc) is
+		b: Bloc(Type_cond);
+		begin
+			b.CondContinu := chaine;
+			b.MTab:= Liste_Int;
+			ajoutElt(L, b);
+			
+	end ajoutPourTq;
+	
+	
+	
 	function "="(L1, L2 : T_Tab_Bloc) return boolean is
 		begin
 		
