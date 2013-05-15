@@ -101,10 +101,10 @@ package body gestionbloc is
 			ajoutElt(L, b);
 	end ajoutBlocCond;
 	
-	procedure ajoutPourTq (L: in out T_Tab_Bloc; Type_cond: T_elt; cond: chaine; Liste_Int : T_Tab_Bloc) is
+	procedure ajoutPourTq (L: in out T_Tab_Bloc; Type_cond: T_elmt; cond: chaine; Liste_Int : T_Tab_Bloc) is
 		b: Bloc(Type_cond);
 		begin
-			b.CondContinu := chaine;
+			b.CondContinu := cond;
 			b.MTab:= Liste_Int;
 			ajoutElt(L, b);
 			

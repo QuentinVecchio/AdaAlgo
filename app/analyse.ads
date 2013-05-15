@@ -40,16 +40,8 @@ Package analyse is
 	--	Modifie l'indice de la ligne courant, pointe sur ftq ou fpour en fin de traitement
 	--	Renvoit l'ensemble des blocs contenus dans le bloc courant
 	--
-	procedure Ajout_pour_tq (tab: T_tab_ligne ; Res: T_Tab_Bloc);
+	procedure Ajout_boucle (tab: in out T_tab_ligne ; Res: T_Tab_Bloc);
 
-	
-	--
-	--	Permet d'ajouter un bloc repeter
-	--	C'est à dire de repeter-> jusqu'a
-	--	Modifie l'indice de la ligne courant, pointe sur  jusqu'a
-	--	Renvoit l'ensemble des blocs contenus dans le bloc courant
-	--
-	procedure Ajout_rep (tab: T_tab_ligne ; Res: T_Tab_Bloc);
 	
 	--
 	--	Permet d'ajouter un bloc conditionnel

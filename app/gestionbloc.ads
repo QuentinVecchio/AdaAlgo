@@ -98,7 +98,7 @@ package gestionbloc is
 	procedure ajoutBlocCond(L: in out T_Tab_Bloc; tabBloc: T_Tab_Bloc);
 	
 	
-	procedure ajoutPourTq (L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc);
+	procedure ajoutPourTq (L: in out T_Tab_Bloc; Type_cond: T_elmt; cond: chaine; Liste_Int : T_Tab_Bloc);
 	
 	
 	--
