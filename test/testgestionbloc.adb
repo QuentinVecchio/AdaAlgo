@@ -69,6 +69,38 @@ procedure testgestionbloc is
 			return aReussi;
 	end testAfficheTypeElt;
 	
+	function testDonneTete return boolean is
+		aReussi : boolean := true;
+		l1: T_Tab_Bloc;
+		res : bloc;
+		begin
+			creerListe(l1);
+			
+			begin
+				donneTete(l1, res);
+			exception
+				when liste_non_cree => null;
+				when others => Put_line("Erreur inattendue !");
+								aReussi := false;
+			end;
+			
+			
+			ajoutElt(l1, monBloc);
+			donneTete(l1, res);
+			if(res.forme /= commentaire)then
+				Put_line("Type attendu: commentaire, type reçu: "&T_elmt'image(res.forme));
+				aReussi := false;
+			end if;
+			ajoutElt(l1, monBloc2);
+			donneTete(l1, res);			
+			if(res.forme /= commentaire)then
+				Put_line("Type attendu: module, type reçu: "&T_elmt'image(res.forme));
+				aReussi := false;
+			end if;
+		return aReussi;
+		
+	end testDonneTete;
+	
 	begin
 	
 		if(testEstVide)then
@@ -86,7 +118,13 @@ procedure testgestionbloc is
 		if(testAfficheTypeElt) then
 			put_line("testAfficheTypeElt accomplit avec succes");
 		else
-			put_line("Il reste encore des erreurs dans creerListe");
+			put_line("Il reste encore des erreurs dans testAfficheTypeElt");
+		end if;
+		
+		if(testDonneTete) then
+			put_line("testDonneTete accomplit avec succes");
+		else
+			put_line("Il reste encore des erreurs dans testDonneTete");
 		end if;
 		
 		

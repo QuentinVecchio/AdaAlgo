@@ -15,7 +15,7 @@ package gestionbloc is
 	type T_ACCESS_Tab_Bloc is ACCESS T_Tab_Bloc;
 	
 	-- type bloc regroupant tout les types que l'on peut rencontrer dans un algo
-	type Bloc(Forme: T_elmt) is record
+	type Bloc(Forme: T_elmt:= affectation) is record
 		case Forme is
 			when commentaire 	=> MonCom : chaine;
 			when module 		=> MonMod: chaine;
@@ -39,6 +39,8 @@ package gestionbloc is
 	end record;
 
 	liste_deja_cree: exception;
+	
+	liste_non_cree: exception;
 	
 	--
 	--	Crée une nouvelle liste

@@ -53,6 +53,8 @@ package body gestionbloc is
 		begin
 			if(NOT estVide(L))then
 				elt := L.courant.all;
+			else
+				raise liste_non_cree;
 			end if;
 	end donneTete;
 	
