@@ -13,8 +13,7 @@ package body analyse is
  		                when commentaire => Ajout_com(donne_tete(tab), Res);
  		                when affectation => Ajout_aff(donne_tete(tab), Res);
 		                when module      => Ajout_Mod(donne_tete(tab), Res);
-		                when pour | tq   => Ajout_pour_tq (tab,Res);
-		                when repeter     => Ajout_rep(tab,Res);
+		                when pour | tq | repeter   => Ajout_boucle (tab,Res);
 		                when cond        => Ajout_cond(tab, Res);
 		                when others      => NULL;
 		        end case;
@@ -104,20 +103,21 @@ package body analyse is
 		 ajoutModule(Liste, L_courant);
 	end Ajout_Mod;
 	
-	procedure Ajout_pour_tq (tab: T_tab_ligne ; Res: T_Tab_Bloc) is
+	procedure Ajout_boucle (tab: in out T_tab_ligne ; Res: T_Tab_Bloc) is
 		Liste, ListeInterne : T_tab_Bloc;
 		condition : chaine;
 	begin
+	
+	--Note:
+	--1) Enlever les pour et faire etc 
+	--2) voir pour T_type_ligne vers T_elt ...
+	
 		condition := donne_tete(tab); -- verifier avec matthieu si 'tab' est bien ce qu'il faut passer en parametre
 		Analyse_Code(tab, ListeInterne);
 		--les noms de fonction et leurs en-tetes risques fort de changer! 
-		ajoutPourTq(Liste, condition, ListeInterne);
-	end Ajout_pour_tq;
+		--ajoutPourTq(Liste, GetType(condition),condition, ListeInterne);
+	end Ajout_boucle;
 
-	procedure Ajout_rep (tab: T_tab_ligne ; Res: T_Tab_Bloc) is
-	begin
-		null;
-	end Ajout_rep;
 	
 	procedure Ajout_cond (tab: T_tab_ligne ; Res: T_Tab_Bloc) is
 	begin
