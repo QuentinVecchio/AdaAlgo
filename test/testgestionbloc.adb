@@ -8,6 +8,9 @@ procedure testgestionbloc is
 	monBloc: Bloc(commentaire);
 	monBloc2: Bloc(module);
 	
+	--
+	--	Test si la fonction estVide renvoit vrai quand vide et faux sinon
+	--
 	function testEstVide return boolean is
 	
 		aReussi: boolean := true;
@@ -22,30 +25,42 @@ procedure testgestionbloc is
 			aReussi := estVide(l2) AND NOT estVide(l1);
 			
 			return aReussi;
-			
-			
 	end testEstVide;
+	
+	
+	function testCreerListe return boolean is
+		aReussi: boolean := true;
+		l1: T_Tab_Bloc;
+		begin
+		
+			begin
+				creerListe(l1);
+				ajoutElt(l1, monBloc);
+				creerListe(l1);
+			
+			exception
+				when liste_deja_cree => null;				
+				when others => Put_line("Une erreur est survenue lors du test de creerliste");
+										aReussi := false;
+
+			end;
+		
+		return aReussi;
+	end testCreerListe;
 	
 	begin
 	
-		Put_line("Début de test");
-		creerListe(maListe);
-		ajoutElt(maListe, monBloc);
-		ajoutElt(maListe, monBloc2);
-		ajoutElt(maListe, monBloc2);
-		ajoutElt(maListe, monBloc);
-		
-		ajoutCommentaire(maListe, "coucou"+ " comment vas");
-		afficheTypeElt(maListe);
-		put_line("enleve");
-		enleveTete(maListe);
-		enleveTete(maListe);
-
-		enleveTete(maListe);
-		enleveTete(maListe);
-		afficheTypeElt(maListe);
 		if(testEstVide)then
 			put_line("testEstVide accomplit avec succes");
+		else
+			put_line("Il reste encore des erreurs dans estVide");
 		end if;
+		
+		if(testCreerListe)then
+			put_line("testCreerListe accomplit avec succes");
+		else
+			put_line("Il reste encore des erreurs dans creerListe");
+		end if;
+		
 		
 end testgestionbloc;
