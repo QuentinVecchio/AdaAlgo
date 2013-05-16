@@ -17,8 +17,8 @@ procedure testconversion is
 				Put_line("Conversion d'un commentaire réussi !");
 			else
 				Put_line("==>Erreur de conversion:");
-				Put_line("Attendu: "+ res);
-				Put_line("Reçu:    "+ donne_tete(L));
+				Put_line("Attendu  :"+ res);
+				Put_line("Reçu     :"+ donne_tete(L));
 				aReussi := false;
 			end if;
 		
@@ -27,12 +27,14 @@ procedure testconversion is
 
 	function testConversionAffectation return boolean is
 		aReussi: boolean := true;
-		T: T_Tab_Bloc;
+		T, T2: T_Tab_Bloc;
 		L: T_Tab_Ligne;
 		res: chaine := createChaine("age := age + 1");
 		resf: chaine := createChaine(" ");
 		begin
 			creerListe(T);
+			creerListe(T2);
+			ajoutAffectation(T, createChaine("age"), createChaine("age div (5 mod 3)"));
 			ajoutAffectation(T, createChaine("age"), createChaine("age + 1"));
 			conversionAffectation(T,L);
 			resf := donne_tete(L);
@@ -53,9 +55,29 @@ procedure testconversion is
 			end if;
 			
 			if(not aReussi)then
-				put_line("Valeur reçue:   "+ resf);
-				put_line("Valeur attendue:"+res);
+				put_line("Valeur reçue    :"+ resf);
+				put_line("Valeur attendue :"+res);
 			end if;
+			
+			conversionAffectation(T2,L);
+			resf := donne_tete(L);
+			res := createChaine("age := age / (5 rem 3)");
+			if(contains(resf, "mod"))then
+				put_line("Il reste encore des mod, -> rem");
+				aReussi := false;
+			end if;
+			
+			if(contains(resf, "div"))then
+				put_line("Il reste encore des div, -> /");
+				aReussi := false;
+			end if;
+			
+			
+			if(contains(resf, "div") or else contains(resf, "mod"))then
+				put_line("Valeur reçue     :"+ resf);
+				put_line("Valeur attendue  :"+res);
+			end if;
+			
 			return aReussi;
 	end testConversionAffectation;
 	
@@ -87,6 +109,29 @@ procedure testconversion is
 		
 	end testConversionModule;
 	
+	function testConversionAda return boolean is
+		aReussi: boolean := false;
+		T: T_Tab_Bloc;
+		L: T_Tab_Ligne;
+
+		begin
+			creerListe(T);
+			ajoutCommentaire(T, createChaine("c'est moi"));
+			ajoutCommentaire(T, createChaine("Encore moi !"));
+			ajoutAffectation(T, createChaine("surface"), createChaine("c*c"));
+		
+			conversionAda(T, L);
+			if(estVide(L))then
+				put_line("La procedure conversionAda ne renvoit rien !");
+				aReussi := false;
+			end if;
+			
+		
+			return aReussi;
+		
+	end testConversionAda;
+	
+	
 	
 	begin
 		Put_line("Début de test du fichier conversion.adb");
@@ -108,5 +153,9 @@ procedure testconversion is
 			Put_line("#Il reste encore des erreurs dans conversionModule");
 		end if;		
 		
-		
+		if(testConversionAda)then
+			Put_line("#Test de ConversionAda reussi avec succes");
+		else
+			Put_line("#Il reste encore des erreurs dans ConversionAda");
+		end if;		
 end testconversion;
