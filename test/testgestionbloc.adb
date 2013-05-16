@@ -72,7 +72,7 @@ procedure testgestionbloc is
 	function testDonneTete return boolean is
 		aReussi : boolean := true;
 		l1: T_Tab_Bloc;
-		res : bloc;
+		res : bloc(commentaire);
 		begin
 			creerListe(l1);
 			

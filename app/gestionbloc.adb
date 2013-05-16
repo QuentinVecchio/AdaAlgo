@@ -103,16 +103,32 @@ package body gestionbloc is
 			ajoutElt(L, b);
 	end ajoutBlocCond;
 	
-	procedure ajoutPourTq (L: in out T_Tab_Bloc; Type_cond: T_elmt; cond: chaine; Liste_Int : T_Tab_Bloc) is
-		b: Bloc(Type_cond);
-		begin
-			b.CondContinu := cond;
-			b.MTab:= Liste_Int;
-			ajoutElt(L, b);
-			
-	end ajoutPourTq;
-	
-	
+	procedure ajoutPour (L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc) is
+			b: Bloc(pour);
+			begin
+					b.CondContinu := cond;
+					b.MTab:= Liste_Int;
+					ajoutElt(L, b);
+
+	end ajoutPour;
+
+	procedure ajoutTq (L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc) is
+			b: Bloc(pour);
+			begin
+					b.CondContinu := cond;
+					b.MTab:= Liste_Int;
+					ajoutElt(L, b);
+
+	end ajoutTq;
+
+	procedure ajoutRepeter (L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc) is
+			b: Bloc(pour);
+			begin
+					b.CondContinu := cond;
+					b.MTab:= Liste_Int;
+					ajoutElt(L, b);
+
+	end ajoutRepeter;
 	
 	function "="(L1, L2 : T_Tab_Bloc) return boolean is
 		begin
