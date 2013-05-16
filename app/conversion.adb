@@ -1,21 +1,24 @@
 package body conversion is
 
-	procedure conversionAda(tabBloc : in out T_TAB_BLOC, tabLigne : out T_TAB_LIGNE) is
+	procedure conversionAda(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE) is
 	begin
-
+		null;
 	end conversionAda;
 	
-	procedure conversionCommentaire(eltAlgo : in chaine, eltAda : out chaine) is
+	procedure conversionCommentaire(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE) is
+		--eltAda :chaine := "--" + eltAlgo;
 	begin
-		eltAda = "--" + eltAlgo;
+		null;
 	end conversionCommentaire;
 	
-	procedure conversionAffectation(tabBloc : in chaine, tabLigne : out T_TAB_LIGNE) is
+	procedure conversionAffectation(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE) is
 	begin
+		null;
 	end conversionAffectation;
 
-	procedure conversionModule(tabBloc : in chaine, tabLigne : out T_TAB_LIGNE) is
+	procedure conversionModule(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE) is
 	begin
+		null;
 	end conversionModule;
 
 end conversion;
