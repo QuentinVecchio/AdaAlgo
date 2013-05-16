@@ -25,6 +25,39 @@ procedure testconversion is
 		return aReussi;
 	end testConversionCommentaire;
 
+	function testConversionAffectation return boolean is
+		aReussi: boolean := true;
+		T: T_Tab_Bloc;
+		L: T_Tab_Ligne;
+		res: chaine := createChaine("age := age + 1");
+		resf: chaine := createChaine(" ");
+		begin
+			creerListe(T);
+			ajoutAffectation(T, createChaine("age"), createChaine("age + 1"));
+			conversionAffectation(T,L);
+			resf := donne_tete(L);
+			if(not startWith(resf, "age"))then
+				put_line("L'affectation ne commence pas par 'age'");
+				aReussi := false;
+			end if;
+			
+			-- a remplacer par un endwith plus avantageux
+			if(not contains(resf, "age +1"))then
+				put_line("L'affectation ne finit pas par 'age +1'");
+				aReussi := false;
+			end if;
+			
+			if(not contains(resf, ":="))then
+				put_line("L'affectation ne comporte pas de ':='");
+				aReussi := false;
+			end if;
+			
+			if(not aReussi)then
+				put_line("Valeur reçue:   "+ resf);
+				put_line("Valeur attendue:"+res);
+			end if;
+			return aReussi;
+	end testConversionAffectation;
 	begin
 		Put_line("Début de test du fichier conversion.adb");
 		if(testConversionCommentaire)then
@@ -32,4 +65,11 @@ procedure testconversion is
 		else
 			Put_line("Il reste encore des erreurs dans conversionCommentaire");
 		end if;
+		
+		if(testConversionAffectation)then
+			Put_line("Test de ConversionAffectation reussi avec succes");
+		else
+			Put_line("Il reste encore des erreurs dans ConversionAffectation");
+		end if;		
+		
 end testconversion;
