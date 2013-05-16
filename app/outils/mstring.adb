@@ -190,9 +190,7 @@ package body mstring is
 			tmp := substring(tmp, 1, length(motifTmp));
 			
 			return contains(tmp, motif);
-		
-			
-  
+
   end startWith;
   
   function startWith(c: chaine; motif: string) return boolean is
