@@ -58,18 +58,55 @@ procedure testconversion is
 			end if;
 			return aReussi;
 	end testConversionAffectation;
+	
+	function testConversionModule return boolean is
+		aReussi: boolean := false;
+		T: T_Tab_Bloc;
+		L: T_Tab_Ligne;
+		tmp : chaine;
+		resf: chaine;
+		begin
+			creerListe(T);
+			tmp := createChaine("lire(..)");
+			ajoutModule(T, tmp);
+			conversionModule(T,L);
+			resf:= donne_tete(L);
+		
+			if(not startWith(resf, "put_line("))then
+				put_line("La ligne ne commence pas par un put_line");
+				aReussi := false;
+			end if;
+			
+			--a remplacer par endwith 
+			if(not contains(resf, ");"))then
+				put_line("L'appel de module ne comporte pas de ');'");
+				aReussi := false;
+			end if;
+		
+			return aReussi;
+		
+	end testConversionModule;
+	
+	
 	begin
 		Put_line("Début de test du fichier conversion.adb");
 		if(testConversionCommentaire)then
-			Put_line("Test de conversionCommentaire reussi avec succes");
+			Put_line("#Test de conversionCommentaire reussi avec succes");
 		else
-			Put_line("Il reste encore des erreurs dans conversionCommentaire");
+			Put_line("#Il reste encore des erreurs dans conversionCommentaire");
 		end if;
 		
 		if(testConversionAffectation)then
-			Put_line("Test de ConversionAffectation reussi avec succes");
+			Put_line("#Test de ConversionAffectation reussi avec succes");
 		else
-			Put_line("Il reste encore des erreurs dans ConversionAffectation");
+			Put_line("#Il reste encore des erreurs dans ConversionAffectation");
 		end if;		
+		
+		if(testConversionModule)then
+			Put_line("#Test de conversionModule reussi avec succes");
+		else
+			Put_line("#Il reste encore des erreurs dans conversionModule");
+		end if;		
+		
 		
 end testconversion;
