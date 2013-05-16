@@ -1,3 +1,4 @@
+with definitions; use definitions;
 package body analyse is
 	
 	-------------------------
@@ -13,7 +14,9 @@ package body analyse is
  		                when commentaire => Ajout_com(donne_tete(tab), Res);
  		                when affectation => Ajout_aff(donne_tete(tab), Res);
 		                when module      => Ajout_Mod(donne_tete(tab), Res);
-		                when pour | tq | repeter   => Ajout_boucle (tab,Res);
+		                when pour	 => Ajout_Boucle (tab, Res);
+		                when tq		 => Ajout_Boucle (tab, Res);
+		                when repeter	 => Ajout_Boucle (tab, Res);
 		                when cond        => Ajout_cond(tab, Res);
 		                when others      => NULL;
 		        end case;
@@ -103,16 +106,38 @@ package body analyse is
 		 ajoutModule(Liste, L_courant);
 	end Ajout_Mod;
 	
-	procedure Ajout_boucle (tab: in out T_tab_ligne ; Res: T_Tab_Bloc) is
+	procedure Ajout_boucle (tab: in out T_tab_ligne; Res: T_Tab_Bloc) is
 		Liste, ListeInterne : T_tab_Bloc;
 		condition : chaine;
+		type_Boucle : T_elmt;
 	begin
 	
 	--Note:
 	--1) Enlever les pour et faire etc 
 	--2) voir pour T_type_ligne vers T_elt ...
 	
-		condition := donne_tete(tab); -- verifier avec matthieu si 'tab' est bien ce qu'il faut passer en parametre
+		condition := donne_tete(tab); 
+		if(startWith(condition, "pour"))then
+			type_Boucle := pour; 
+		elsif(startWith(condition, "tq"))then
+			type_Boucle := tq;
+		elsif(startWith(condition, "repeter"))then
+			type_Boucle := repeter;
+		end if;
+		
+		--on enleve le 'pour', 'tq' ou le 'repeter'
+		case type_Boucle is
+			when	pour	=> condition := substring(condition, 1, 5);
+			when	tq	=> condition := substring(condition, 1, 3);
+			when	repeter => condition := substring(condition, 1, 8);
+			when	others	=> NULL;
+		end case;
+		
+		--on enleve le 'faire'
+		condition := substring(condition, length(condition)-6, length(condition));
+		condition := trimLeft(condition);
+		condition := trimRight(condition);
+		
 		Analyse_Code(tab, ListeInterne);
 		--les noms de fonction et leurs en-tetes risques fort de changer! 
 		--ajoutPourTq(Liste, GetType(condition),condition, ListeInterne);
