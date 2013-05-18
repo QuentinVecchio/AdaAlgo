@@ -36,72 +36,72 @@ package entetelexique is
 	
 	--
 	--	Fonction qui permet d'extraire la liste des noms d'une ligne donnée
-	--	C'est à dire tout les éléments séparées par une virgule entre le début et la première parenthèse
-	--	@param ligneCourant, la ligne a analyser
+	--	C'est à dire tous les éléments séparées par une virgule entre le début et la première parenthèse
+	--	@param ligneCourante, la ligne à analyser
 	--	@return T_Tab_Chaine, une liste de l'ensemble des noms trouvés
 	--
-	function donneListeNom(ligneCourant: chaine) return T_Tab_Chaine;
+	function donneListeNom(ligneCourante: chaine) return T_Tab_Chaine;
 	
 	--
 	--	Permet de définir le type de ligne
-	--	@param ligneCourant, la ligne a analyser
+	--	@param ligneCourante, la ligne à analyser
 	--	@return le type de ligne identifié
 	--
-	function donneTypeLigne(ligneCourant: chaine) return T_typeline;
+	function donneTypeLigne(ligneCourante: chaine) return T_typeline;
 	
 	--
 	--	Permet de donner le commentaire d'une ligne donnée si il en existe un
-	--	@param ligneCourante, la ligne où se trouve le commentaire
+	--	@param ligneCourantee, la ligne où se trouve le commentaire
 	--	@return chaine, contenant le commentaire
 	--
-	function donneCommentaire(ligneCourant: chaine) return chaine;
+	function donneCommentaire(ligneCourante: chaine) return chaine;
 	
 	--
 	--	Permet de récuperer le type de retour d'une fonction ou le type d'une constante 
 	--	(même emplacement dans la chaine)
-	--	@param ligneCourant, la ligne a analyser
+	--	@param ligneCourante, la ligne à analyser
 	--	@return chaine, contenant le type de retour de la fonction ou le type de la constante
 	--	@return chaine, une chaine vide si la fonction n'a rien trouvé (= appel dans un mauvais cas)
 	--
-	function donneType(ligneCourant: chaine) return chaine;
+	function donneType(ligneCourante: chaine) return chaine;
 	
 	--
 	-- 	Permet de récuperer le type d'élément contenu dans une table
-	--	@param ligneCourant, la ligne a analyser
+	--	@param ligneCourante, la ligne à analyser
 	--	@return chaine, contenant le type de valeur contenu dans la table
-	function donneTypeEltDeTable(ligneCourant: chaine) return chaine;
+	function donneTypeEltDeTable(ligneCourante: chaine) return chaine;
 	
 	--
 	--	Permet de récuperer l'ensemble de définition d'un type table
-	--	@param ligneCourant, la ligne a analyser
+	--	@param ligneCourante, la ligne à analyser
 	--	@return chaine, contenant l'ensemble de définition de la table donnée
 	--
-	function donneEnsDefinition(ligneCourant: chaine) return chaine;
+	function donneEnsDefinition(ligneCourante: chaine) return chaine;
 	
 	--
 	-- Permet de récuperer l'ensemble des données définissant une structure
-	--	@param ligneCourant, la ligne a analyser
+	--	@param ligneCourante, la ligne à analyser
 	--	@return chaine, représentant l'ensemble des constituants de la strcuture
-	function donneEltStructure(ligneCourant: chaine) return chaine;
+	function donneEltStructure(ligneCourante: chaine) return chaine;
 	
 	--
 	--	Permet de donner le type d'une variable
-	--	@param ligneCourant, la ligne a analyser
-	--	@return chaine, le type de la variable (entier, reel, caractère..)
-	function donneTypeVariable(ligneCourant: chaine) return chaine;
+	--	@param ligneCourante, la ligne à analyser
+	--	@return chaine, le type de la variable (entier, réel, caractère..)
+	function donneTypeVariable(ligneCourante: chaine) return chaine;
 	
 	--
 	--	Permet de donner la valeur d'une constante
-	--	@param ligneCourant, la ligne a analyser
+	--	@param ligneCourante, la ligne à analyser
 	--	@return chaine, la chaine contenant la valeur de la constante
-	function donneValeurConstante(ligneCourant: chaine) return chaine;
+	function donneValeurConstante(ligneCourante: chaine) return chaine;
 	
 	--
 	--	Permet de construire un élément ligne de type fonction
 	--	@param nom, le nom de la fonction
 	--	@param commentaire, le commentaire lié a cette fonction
 	--	@param typeRetour, le type de la valeur renvoyé par la fonction
-	--	@return ligne, une ligne de type fonction avec les champs rempli
+	--	@return ligne, une ligne de type fonction avec les champs remplis
 	--
 	function donnerFonction(nom, commentaire, typeRetour: chaine) return ligne;
 	
@@ -109,7 +109,7 @@ package entetelexique is
 	--	Permet de construire un élément ligne de type module
 	--	@param nom, le nom du module
 	--	@param commentaire, le commentaire lié au module
-	--	@return ligne, une ligne de type module avec les champs rempli
+	--	@return ligne, une ligne de type module avec les champs remplis
 	--
 	function donnerModule(nom, commentaire: chaine) return ligne;
 	
@@ -118,7 +118,7 @@ package entetelexique is
 	--	@param nom, le nom de la variable
 	--	@param commentaire, le commentaire lié  a la variable
 	--	@param typeValeur, le type de la variable
-	--	@return ligne, une ligne de variable avec les champs rempli
+	--	@return ligne, une ligne de variable avec les champs remplis
 	--
 	function donnerVariable(nom, commentaire, typeValeur: chaine) return ligne;
 	
@@ -128,7 +128,7 @@ package entetelexique is
 	--	@param commentaire, le commentaire lié a la constante
 	--	@param typeValeur, le type de valeur de la constante
 	--	@param valeur, la valeur de la constante
-	--	@return ligne, une ligne de constante avec les champs rempli
+	--	@return ligne, une ligne de constante avec les champs remplis
 	--
 	function donnerConstante(nom, commentaire, typeValeur, valeur: chaine) return ligne;
 	
@@ -138,7 +138,7 @@ package entetelexique is
 	--	@param commentaire, le commentaire lié a la table
 	--	@param intervalle, les intervalles de définition des dimensions de la table
 	--	@param typeElement, le type d'élément dans la table
-	--	@return ligne, une ligne de type table avec les champs rempli
+	--	@return ligne, une ligne de type table avec les champs remplis
 	--
 	function donnerTable(nom, commentaire, intervalle, typeElement: chaine) return ligne;
 	
@@ -147,7 +147,7 @@ package entetelexique is
 	--	@param nom, le nom de la structure
 	--	@param commentaire, le commentaire lié a la structure
 	--	@param ensElement, l'ensemble des éléments de la structure
-	--	@return ligne, une ligne de type module avec les champs rempli
+	--	@return ligne, une ligne de type module avec les champs remplis
 	--
 	function donnerStructure(nom, commentaire, ensElement: chaine) return ligne;
 	
