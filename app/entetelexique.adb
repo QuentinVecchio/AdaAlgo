@@ -1,5 +1,19 @@
 package body entetelexique is
 
+		function donneListeNom(ligneCourant: chaine) return T_Tab_Chaine is
+			liste: T_Tab_Chaine;
+			begin
+				return liste;
+		end donneListeNom;
+
+
+	function donneTypeLigne(ligneCourant: chaine) return T_typeline is
+		typeLigne: T_typeline;
+		begin
+			return typeLigne;
+	end donneTypeLigne;
+
+
 	function donnerFonction(nom, commentaire, typeRetour: chaine) return ligne is
 		l: ligne(fonction);
 		
