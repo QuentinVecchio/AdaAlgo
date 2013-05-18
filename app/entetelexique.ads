@@ -56,6 +56,45 @@ package entetelexique is
 	--
 	function donneCommentaire(ligneCourant: chaine) return chaine;
 	
+	--
+	--	Permet de récuperer le type de retour d'une fonction ou le type d'une constante 
+	--	(même emplacement dans la chaine)
+	--	@param ligneCourant, la ligne a analyser
+	--	@return chaine, contenant le type de retour de la fonction ou le type de la constante
+	--	@return chaine, une chaine vide si la fonction n'a rien trouvé (= appel dans un mauvais cas)
+	--
+	function donneType(ligneCourant: chaine) return chaine;
+	
+	--
+	-- 	Permet de récuperer le type d'élément contenu dans une table
+	--	@param ligneCourant, la ligne a analyser
+	--	@return chaine, contenant le type de valeur contenu dans la table
+	function donneTypeEltDeTable(ligneCourant: chaine) return chaine;
+	
+	--
+	--	Permet de récuperer l'ensemble de définition d'un type table
+	--	@param ligneCourant, la ligne a analyser
+	--	@return chaine, contenant l'ensemble de définition de la table donnée
+	--
+	function donneEnsDefinition(ligneCourant: chaine) return chaine;
+	
+	--
+	-- Permet de récuperer l'ensemble des données définissant une structure
+	--	@param ligneCourant, la ligne a analyser
+	--	@return chaine, représentant l'ensemble des constituants de la strcuture
+	function donneEltStructure(ligneCourant: chaine) return chaine;
+	
+	--
+	--	Permet de donner le type d'une variable
+	--	@param ligneCourant, la ligne a analyser
+	--	@return chaine, le type de la variable (entier, reel, caractère..)
+	function donneTypeVariable(ligneCourant: chaine) return chaine;
+	
+	--
+	--	Permet de donner la valeur d'une constante
+	--	@param ligneCourant, la ligne a analyser
+	--	@return chaine, la chaine contenant la valeur de la constante
+	function donneValeurConstante(ligneCourant: chaine) return chaine;
 	
 	--
 	--	Permet de construire un élément ligne de type fonction

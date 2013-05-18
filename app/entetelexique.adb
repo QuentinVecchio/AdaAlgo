@@ -14,17 +14,48 @@ package body entetelexique is
 	end donneTypeLigne;
 
 	function donneCommentaire(ligneCourant: chaine) return chaine is
-		com: chaine;
+		c: chaine;
 		begin
-			return com;
+			return c;
 	end donneCommentaire;
 			
 	function donneType(ligneCourant: chaine) return chaine is
-		com: chaine;
+		c: chaine;
 		begin
-			return com;
+			return c;
 	end donneType;
-
+			
+	function donneTypeEltDeTable(ligneCourant: chaine) return chaine is
+		c: chaine;
+		begin
+			return c;
+	end donneTypeEltDeTable;
+	
+	function donneEnsDefinition(ligneCourant: chaine) return chaine is
+		c: chaine;
+		begin
+			return c;
+	end donneEnsDefinition;
+	
+	function donneEltStructure(ligneCourant: chaine) return chaine is
+		c: chaine;
+		begin
+			return c;
+	end donneEltStructure;
+	
+	
+	
+	function donneTypeVariable(ligneCourant: chaine) return chaine is
+		c: chaine;
+		begin
+			return c;
+	end donneTypeVariable;
+	
+	function donneValeurConstante(ligneCourant: chaine) return chaine is
+		c: chaine;
+		begin
+			return c;
+	end donneValeurConstante;
 
 	function donnerFonction(nom, commentaire, typeRetour: chaine) return ligne is
 		l: ligne(fonction);
