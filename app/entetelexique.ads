@@ -32,7 +32,61 @@ package entetelexique is
 		end case;
 	end record;
 
+	--
+	--	Permet de construire un élément ligne de type fonction
+	--	@param nom, le nom de la fonction
+	--	@param commentaire, le commentaire lié a cette fonction
+	--	@param typeRetour, le type de la valeur renvoyé par la fonction
+	--	@return ligne, une ligne de type fonction avec les champs rempli
+	--
 	function donnerFonction(nom, commentaire, typeRetour: chaine) return ligne;
+	
+	--
+	--	Permet de construire un élément ligne de type module
+	--	@param nom, le nom du module
+	--	@param commentaire, le commentaire lié au module
+	--	@return ligne, une ligne de type module avec les champs rempli
+	--
+	function donnerModule(nom, commentaire: chaine) return ligne;
+	
+	--
+	--	Permet de construire un élément ligne de type variable
+	--	@param nom, le nom de la variable
+	--	@param commentaire, le commentaire lié  a la variable
+	--	@param typeValeur, le type de la variable
+	--	@return ligne, une ligne de variable avec les champs rempli
+	--
+	function donnerVariable(nom, commentaire, typeValeur: chaine) return ligne;
+	
+	--
+	--	Permet de construire un élément ligne de constante
+	--	@param nom, le nom de la constante
+	--	@param commentaire, le commentaire lié a la constante
+	--	@param typeValeur, le type de valeur de la constante
+	--	@param valeur, la valeur de la constante
+	--	@return ligne, une ligne de constante avec les champs rempli
+	--
+	function donnerConstante(nom, commentaire, typeValeur, valeur: chaine) return ligne;
+	
+	--
+	--	Permet de construire un élément ligne de type table
+	--	@param nom, le nom du type table
+	--	@param commentaire, le commentaire lié a la table
+	--	@param intervalle, les intervalles de définition des dimensions de la table
+	--	@param typeElement, le type d'élément dans la table
+	--	@return ligne, une ligne de type table avec les champs rempli
+	--
+	function donnerTable(nom, commentaire, intervalle, typeElement: chaine) return ligne;
+	
+	--
+	--	Permet de construire un élément ligne de type structure
+	--	@param nom, le nom de la structure
+	--	@param commentaire, le commentaire lié a la structure
+	--	@param ensElement, l'ensemble des éléments de la structure
+	--	@return ligne, une ligne de type module avec les champs rempli
+	--
+	function donnerStructure(nom, commentaire, ensElement: chaine) return ligne;
+	
 	
 	
 end entetelexique;
