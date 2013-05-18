@@ -1,43 +1,43 @@
 package body entetelexique is
 
-		function donneListeNom(ligneCourant: chaine) return T_Tab_Chaine is
+		function donneListeNom(ligneCourante: chaine) return T_Tab_Chaine is
 			liste: T_Tab_Chaine;
 			begin
 				return liste;
 		end donneListeNom;
 
 
-	function donneTypeLigne(ligneCourant: chaine) return T_typeline is
+	function donneTypeLigne(ligneCourante: chaine) return T_typeline is
 		typeLigne: T_typeline;
 		begin
 			return typeLigne;
 	end donneTypeLigne;
 
-	function donneCommentaire(ligneCourant: chaine) return chaine is
+	function donneCommentaire(ligneCourante: chaine) return chaine is
 		c: chaine;
 		begin
 			return c;
 	end donneCommentaire;
 			
-	function donneType(ligneCourant: chaine) return chaine is
+	function donneType(ligneCourante: chaine) return chaine is
 		c: chaine;
 		begin
 			return c;
 	end donneType;
 			
-	function donneTypeEltDeTable(ligneCourant: chaine) return chaine is
+	function donneTypeEltDeTable(ligneCourante: chaine) return chaine is
 		c: chaine;
 		begin
 			return c;
 	end donneTypeEltDeTable;
 	
-	function donneEnsDefinition(ligneCourant: chaine) return chaine is
+	function donneEnsDefinition(ligneCourante: chaine) return chaine is
 		c: chaine;
 		begin
 			return c;
 	end donneEnsDefinition;
 	
-	function donneEltStructure(ligneCourant: chaine) return chaine is
+	function donneEltStructure(ligneCourante: chaine) return chaine is
 		c: chaine;
 		begin
 			return c;
@@ -45,13 +45,13 @@ package body entetelexique is
 	
 	
 	
-	function donneTypeVariable(ligneCourant: chaine) return chaine is
+	function donneTypeVariable(ligneCourante: chaine) return chaine is
 		c: chaine;
 		begin
 			return c;
 	end donneTypeVariable;
 	
-	function donneValeurConstante(ligneCourant: chaine) return chaine is
+	function donneValeurConstante(ligneCourante: chaine) return chaine is
 		c: chaine;
 		begin
 			return c;
