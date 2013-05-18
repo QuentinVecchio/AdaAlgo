@@ -50,6 +50,14 @@ package entetelexique is
 	function donneTypeLigne(ligneCourant: chaine) return T_typeline;
 	
 	--
+	--	Permet de donner le commentaire d'une ligne donnée si il en existe un
+	--	@param ligneCourante, la ligne où se trouve le commentaire
+	--	@return chaine, contenant le commentaire
+	--
+	function donneCommentaire(ligneCourant: chaine) return chaine;
+	
+	
+	--
 	--	Permet de construire un élément ligne de type fonction
 	--	@param nom, le nom de la fonction
 	--	@param commentaire, le commentaire lié a cette fonction
