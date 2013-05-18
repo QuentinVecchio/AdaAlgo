@@ -13,6 +13,18 @@ package body entetelexique is
 			return typeLigne;
 	end donneTypeLigne;
 
+	function donneCommentaire(ligneCourant: chaine) return chaine is
+		com: chaine;
+		begin
+			return com;
+	end donneCommentaire;
+			
+	function donneType(ligneCourant: chaine) return chaine is
+		com: chaine;
+		begin
+			return com;
+	end donneType;
+
 
 	function donnerFonction(nom, commentaire, typeRetour: chaine) return ligne is
 		l: ligne(fonction);
