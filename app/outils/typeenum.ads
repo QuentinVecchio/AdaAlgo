@@ -5,7 +5,8 @@ type montype is (<>);
 package typeEnum is
 
 	--
-	-- Surcharge de put et get pour le type énuméré
+	-- 	Surcharge de put et get pour le type énuméré
+	--	@param elt, l'élément a afficher
 	--
 	procedure put(elt: montype);
 	
@@ -14,7 +15,8 @@ package typeEnum is
 	procedure get(elt: out montype);
 	
 	--
-	-- Permet l'acquisition sécurisé de l'élément, gestion de l'exception
+	-- 	Permet l'acquisition sécurisé de l'élément, gestion de l'exception
+	--	@param elt, la variable dans laquelle sera stockée l'élément obtenu
 	--
 	procedure getSecure(elt: out montype);
 	
