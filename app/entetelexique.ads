@@ -1,4 +1,4 @@
-with simple_io, definitions, mstring, typeEnum;
+with simple_io, definitions, mstring, liste, typeEnum;
 use simple_io, definitions, mstring;
 
 package entetelexique is
@@ -32,6 +32,23 @@ package entetelexique is
 		end case;
 	end record;
 
+	type T_Tab_Chaine is new listeChaine.T_PTR_LISTE;
+	
+	--
+	--	Fonction qui permet d'extraire la liste des noms d'une ligne donnée
+	--	C'est à dire tout les éléments séparées par une virgule entre le début et la première parenthèse
+	--	@param ligneCourant, la ligne a analyser
+	--	@return T_Tab_Chaine, une liste de l'ensemble des noms trouvés
+	--
+	function donneListeNom(ligneCourant: chaine) return T_Tab_Chaine;
+	
+	--
+	--	Permet de définir le type de ligne
+	--	@param ligneCourant, la ligne a analyser
+	--	@return le type de ligne identifié
+	--
+	function donneTypeLigne(ligneCourant: chaine) return T_typeline;
+	
 	--
 	--	Permet de construire un élément ligne de type fonction
 	--	@param nom, le nom de la fonction
