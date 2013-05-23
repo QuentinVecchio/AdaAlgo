@@ -144,6 +144,39 @@ package body analyse is
 	end Ajout_boucle;
 
 	
+	procedure Ajout_Pour(tab: in out T_tab_ligne; Res: T_Tab_Bloc) is
+		Liste, ListeInterne : T_tab_Bloc;
+		condition : chaine;
+	begin
+		condition := donne_tete(tab);
+		condition := substring(condition, 1, 5);
+		
+		condition := substring(condition, length(condition)-6, length(condition));
+		
+		condition := trimLeft(condition);
+		condition := trimRight(condition);
+		
+		Analyse_Code(tab, ListeInterne);
+		
+		ajoutPour (Liste; condition; ListeInterne);
+	
+	end Ajout_Pour;
+	
+	procedure Ajout_tq(tab: in out T_tab_ligne; Res: T_Tab_Bloc) is
+		Liste, ListeInterne : T_tab_Bloc;
+		condition : chaine;	
+	begin
+		condition := donne_tete(tab);
+		condition := substring(condition, 1, 5);
+		
+		condition := substring(condition, 1, 3);
+		
+		
+		
+	end Ajout_tq;
+	
+	
+	
 	procedure Ajout_cond (tab: T_tab_ligne ; Res: T_Tab_Bloc) is
 	begin
 		null;
