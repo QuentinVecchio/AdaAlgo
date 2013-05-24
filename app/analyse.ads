@@ -35,13 +35,19 @@ Package analyse is
 	procedure Ajout_Mod(L: chaine; res: T_Tab_Bloc);
 	
 	--
-	--	Permet d'ajouter un bloc pour ou tq 
-	--	C'est à dire de pour-> fpour et tq -> ftq
-	--	Modifie l'indice de la ligne courant, pointe sur ftq ou fpour en fin de traitement
-	--	Renvoit l'ensemble des blocs contenus dans le bloc courant
+	--	Permet d'ajouter un bloc 'pour', 'tq' et 'repeter' 
+	--	C'est à dire de 'pour'-> 'fpour', 'tq' -> 'ftq' et 'repeter'->'jq'
+	--	la procedure dispatche ensuite vers les fonction d'ajout qui corresponde au type de la boucle
 	--
-	procedure Ajout_boucle (tab: in out T_tab_ligne; Res: T_Tab_Bloc);
+	procedure Ajout_boucle (tab: in out T_tab_ligne; Res: in out T_Tab_Bloc);
+	
+	procedure Ajout_Pour(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc; condition : in out chaine);
 
+	procedure Ajout_tq(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc; condition : in out chaine);
+	
+	procedure Ajout_Repeter(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc; condition : in out chaine);
+	
+	
 	
 	--
 	--	Permet d'ajouter un bloc conditionnel
