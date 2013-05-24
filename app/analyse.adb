@@ -105,77 +105,88 @@ package body analyse is
 		
 		 ajoutModule(Liste, L_courant);
 	end Ajout_Mod;
+
+
+
+
+
+
+
 	
-	procedure Ajout_boucle (tab: in out T_tab_ligne; Res: T_Tab_Bloc) is
-		Liste, ListeInterne : T_tab_Bloc;
+	procedure Ajout_boucle (tab: in out T_tab_ligne; Res: in out T_Tab_Bloc) is
+		ListeInterne : T_tab_Bloc;
 		condition : chaine;
-		type_Boucle : T_elmt;
+		
 	begin
-	
-	--Note:
-	--1) Enlever les pour et faire etc 
-	--2) voir pour T_type_ligne vers T_elt ...
-	
-		condition := donne_tete(tab); 
-		if(startWith(condition, "pour"))then
-			type_Boucle := pour; 
-		elsif(startWith(condition, "tq"))then
-			type_Boucle := tq;
-		elsif(startWith(condition, "repeter"))then
-			type_Boucle := repeter;
-		end if;
+		-- /!\ ici la gestion de boucle est uniquement valable pour 'pour' et 'tq'
+		-- la gestion de la boucle repeter viendra plus tard
+		-- patience mes petits...
+
+
+
+		--on recupere la ligne de condition
+		condition := donne_tete(tab);
 		
-		--on enleve le 'pour', 'tq' ou le 'repeter'
-		case type_Boucle is
-			when	pour	=> condition := substring(condition, 1, 5);
-			when	tq	=> condition := substring(condition, 1, 3);
-			when	repeter => condition := substring(condition, 1, 8);
-			when	others	=> NULL;
-		end case;
-		
+		--on enleve des espaces possible a la fin de la ligne	
+		condition := trimLeft(condition);
+
 		--on enleve le 'faire'
 		condition := substring(condition, length(condition)-6, length(condition));
 		condition := trimLeft(condition);
 		condition := trimRight(condition);
+
+		--on dispatche suivant le type de la boucle
+		condition := donne_tete(tab); 
+		if(startWith(condition, "pour"))then
+			Ajout_Pour(tab, Res, condition); 
+		elsif(startWith(condition, "tq"))then
+			NULL;
+		elsif(startWith(condition, "repeter"))then
+			NULL;
+		end if;
 		
-		Analyse_Code(tab, ListeInterne);
-		--les noms de fonction et leurs en-tetes risques fort de changer! 
-		--ajoutPourTq(Liste, GetType(condition),condition, ListeInterne);
+
 	end Ajout_boucle;
 
 	
-	procedure Ajout_Pour(tab: in out T_tab_ligne; Res: T_Tab_Bloc) is
-		Liste, ListeInterne : T_tab_Bloc;
-		condition : chaine;
+	procedure Ajout_Pour(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc; condition : in out chaine) is
+		ListeInterne : T_tab_Bloc;
 	begin
-		condition := donne_tete(tab);
-		condition := substring(condition, 1, 5);
-		
+
+		--on enleve le 'pour'
 		condition := substring(condition, length(condition)-6, length(condition));
 		
 		condition := trimLeft(condition);
 		condition := trimRight(condition);
 		
+		--on recupere l'interval dans lequel la boucle va opperer:
+		--demander au bon matthieu un fonction de recherche de position d'un motif dans une chaine
+		
+		-- il y a deux points fixes à utiliser pour l'intervall : 'de' et le '[aà]'
+		-- a partire de là affecter cette interval à la condition.
+
 		Analyse_Code(tab, ListeInterne);
 		
-		ajoutPour (Liste; condition; ListeInterne);
+		ajoutPour(Res, condition, ListeInterne);
 	
 	end Ajout_Pour;
 	
-	procedure Ajout_tq(tab: in out T_tab_ligne; Res: T_Tab_Bloc) is
-		Liste, ListeInterne : T_tab_Bloc;
-		condition : chaine;	
-	begin
-		condition := donne_tete(tab);
-		condition := substring(condition, 1, 5);
-		
-		condition := substring(condition, 1, 3);
-		
-		
-		
+	procedure Ajout_tq(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc; condition : in out chaine) is
+--		Liste, ListeInterne : T_tab_Bloc;
+--		condition : chaine;	
+	Begin
+		NULL;
+--		condition := donne_tete(tab);
+--		condition := substring(condition, 1, 5);
+--		
+--		condition := substring(condition, 1, 3);
+--		
 	end Ajout_tq;
 	
-	
+	procedure Ajout_repeter(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc; condition : in out chaine) is
+	begin
+		NULL;
+	end Ajout_repeter;	
 	
 	procedure Ajout_cond (tab: T_tab_ligne ; Res: T_Tab_Bloc) is
 	begin
