@@ -14,9 +14,9 @@ package body analyse is
  		                when commentaire => Ajout_com(donne_tete(tab), Res);
  		                when affectation => Ajout_aff(donne_tete(tab), Res);
 		                when module      => Ajout_Mod(donne_tete(tab), Res);
-		                when pour	 => Ajout_Boucle (tab, Res);
-		                when tq		 => Ajout_Boucle (tab, Res);
-		                when repeter	 => Ajout_Boucle (tab, Res);
+		                when pour	 => Ajout_Pour (tab, Res);
+		                when tq		 => Ajout_tq (tab, Res);
+		                when repeter	 => Ajout_repeter (tab, Res);
 		                when cond        => Ajout_cond(tab, Res);
 		                when others      => NULL;
 		        end case;
@@ -108,21 +108,11 @@ package body analyse is
 
 
 
-
-
-
-
 	
-	procedure Ajout_boucle (tab: in out T_tab_ligne; Res: in out T_Tab_Bloc) is
+	procedure Ajout_Pour(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc) is
 		ListeInterne : T_tab_Bloc;
 		condition : chaine;
-		
 	begin
-		-- /!\ ici la gestion de boucle est uniquement valable pour 'pour' et 'tq'
-		-- la gestion de la boucle repeter viendra plus tard
-		-- patience mes petits...
-
-
 
 		--on recupere la ligne de condition
 		condition := donne_tete(tab);
@@ -133,57 +123,58 @@ package body analyse is
 		--on enleve le 'faire'
 		condition := substring(condition, length(condition)-6, length(condition));
 		condition := trimLeft(condition);
-		condition := trimRight(condition);
-
-		--on dispatche suivant le type de la boucle
-		condition := donne_tete(tab); 
-		if(startWith(condition, "pour"))then
-			Ajout_Pour(tab, Res, condition); 
-		elsif(startWith(condition, "tq"))then
-			NULL;
-		elsif(startWith(condition, "repeter"))then
-			NULL;
-		end if;
-		
-
-	end Ajout_boucle;
-
-	
-	procedure Ajout_Pour(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc; condition : in out chaine) is
-		ListeInterne : T_tab_Bloc;
-	begin
 
 		--on enleve le 'pour'
-		condition := substring(condition, length(condition)-6, length(condition));
-		
-		condition := trimLeft(condition);
 		condition := trimRight(condition);
+		condition := substring(condition, length(condition)-5, length(condition));
 		
-		--on recupere l'interval dans lequel la boucle va opperer:
-		--demander au bon matthieu un fonction de recherche de position d'un motif dans une chaine
-		
-		-- il y a deux points fixes à utiliser pour l'intervall : 'de' et le '[aà]'
-		-- a partire de là affecter cette interval à la condition.
+		--on eleve les eventuelle espaces
+		condition := trimLeft(condition);
+		condition := trimRight(condition);		
 
+		--on rappel analyse code sur l'interieure de la boucle
 		Analyse_Code(tab, ListeInterne);
 		
+		--on ajout en mémoire la boucle
 		ajoutPour(Res, condition, ListeInterne);
 	
 	end Ajout_Pour;
+
+
 	
-	procedure Ajout_tq(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc; condition : in out chaine) is
---		Liste, ListeInterne : T_tab_Bloc;
---		condition : chaine;	
+	procedure Ajout_tq(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc) is
+		 ListeInterne : T_tab_Bloc;
+		condition : chaine;	
 	Begin
-		NULL;
---		condition := donne_tete(tab);
---		condition := substring(condition, 1, 5);
---		
---		condition := substring(condition, 1, 3);
---		
+		--on recupere la ligne de condition
+		condition := donne_tete(tab);
+		
+		--on enleve des espaces possible a la fin de la ligne	
+		condition := trimLeft(condition);
+
+		--on enleve le 'faire'
+		condition := substring(condition, length(condition)-6, length(condition));
+		condition := trimLeft(condition);
+
+		--on enleve le 'tq'
+		condition := trimRight(condition);
+		condition := substring(condition, length(condition)-3, length(condition));
+		
+		--on eleve les eventuelle espaces
+		condition := trimLeft(condition);
+		condition := trimRight(condition);		
+
+		--on rappel analyse code sur l'interieure de la boucle
+		Analyse_Code(tab, ListeInterne);
+		
+		--on ajout en mémoire la boucle
+		ajoutPour(Res, condition, ListeInterne);
+		
 	end Ajout_tq;
+
+
 	
-	procedure Ajout_repeter(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc; condition : in out chaine) is
+	procedure Ajout_repeter(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc) is
 	begin
 		NULL;
 	end Ajout_repeter;	

@@ -39,13 +39,13 @@ Package analyse is
 	--	C'est à dire de 'pour'-> 'fpour', 'tq' -> 'ftq' et 'repeter'->'jq'
 	--	la procedure dispatche ensuite vers les fonction d'ajout qui corresponde au type de la boucle
 	--
-	procedure Ajout_boucle (tab: in out T_tab_ligne; Res: in out T_Tab_Bloc);
-	
-	procedure Ajout_Pour(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc; condition : in out chaine);
 
-	procedure Ajout_tq(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc; condition : in out chaine);
 	
-	procedure Ajout_Repeter(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc; condition : in out chaine);
+	procedure Ajout_Pour(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc);
+
+	procedure Ajout_tq(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc);
+	
+	procedure Ajout_Repeter(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc);
 	
 	
 	
