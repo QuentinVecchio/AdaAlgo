@@ -131,6 +131,9 @@ package body analyse is
 		--on eleve les eventuelle espaces
 		condition := trimLeft(condition);
 		condition := trimRight(condition);		
+		
+		--on enleve le premier element de tab qui est ici la condition
+		enleve_enTete(tab);
 
 		--on rappel analyse code sur l'interieure de la boucle
 		Analyse_Code(tab, ListeInterne);
@@ -143,7 +146,7 @@ package body analyse is
 
 	
 	procedure Ajout_tq(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc) is
-		 ListeInterne : T_tab_Bloc;
+		ListeInterne : T_tab_Bloc;
 		condition : chaine;	
 	Begin
 		--on recupere la ligne de condition
@@ -162,7 +165,10 @@ package body analyse is
 		
 		--on eleve les eventuelle espaces
 		condition := trimLeft(condition);
-		condition := trimRight(condition);		
+		condition := trimRight(condition);
+
+		--on enleve le premier element de tab qui est ici la condition
+		enleve_enTete(tab);
 
 		--on rappel analyse code sur l'interieure de la boucle
 		Analyse_Code(tab, ListeInterne);
@@ -175,8 +181,33 @@ package body analyse is
 
 	
 	procedure Ajout_repeter(tab: in out T_tab_ligne; Res: in out T_Tab_Bloc) is
+		ListeInterne : T_tab_Bloc;
+		condition : chaine;		
 	begin
-		NULL;
+		--on eleve le premier element de 'tab' qui est ici 	
+		enleve_enTete(tab);
+
+		--on rappel analyse code sur l'interieure de la boucle
+		Analyse_Code(tab, ListeInterne);
+		
+
+		--on recupere la ligne de condition
+		condition := donne_tete(tab);
+		
+		--on enleve des espaces possible a la fin de la ligne	
+		condition := trimLeft(condition);
+
+		--on enleve le 'tq'
+		condition := trimRight(condition);
+		condition := substring(condition, length(condition)-3, length(condition));
+		
+		--on eleve les eventuelle espaces
+		condition := trimLeft(condition);
+		condition := trimRight(condition);		
+	
+		--on ajout en mémoire la boucle
+		ajoutPour(Res, condition, ListeInterne);
+										
 	end Ajout_repeter;	
 	
 	procedure Ajout_cond (tab: T_tab_ligne ; Res: T_Tab_Bloc) is
