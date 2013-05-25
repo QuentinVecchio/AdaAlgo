@@ -213,7 +213,7 @@ package body analyse is
 		blocCond : T_Tab_Bloc;
 		bloc : T_Tab_Bloc;
 		L_courant : chaine;
-		type_cond : T_elt;
+		type_cond : T_elmt;
 	begin
 		loop
 			L_courant := donne_tete(tab);
