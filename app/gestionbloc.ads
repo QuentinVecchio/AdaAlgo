@@ -159,6 +159,28 @@ package gestionbloc is
 	procedure ajoutRepeter (L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc);
 
 	--
+	--	Ajout le bloc si au bloc conditionnel
+	--	@param L, la liste ou sera ajouté l'élement
+	--	@param cond, la condition de la boucle
+	--
+	procedure Ajout_Si(L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc);
+
+	--
+	--	Ajout le bloc 'sinon si' au bloc conditionnel
+	--	@param L, la liste ou sera ajouté l'élement
+	--	@param cond, la condition de la boucle
+	--
+	procedure Ajout_SinonSi(L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc);
+
+	--
+	--	Ajout le bloc 'sinon' au bloc conditionnel
+	--	@param L, la liste ou sera ajouté l'élement
+	--	@param cond, la condition de la boucle
+	--
+	procedure Ajout_Sinon(L: in out T_Tab_Bloc; Liste_Int : T_Tab_Bloc);
+	
+
+	--
 	--      Test l'égalité entre deux T_Tab_Bloc (compare uniquement le type des éléments)
 	--      @param L1,L2 sont les listes de bloc a comparer
 	--

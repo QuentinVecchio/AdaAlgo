@@ -129,6 +129,24 @@ package body gestionbloc is
 					ajoutElt(L, b);
 
 	end ajoutRepeter;
+
+	procedure Ajout_Si(L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc) is
+	
+	begin
+		NULL;
+	end Ajout_Si;
+
+	procedure Ajout_SinonSi(L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc) is
+	
+	begin
+		NULL;
+	end Ajout_SinonSi;
+
+	procedure Ajout_Sinon(L: in out T_Tab_Bloc; Liste_Int : T_Tab_Bloc) is
+	
+	begin
+		NULL;
+	end Ajout_Sinon;
 	
 	function "="(L1, L2 : T_Tab_Bloc) return boolean is
 		begin
