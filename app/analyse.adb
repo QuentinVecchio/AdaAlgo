@@ -82,7 +82,6 @@ package body analyse is
 	procedure Ajout_aff(L: chaine; res: T_Tab_Bloc)is
 		partGauche, partDroit: chaine;
 		L_courant: chaine := L;
-		Liste: T_Tab_Bloc;
 	begin
 		L_courant := trimLeft(L_courant);
 		L_courant := trimRight(L_courant);
@@ -91,7 +90,7 @@ package body analyse is
 		partGauche := trimRight(partGauche);
 		partDroit := trimLeft(partDroit);
 		
-		ajoutAffectation(Liste,  partGauche, partDroit);
+		ajoutAffectation(res,  partGauche, partDroit);
 	end Ajout_aff;
 	
 	
