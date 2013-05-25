@@ -79,7 +79,7 @@ package body analyse is
 	
 	end Ajout_com;
 
-	procedure Ajout_aff(L: chaine; res: T_Tab_Bloc)is
+	procedure Ajout_aff(L: chaine; res: in out T_Tab_Bloc)is
 		partGauche, partDroit: chaine;
 		L_courant: chaine := L;
 	begin
@@ -95,14 +95,13 @@ package body analyse is
 	
 	
 	
-	procedure Ajout_Mod(L: chaine; res: T_Tab_Bloc)is
+	procedure Ajout_Mod(L: chaine; res: in out T_Tab_Bloc)is
 		L_courant : chaine := L;
-		Liste : T_Tab_Bloc;
 	begin
 		L_courant := trimLeft(L_courant);
 		L_courant := trimRight(L_courant);
 		
-		 ajoutModule(Liste, L_courant);
+		ajoutModule(res, L_courant);
 	end Ajout_Mod;
 
 
@@ -209,9 +208,9 @@ package body analyse is
 										
 	end Ajout_repeter;	
 	
-	procedure Ajout_cond (tab: T_tab_ligne ; Res: T_Tab_Bloc) is
-		blocCond : T_Tab_Bloc;
-		bloc : T_Tab_Bloc;
+	procedure Ajout_cond (tab: in out T_tab_ligne ; Res: in out T_Tab_Bloc) is
+		Bloc : T_Tab_Bloc;
+		ListeInterne : T_Tab_Bloc;
 		L_courant : chaine;
 		type_cond : T_elmt;
 	begin
@@ -225,18 +224,17 @@ package body analyse is
 				L_courant := substring(L_courant, 3, length(L_courant));
 				type_cond := si;
 			elsif(startWith(L_courant, "sinon si")) then
-				Analyse(tab, bloc);
 				type_cond := sinonsi;
 			else
 				type_cond := sinon;
 			end if;
 
 
-			Analyse(tab, bloc);
+			Analyse_Code(tab, Bloc);
 			case type_cond is
-				when si => Ajout_Si(bloc, L_courant);
-				when sinon => Ajout_SinonSi(bloc, L_courant);
-				when others => Ajout_Sinon(bloc);
+				when si => Ajout_Si(Bloc, L_courant,ListeInterne);
+				when sinon => Ajout_SinonSi(Bloc, L_courant, ListeInterne);
+				when others => Ajout_Sinon(Bloc, ListeInterne);
 			end case;
 				
 			L_courant := donne_tete(tab);
@@ -246,7 +244,7 @@ package body analyse is
 		end loop;
 
 		--derniere etape : ajouter la condition dans la liste principale
-		ajoutBlocCond(Res, blocCond);	
+		ajoutBlocCond(Res, Bloc);	
 	end Ajout_cond;
 	
 end analyse;

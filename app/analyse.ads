@@ -31,14 +31,14 @@ Package analyse is
 	--	@param L, ligne contenant l'affectation
 	--	@param res, liste de bloc
 	--
-	procedure Ajout_aff(L: chaine; res: T_Tab_Bloc);
+	procedure Ajout_aff(L: chaine; res: in out T_Tab_Bloc);
 
 	--
 	--	Permet d'ajouter une ligne correspondant à un appel de module
 	--	@param L, ligne contenant le module
 	--	@pram res, liste de bloc
 	--
-	procedure Ajout_Mod(L: chaine; res: T_Tab_Bloc);
+	procedure Ajout_Mod(L: chaine; res: in out T_Tab_Bloc);
 	
 	--
 	--	met en forme la condition pour etre implementé en mémoire
@@ -77,7 +77,7 @@ Package analyse is
 	--	@param tab, liste de ligne a partire du début de la condition
 	--	@param res, liste de bloc
 	--
-	procedure Ajout_cond (tab: T_tab_ligne ;  Res: T_Tab_Bloc);
+	procedure Ajout_cond (tab: in out T_tab_ligne ;  Res: in out T_Tab_Bloc);
 	
 	
 end analyse;
