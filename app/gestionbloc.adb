@@ -1,3 +1,4 @@
+with simple_io; use simple_io;
 package body gestionbloc is
 
 
@@ -107,16 +108,15 @@ package body gestionbloc is
 			b: Bloc(pour);
 			begin
 					b.CondContinu := cond;
-					b.MTab:= Liste_Int;
+					b.Tab_bloc:= Liste_Int;
 					ajoutElt(L, b);
-
 	end ajoutPour;
 
 	procedure ajoutTq (L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc) is
 			b: Bloc(pour);
 			begin
 					b.CondContinu := cond;
-					b.MTab:= Liste_Int;
+					b.Tab_Bloc:= Liste_Int;
 					ajoutElt(L, b);
 
 	end ajoutTq;
@@ -125,7 +125,7 @@ package body gestionbloc is
 			b: Bloc(pour);
 			begin
 					b.CondContinu := cond;
-					b.MTab:= Liste_Int;
+					b.Tab_Bloc:= Liste_Int;
 					ajoutElt(L, b);
 
 	end ajoutRepeter;
