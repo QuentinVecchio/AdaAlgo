@@ -211,8 +211,43 @@ package body analyse is
 	end Ajout_repeter;	
 	
 	procedure Ajout_cond (tab: T_tab_ligne ; Res: T_Tab_Bloc) is
+		blocCond : T_Tab_Bloc;
+		bloc : T_Tab_Bloc;
+		L_courant : chaine;
+		type_cond : T_elt;
 	begin
-		null;
+		loop
+			L_courant := donne_tete(tab);
+			L_courant := trimLeft(L_courant);
+
+			enleve_enTete(tab);
+			
+			if(startWith(L_courant, "si")) then
+				L_courant := substring(L_courant, 3, length(L_courant));
+				type_cond := si;
+			elsif(startWith(L_courant, "sinon si")) then
+				Analyse(tab, bloc);
+				type_cond := sinonsi;
+			else
+				type_cond := sinon;
+			end if;
+
+
+			Analyse(tab, bloc);
+			case type_cond is
+				when si => Ajout_Si(bloc, L_courant);
+				when sinon => Ajout_SinonSi(bloc, L_courant);
+				when others => Ajout_Sinon(bloc);
+			end case;
+				
+			L_courant := donne_tete(tab);
+			L_courant := trimLeft(L_courant);
+			L_courant := trimRight(L_courant);
+		exit when contains(L_courant, "fsi");
+		end loop;
+
+		--derniere etape : ajouter la condition dans la liste principale
+		ajoutBlocCond(Res, blocCond);	
 	end Ajout_cond;
 	
 end analyse;
