@@ -1,31 +1,34 @@
 package body conversion is
 
-	procedure conversionAda(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE) is
+	procedure conversionAda(listeBloc : in out T_TAB_BLOC; listeLigne : in out T_TAB_LIGNE) is
+		elt : Bloc; 
 	begin
-		case Forme is
-			when commentaire  => conversionCommentaire();
-                        when module  => conversionModule();
-                        when affectation => conversionAffectation();
-                        when pour => conversionPour();
-			when tq => conversionTantque();
-			when repeter => conversionRepeter();
-                        --when blocCond => 
-                      	when blocCase => conversionCasParmi();                              
-		end case;
+		while (estVide(listeBloc) = FALSE) loop
+			donneTete(listeBloc,elt);--On affecte le bloc a analyser à elt
+			case elt.Forme is
+				when commentaire  => conversionCommentaire(elt,listeLigne);
+                        	when module  => conversionModule(elt,listeLigne);
+                        	when affectation => conversionAffectation(elt,listeLigne);
+                        	when pour => conversionPour(elt,listeLigne);
+				when tq => conversionTantque(elt,listeLigne);
+				when repeter => conversionRepeter(elt,listeLigne);
+                        	--when blocCond => 
+                      		when blocCase => conversionCasParmi();                              
+			end case;
+		end loop;
 	end conversionAda;
 	
-	procedure conversionCommentaire(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE) is
-		--eltAda :chaine := "--" + eltAlgo;
+	procedure conversionCommentaire(Bloc : in out Bloc; Ligne : out T_TAB_LIGNE) is
 	begin
-		--:= "--" + tabBloc.MonCom;
+		Ajout_queue(Ligne,"--" + Bloc.MonCom);
 	end conversionCommentaire;
 	
-	procedure conversionAffectation(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE) is
+	procedure conversionAffectation(Bloc : in Bloc; Ligne : out T_TAB_LIGNE) is
 	begin
-		--:= tabBloc.vG + ":=" + tabBloc.vD + ";";
+		Ajout_queue(Ligne,tabBloc.vG + ":=" + tabBloc.vD + ";");
 	end conversionAffectation;
 
-	procedure conversionModule(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE) is
+	procedure conversionModule(Bloc : in Bloc; Ligne : out T_TAB_LIGNE) is
 	begin
 		--if(tabBloc.MonMod(1..4) = "LIRE" OR tabBloc.MonMod(1..4) = "lire") then --On teste si c'est le module lire
 			--:= "GET" + tabBloc.MonMod(5..tabBloc.MonMod'Last);
@@ -34,28 +37,28 @@ package body conversion is
 		--endif;
 	end conversionModule;
 
-	procedure conversionPour(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE) is
+	procedure conversionPour(Bloc : in Bloc; tabLigne : out T_TAB_LIGNE) is
 	begin
-		--:= "FOR I in " + tabBloc.Intervalle +"loop";
+		--:= "FOR I in " + tabBloc.CondContinu(9)+".."+tabBloc.CondContinu(9) +"loop";
 		--conversionAda(tabBloc.Tab_Bloc,);
 		--:= "end loop;";
 	end conversionPour;
 
-	procedure conversionTantque(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE) is
+	procedure conversionTantque(Bloc : in Bloc; tabLigne : out T_TAB_LIGNE) is
         begin
                 --:= "while" + tabBloc.CondContinu + "loop";
                 --conversionAda(tabBloc.Tab_Bloc,);
                 --:= "end loop;";
         end conversionTantque;
 
-	procedure conversionRepeter(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE) is
+	procedure conversionRepeter(Bloc : in Bloc; tabLigne : out T_TAB_LIGNE) is
         begin
 		--:= "loop"
                 --conversionAda(tabBloc.Tab_Bloc,);
                 --:= "while" + tabBloc.CondContinu +";";
         end conversionRepeter;
 
-	procedure conversionCasParmi(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE) is
+	procedure conversionCasParmi(Bloc : in Bloc; tabLigne : out T_TAB_LIGNE) is
 	begin
 		--:= "case" + tabBloc.variableATester + "is"
 	end conversionCasParmi;
