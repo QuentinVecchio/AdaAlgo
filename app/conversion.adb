@@ -13,12 +13,13 @@ package body conversion is
 				when tq => conversionTantque(elt,listeLigne);
 				when repeter => conversionRepeter(elt,listeLigne);
                         	--when blocCond => 
-                      		when blocCase => conversionCasParmi();                              
+                      		--when blocCase => conversionCasParmi();                              
+				when others => NULL;
 			end case;
 		end loop;
 	end conversionAda;
 	
-	procedure conversionCommentaire(Bloc : in out Bloc; Ligne : out T_TAB_LIGNE) is
+	procedure conversionCommentaire(Bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
 	begin
 		Ajout_queue(Ligne,"--" + Bloc.MonCom);
 	end conversionCommentaire;
@@ -30,6 +31,7 @@ package body conversion is
 
 	procedure conversionModule(Bloc : in Bloc; Ligne : out T_TAB_LIGNE) is
 	begin
+		NULL;
 		--if(tabBloc.MonMod(1..4) = "LIRE" OR tabBloc.MonMod(1..4) = "lire") then --On teste si c'est le module lire
 			--:= "GET" + tabBloc.MonMod(5..tabBloc.MonMod'Last);
 		--elsif(tabBloc.MonMod(1..5) = "ECRIRE" OR tabBloc.MonMod(1..5) = "ecrire") then -- On teste si c'est le module ecrire
@@ -39,6 +41,7 @@ package body conversion is
 
 	procedure conversionPour(Bloc : in Bloc; tabLigne : out T_TAB_LIGNE) is
 	begin
+		NULL;
 		--:= "FOR I in " + tabBloc.CondContinu(9)+".."+tabBloc.CondContinu(9) +"loop";
 		--conversionAda(tabBloc.Tab_Bloc,);
 		--:= "end loop;";
@@ -46,6 +49,7 @@ package body conversion is
 
 	procedure conversionTantque(Bloc : in Bloc; tabLigne : out T_TAB_LIGNE) is
         begin
+		NULL;
                 --:= "while" + tabBloc.CondContinu + "loop";
                 --conversionAda(tabBloc.Tab_Bloc,);
                 --:= "end loop;";
@@ -53,6 +57,7 @@ package body conversion is
 
 	procedure conversionRepeter(Bloc : in Bloc; tabLigne : out T_TAB_LIGNE) is
         begin
+		NULL;
 		--:= "loop"
                 --conversionAda(tabBloc.Tab_Bloc,);
                 --:= "while" + tabBloc.CondContinu +";";
@@ -60,6 +65,7 @@ package body conversion is
 
 	procedure conversionCasParmi(Bloc : in Bloc; tabLigne : out T_TAB_LIGNE) is
 	begin
+		NULL;
 		--:= "case" + tabBloc.variableATester + "is"
 	end conversionCasParmi;
 
