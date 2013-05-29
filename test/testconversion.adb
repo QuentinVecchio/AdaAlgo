@@ -8,11 +8,13 @@ procedure testconversion is
 		aReussi: boolean := true;
 		T: T_Tab_Bloc;
 		L: T_Tab_Ligne;
+		BlocCom :Bloc(commentaire);
 		res: chaine := createChaine("--Je suis un commentaire:)");
 		begin
 			creerListe(T);
 			ajoutCommentaire(T, createChaine("Je suis un commentaire:)"));
-			conversionCommentaire(T,L);
+			donneTete(T, BlocCom);
+			conversionCommentaire(BlocCom,L);
 			if(donne_tete(L) = res)then
 				Put_line("Conversion d'un commentaire réussi !");
 			else
@@ -29,6 +31,7 @@ procedure testconversion is
 		aReussi: boolean := true;
 		T, T2: T_Tab_Bloc;
 		L: T_Tab_Ligne;
+		BlocAff, BlocAff2: bloc(affectation);
 		res: chaine := createChaine("age := age + 1");
 		resf: chaine := createChaine(" ");
 		begin
@@ -36,7 +39,8 @@ procedure testconversion is
 			creerListe(T2);
 			ajoutAffectation(T, createChaine("age"), createChaine("age div (5 mod 3)"));
 			ajoutAffectation(T, createChaine("age"), createChaine("age + 1"));
-			conversionAffectation(T,L);
+			donneTete(T, BlocAff);
+			conversionAffectation(BlocAff,L);
 			resf := donne_tete(L);
 			if(not startWith(resf, "age"))then
 				put_line("L'affectation ne commence pas par 'age'");
@@ -58,8 +62,8 @@ procedure testconversion is
 				put_line("Valeur reçue    :"+ resf);
 				put_line("Valeur attendue :"+res);
 			end if;
-			
-			conversionAffectation(T2,L);
+			donneTete(T2, BlocAff2);	
+			conversionAffectation(BlocAff2,L);
 			resf := donne_tete(L);
 			res := createChaine("age := age / (5 rem 3)");
 			if(contains(resf, "mod"))then
@@ -85,13 +89,15 @@ procedure testconversion is
 		aReussi: boolean := false;
 		T: T_Tab_Bloc;
 		L: T_Tab_Ligne;
+		BlocModule: Bloc(module);
 		tmp : chaine;
 		resf: chaine;
 		begin
 			creerListe(T);
 			tmp := createChaine("lire(..)");
 			ajoutModule(T, tmp);
-			conversionModule(T,L);
+			DonneTete(T, BlocModule);
+			conversionModule(BlocModule,L);
 			resf:= donne_tete(L);
 		
 			if(not startWith(resf, "put_line("))then
