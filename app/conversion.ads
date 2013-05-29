@@ -1,4 +1,4 @@
-with gestionBloc, mstring, definitions;
+with gestionBloc, mstring, definitions,liste;
 use gestionBloc, mstring, definitions;
 
 --------------------------------------
@@ -8,27 +8,27 @@ use gestionBloc, mstring, definitions;
 package conversion is
 
 --procedure principale qui commence la conversion d'un bloc en appelant des fonctions de conversion
-procedure conversionAda(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE);
+procedure conversionAda(listeBloc : in out T_TAB_BLOC; listeLigne : in out T_TAB_LIGNE);
 
 --procedure de conversion d'un COMMENTAIRE
-procedure conversionCommentaire(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE);
+procedure conversionCommentaire(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE);
 
 --procedure de conversion d'un bloc AFFECTATION
-procedure conversionAffectation(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE);
+procedure conversionAffectation(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE);
 
 --procedure de conversion d'un bloc MODULE
-procedure conversionModule(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE);
+procedure conversionModule(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE);
 
 --procedure de conversion d'un bloc POUR
-procedure conversionPour(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE);
+procedure conversionPour(m_loc : in out Bloc; Ligne : in out T_TAB_LIGNE);
 
 --procedure de conversion d'un bloc TANT QUE
-procedure conversionTantque(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE)
+procedure conversionTantque(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE);
 
 --procedure de conversion d'un bloc REPETER
-procedure conversionRepeter(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE)
+procedure conversionRepeter(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE);
 
 --procedure de conversion d'un bloc CAS PARMI
-procedure conversionCasParmi(tabBloc : in out T_TAB_BLOC; tabLigne : out T_TAB_LIGNE)
+procedure conversionCasParmi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE);
 
 end conversion;
