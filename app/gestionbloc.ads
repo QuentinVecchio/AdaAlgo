@@ -25,7 +25,7 @@ package gestionbloc is
 	--      les bloc si, sinon si et sinon comporte un ensemble d'instructions (tableau de bloc)
 	--      pour si, sinon si on un champ condition en plus
 
-	type Bloc(Forme: T_elmt) is record
+	type Bloc(Forme: T_elmt:= commentaire) is record
 			case Forme is
 					when commentaire        => MonCom : chaine;
 					when module             => MonMod: chaine;
