@@ -131,21 +131,28 @@ package body gestionbloc is
 	end ajoutRepeter;
 
 	procedure Ajout_Si(L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc) is
-	
+		b: bloc(si);	
 	begin
-		NULL;
+		b.Liste := Liste_Int;
+		b.Cond := cond;
+		ajoutElt(L,b);
+		
 	end Ajout_Si;
 
 	procedure Ajout_SinonSi(L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc) is
-	
+		b: bloc(SinonSi);
 	begin
-		NULL;
+		b.Liste := Liste_int;
+		b.cond := cond;
+		ajoutElt(L,b);
+		
 	end Ajout_SinonSi;
 
 	procedure Ajout_Sinon(L: in out T_Tab_Bloc; Liste_Int : T_Tab_Bloc) is
-	
+		b: bloc(Sinon);
 	begin
-		NULL;
+		b.Liste := Liste_int;
+		ajoutElt(L,b);
 	end Ajout_Sinon;
 	
 	function "="(L1, L2 : T_Tab_Bloc) return boolean is
