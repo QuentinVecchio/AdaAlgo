@@ -20,7 +20,7 @@ procedure conversionAffectation(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE
 procedure conversionModule(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE);
 
 --procedure de conversion d'un bloc POUR
-procedure conversionPour(m_loc : in out Bloc; Ligne : in out T_TAB_LIGNE);
+procedure conversionPour(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE);
 
 --procedure de conversion d'un bloc TANT QUE
 procedure conversionTantque(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE);
