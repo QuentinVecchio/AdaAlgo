@@ -31,11 +31,11 @@ package body conversion is
 
 	procedure conversionModule(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
 	begin
-		if(tabBloc.MonMod(1..4) = "LIRE" OR tabBloc.MonMod(1..4) = "lire") then --On teste si c'est le module lire
-			Ajout_queue(Ligne,"GET" + tabBloc.MonMod(5..tabBloc.MonMod'Last));
-		elsif(tabBloc.MonMod(1..5) = "ECRIRE" OR tabBloc.MonMod(1..5) = "ecrire") then -- On teste si c'est le module ecrire
-			Ajout_queue(Ligne,"PUT" + tabBloc.MonMod(6..tabBloc.MonMod'Last));
-		endif;
+		if(startWith(m_bloc.MonMod,"LIRE")) then --On teste si c'est le module lire
+			Ajout_queue(Ligne,"GET" + substring(m_bloc.MonMod,5,length(m_bloc.MonMod)));
+		--elsif(startWith(m_bloc.MonMod,"ECRIRE")) then -- On teste si c'est le module ecrire
+		--	Ajout_queue(Ligne,"PUT" + m_bloc.MonMod(6..m_bloc.MonMod'Last));
+		end if;
 	end conversionModule;
 
 	procedure conversionPour(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
