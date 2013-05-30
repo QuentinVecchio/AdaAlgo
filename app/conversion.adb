@@ -31,19 +31,18 @@ package body conversion is
 
 	procedure conversionModule(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
 	begin
-		NULL;
-		--if(tabBloc.MonMod(1..4) = "LIRE" OR tabBloc.MonMod(1..4) = "lire") then --On teste si c'est le module lire
-			--:= "GET" + tabBloc.MonMod(5..tabBloc.MonMod'Last);
-		--elsif(tabBloc.MonMod(1..5) = "ECRIRE" OR tabBloc.MonMod(1..5) = "ecrire") then -- On teste si c'est le module ecrire
-			--:= "PUT" + tabBloc.MonMod(6..tabBloc.MonMod'Last);
-		--endif;
+		if(tabBloc.MonMod(1..4) = "LIRE" OR tabBloc.MonMod(1..4) = "lire") then --On teste si c'est le module lire
+			Ajout_queue(Ligne,"GET" + tabBloc.MonMod(5..tabBloc.MonMod'Last));
+		elsif(tabBloc.MonMod(1..5) = "ECRIRE" OR tabBloc.MonMod(1..5) = "ecrire") then -- On teste si c'est le module ecrire
+			Ajout_queue(Ligne,"PUT" + tabBloc.MonMod(6..tabBloc.MonMod'Last));
+		endif;
 	end conversionModule;
 
 	procedure conversionPour(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
 	begin
 		NULL;
 		--:= "FOR I in " + tabBloc.CondContinu(9)+".."+tabBloc.CondContinu(9) +"loop";
-		--conversionAda(tabBloc.Tab_Bloc,);
+		--conversionAda();
 		--:= "end loop;";
 	end conversionPour;
 
