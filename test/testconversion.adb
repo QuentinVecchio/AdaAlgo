@@ -37,8 +37,10 @@ procedure testconversion is
 		begin
 			creerListe(T);
 			creerListe(T2);
-			ajoutAffectation(T, createChaine("age"), createChaine("age div (5 mod 3)"));
+			--ajoutAffectation(T, createChaine("age"), createChaine("age div (5 mod 3)"));
 			ajoutAffectation(T, createChaine("age"), createChaine("age + 1"));
+			ajoutAffectation(T, createChaine("age"), createChaine("age div (5 mod 3)"));
+
 			donneTete(T, BlocAff);
 			conversionAffectation(BlocAff,L);
 			resf := donne_tete(L);
@@ -48,7 +50,7 @@ procedure testconversion is
 			end if;
 			
 			-- a remplacer par un endwith plus avantageux
-			if(not contains(resf, "age +1"))then
+			if(not contains(resf, "age + 1"))then
 				put_line("L'affectation ne finit pas par 'age +1'");
 				aReussi := false;
 			end if;
@@ -62,6 +64,7 @@ procedure testconversion is
 				put_line("Valeur reçue    :"+ resf);
 				put_line("Valeur attendue :"+res);
 			end if;
+			
 			donneTete(T2, BlocAff2);	
 			conversionAffectation(BlocAff2,L);
 			resf := donne_tete(L);
