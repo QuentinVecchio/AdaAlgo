@@ -13,7 +13,11 @@ WITH Gtk.Label;		USE Gtk.Label;
 WITh Gdk.Color;		USE Gdk.Color;
 WITH Gdk.Visual;	USE Gdk.Visual;
 WITH Gtk.Handlers ;
-
+with mstring;	use mstring;
+with definitions; use definitions;
+with gestionbloc; use gestionbloc;
+with analyse; use analyse;
+with conversion; use conversion;
 
 PROCEDURE MaFenetre IS
 --*****************INITIALISATIONS DES VARIABLES ET SS-PGMES*****************--
@@ -53,12 +57,79 @@ PROCEDURE MaFenetre IS
 			buffer : Gtk_Text_Buffer;
 			start_iter : Gtk_Text_Iter;
 			end_iter : Gtk_Text_Iter;
+
+			code :chaine;			
+			monCode: T_Tab_ligne;
+
+			procedure labeltoStr(entree: chaine; sortie: out T_Tab_ligne)is
+
+				i: integer;	
+				tmp: chaine := entree;	
+				begin
+					sortie := Creer_liste;
+
+					loop
+							i := strpos(tmp, ASCII.LF);
+							
+							if(i /= 0)then
+								
+								if(i = length(tmp) or else i = 1)then
+									exit;
+								end if;
+								Ajout_queue(sortie,substring(tmp, 1, i-1));
+								tmp := substring(tmp, i+1, length(tmp));
+							else
+								Ajout_queue(sortie,tmp);
+								i := 0;
+							end if;
+					exit when (i = 0);
+					end loop;
+			end labeltoStr;
+
+			procedure strtolabel(entree: in out T_Tab_ligne; sortie: in out chaine)is
+				
+				tmp : chaine;
+				begin
+					donne_tete(entree, sortie);
+					enleve_enTete(entree);
+					while(NOT estVide(entree))loop
+						donne_tete(entree, tmp);
+						enleve_enTete(entree);
+
+						sortie := sortie+ASCII.LF+tmp;
+					end loop;
+			end strtolabel;
+
+			result : chaine;
+			resultString : string(1..100000);
+			l_result : integer;
+
+			win : gtk_window;
+			label : gtk_label;
+
+			resBloc: T_Tab_Bloc;
+			listeLigne : T_TAB_LIGNE;
 		BEGIN
 			Gtk_New(buffer);
 			buffer := Get_Buffer(Text);
 			Get_Start_Iter(buffer,start_iter);
 			Get_End_Iter(buffer,end_iter); 
-   			PUT_LINE(Get_Text(buffer,start_Iter,end_Iter,TRUE));
+			code := createChaine(Get_Text(buffer,start_Iter,end_Iter,TRUE));
+   		put_line(code);
+
+			labeltoStr(code, monCode);
+
+			Analyse_Code(monCode, resBloc);
+			conversionAda(resBloc, listeLigne);
+			strtolabel(listeLigne, result);
+			toString(result, resultString, l_result);
+			
+   	Gtk_New(win,Window_Toplevel);
+   	win.Set_Title("Fenetre");
+   	win.set_default_size(500,400);
+		gtk_new(label, resultString(1..l_result));
+		win.add(label);
+		win.show_all;
 		END Compiler;
 		
 --*****************CODE SOURCE*****************--

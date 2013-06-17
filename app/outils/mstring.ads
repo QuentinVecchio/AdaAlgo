@@ -61,6 +61,10 @@ package mstring is
 
 	function "+"(c1, c2: chaine) return chaine;
 
+	function "+"(c1:chaine; carac: character) return chaine;
+
+	function "+"(carac: character; c1:chaine) return chaine;
+
 	--
 	--	Transforme de chaine vers string
 	--	@param c, la chaine a transformer en string
