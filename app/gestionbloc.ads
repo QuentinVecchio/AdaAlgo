@@ -34,11 +34,13 @@ package gestionbloc is
 												Tab_Bloc : T_Tab_Bloc;
 					when blocCond           => MTab : T_Tab_Bloc;
 					when blocCase           => variableATester: chaine;
-												Liste_case : T_Tab_Bloc;
-												case Forme is
-														when defaut => null;
-														when others => CondCase: chaine;
-												end case;
+								   Liste_case: T_Tab_Bloc;
+					when BlocIntCase	=> instructCase : T_Tab_Bloc;
+								   case Forme is
+									when defaut => NULL;
+									when others => condCase : chaine;
+								   end case;
+
 					-- les si, sinon si, sinon
 					when others             => Liste: T_Tab_Bloc;
 												case Forme is
@@ -179,6 +181,15 @@ package gestionbloc is
 	--
 	procedure Ajout_Sinon(L: in out T_Tab_Bloc; Liste_Int : T_Tab_Bloc);
 	
+	--
+	--      Ajout un bloc blocCas en fin de liste
+	--      @param L, la liste a manipuler
+	--      @param ListeInterne, le blocCond a ajouter
+	--	@param var, la variable du bloc switch case
+	--
+	procedure ajoutBlocCas(L: in out T_Tab_Bloc; ListeInterne: T_Tab_Bloc; var: chaine);
+
+	procedure AjoutCas(L: in out T_Tab_Bloc; ListeInterne: T_Tab_Bloc; condition: chaine);
 
 	--
 	--      Test l'égalité entre deux T_Tab_Bloc (compare uniquement le type des éléments)

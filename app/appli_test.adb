@@ -12,6 +12,7 @@ WITH Gtk.Text_Iter; 	USE Gtk.Text_Iter;
 WITH Gtk.Label;		USE Gtk.Label;
 WITh Gdk.Color;		USE Gdk.Color;
 WITH Gdk.Visual;	USE Gdk.Visual;
+WITh Gtk.Message_Dialog;USE Gtk.Message_Dialog;
 WITH Gtk.Handlers ;
 with mstring;	use mstring;
 with definitions; use definitions;
@@ -19,7 +20,7 @@ with gestionbloc; use gestionbloc;
 with analyse; use analyse;
 with conversion; use conversion;
 
-PROCEDURE MaFenetre IS
+PROCEDURE appli_test IS
 --*****************INITIALISATIONS DES VARIABLES ET SS-PGMES*****************--
 --VARIABLES
 	--Fenetre
@@ -109,11 +110,13 @@ PROCEDURE MaFenetre IS
 
 			resBloc: T_Tab_Bloc;
 			listeLigne : T_TAB_LIGNE;
+ 
 		BEGIN
 			Gtk_New(buffer);
 			buffer := Get_Buffer(Text);
 			Get_Start_Iter(buffer,start_iter);
 			Get_End_Iter(buffer,end_iter); 
+
 			code := createChaine(Get_Text(buffer,start_Iter,end_Iter,TRUE));
    		put_line(code);
 
@@ -121,6 +124,10 @@ PROCEDURE MaFenetre IS
 
 			Analyse_Code(monCode, resBloc);
 			conversionAda(resBloc, listeLigne);
+
+			put_line("Affiche:");
+			Affiche_liste(listeLigne);
+
 			strtolabel(listeLigne, result);
 			toString(result, resultString, l_result);
 			
@@ -130,6 +137,8 @@ PROCEDURE MaFenetre IS
 		gtk_new(label, resultString(1..l_result));
 		win.add(label);
 		win.show_all;
+
+   	
 		END Compiler;
 		
 --*****************CODE SOURCE*****************--
@@ -137,7 +146,7 @@ BEGIN
    	Init ;
 --Initialisation de la fenetre principale
    	Gtk_New(fenetrePrincipale,Window_Toplevel);
-   	fenetrePrincipale.Set_Title("Fenetre");
+   	fenetrePrincipale.Set_Title("Programme algo");
    	fenetrePrincipale.set_default_size(500,400);
    	Connect(fenetrePrincipale, "destroy",Stop_Program'ACCESS);
 --Initialisation de la table
@@ -159,5 +168,5 @@ BEGIN
 --Affichage de la fenetre   	
 	fenetrePrincipale.Show_all ;
    	Main ;
-END MaFenetre ;
+END appli_test ;
 
