@@ -36,7 +36,7 @@ package body conversion is
 	procedure conversionModule(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
 	begin
 		if(startWith(m_bloc.MonMod,"LIRE")) then --On teste si c'est le module lire
-			Ajout_queue(Ligne,"GET" + substring(m_bloc.MonMod,5,length(m_bloc.MonMod)));
+			Ajout_queue(Ligne,"GET(" + substring(m_bloc.MonMod,5,length(m_bloc.MonMod))+")");
 		elsif(startWith(m_bloc.MonMod,"ECRIRE")) then -- On teste si c'est le module ecrire
 			Ajout_queue(Ligne,"PUT" + substring(m_bloc.MonMod,6,length(m_bloc.MonMod)));
 		end if;
@@ -81,7 +81,7 @@ package body conversion is
 	procedure conversionCond(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is 
 	begin
 		conversionAda(m_bloc.MTab, Ligne);
-		Ajout_queue(Ligne, CreateChaine("end if;"));
+		Ajout_que ue(Ligne, CreateChaine("end if;"));
 	end conversionCond;
 
 	
