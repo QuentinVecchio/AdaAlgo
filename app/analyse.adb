@@ -18,7 +18,7 @@ package body analyse is
 		                when tq		 => Ajout_tq (tab, Res);
 		                when repeter	 => Ajout_repeter (tab, Res);
 		                when cond        => Ajout_cond(tab, Res);
-		                when others      => NULL;
+		                when others      => NULL;  -- sinon, sinonsi ,fsi, fpour, ftq, jusqu'a
 		        end case;
 		        enleve_enTete(tab);
 		end loop;

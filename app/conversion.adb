@@ -33,33 +33,30 @@ package body conversion is
 	begin
 		if(startWith(m_bloc.MonMod,"LIRE")) then --On teste si c'est le module lire
 			Ajout_queue(Ligne,"GET" + substring(m_bloc.MonMod,5,length(m_bloc.MonMod)));
-		--elsif(startWith(m_bloc.MonMod,"ECRIRE")) then -- On teste si c'est le module ecrire
-		--	Ajout_queue(Ligne,"PUT" + m_bloc.MonMod(6..m_bloc.MonMod'Last));
+		elsif(startWith(m_bloc.MonMod,"ECRIRE")) then -- On teste si c'est le module ecrire
+			Ajout_queue(Ligne,"PUT" + substring(m_bloc.MonMod,6,length(m_bloc.MonMod)));
 		end if;
 	end conversionModule;
 
 	procedure conversionPour(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
 	begin
-		NULL;
-		--:= "FOR I in " + tabBloc.CondContinu(9)+".."+tabBloc.CondContinu(9) +"loop";
-		--conversionAda();
-		--:= "end loop;";
+		Ajout_queue(Ligne,"FOR I in "+tabBloc.CondContinu(9)+".."+tabBloc.CondContinu(9)+"loop");
+		--conversionAda(); 
+		Ajout_queue(Ligne,"end loop;");
 	end conversionPour;
 
 	procedure conversionTantque(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
         begin
-		NULL;
-                --:= "while" + tabBloc.CondContinu + "loop";
+                Ajout_queue(Ligne,"while"+tabBloc.CondContinu+"loop");
                 --conversionAda(tabBloc.Tab_Bloc,);
-                --:= "end loop;";
+                Ajout_queue(Ligne,"end loop;");
         end conversionTantque;
 
 	procedure conversionRepeter(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
         begin
-		NULL;
-		--:= "loop"
+		Ajout_queue(Ligne,"loop");
                 --conversionAda(tabBloc.Tab_Bloc,);
-                --:= "while" + tabBloc.CondContinu +";";
+                Ajout_queue(Ligne,"while" + tabBloc.CondContinu +";");
         end conversionRepeter;
 
 	procedure conversionCasParmi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
