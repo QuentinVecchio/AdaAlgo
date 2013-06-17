@@ -49,7 +49,7 @@ package body conversion is
 	procedure conversionTantque(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
         begin
 		NULL;
-                --:= "while" + tabBloc.CondContinu + "loop";
+                --:= "while " + tabBloc.CondContinu + " loop";
                 --conversionAda(tabBloc.Tab_Bloc,);
                 --:= "end loop;";
         end conversionTantque;
@@ -59,7 +59,8 @@ package body conversion is
 		NULL;
 		--:= "loop"
                 --conversionAda(tabBloc.Tab_Bloc,);
-                --:= "while" + tabBloc.CondContinu +";";
+		--:= "exit when + tabBloc.CondContinu +";";
+		--:="end loop;"
         end conversionRepeter;
 
 	procedure conversionCasParmi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
