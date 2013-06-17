@@ -91,7 +91,7 @@ package body analyse is
 		L_courant := trimLeft(L_courant);
 		L_courant := trimRight(L_courant);
 		partGauche := substring(L_courant, 1, strpos(L_courant, '<')-1);
-		partDroit := substring(L_courant, strpos(L_courant, '-')+1, length(L_courant))+" ";
+		partDroit := substring(L_courant, strpos(L_courant, '<')+2, length(L_courant));
 		partGauche := trimRight(partGauche);
 		partDroit := trimLeft(partDroit);
 		
@@ -177,7 +177,7 @@ package body analyse is
 		Analyse_Code(tab, ListeInterne);
 		
 		--on ajout en mémoire la boucle
-		ajoutTq(Res, condition, ListeInterne);
+		ajoutPour(Res, condition, ListeInterne);
 		
 	end Ajout_tq;
 
@@ -187,7 +187,7 @@ package body analyse is
 		ListeInterne : T_tab_Bloc;
 		condition : chaine;		
 	begin
-		--on eleve le premier element de 'tab' qui est ici 	
+		--on eleve le premier element de 'tab' qui est ici 'repter
 		enleve_enTete(tab);
 
 		--on rappel analyse code sur l'interieure de la boucle
@@ -202,16 +202,17 @@ package body analyse is
 
 		--on enleve le 'tq'
 		condition := trimRight(condition);
-		condition := substring(condition, length(condition)-3, length(condition));
+		condition := substring(condition, 6, length(condition));
 		
 		--on eleve les eventuelle espaces
 		condition := trimLeft(condition);
 		condition := trimRight(condition);		
 	
 		--on ajout en mémoire la boucle
-		ajoutPour(Res, condition, ListeInterne);
+		ajoutRepeter(Res, condition, ListeInterne);
 										
 	end Ajout_repeter;	
+	--bla
 	
 	procedure Ajout_cond (tab: in out T_tab_ligne ; Res: in out T_Tab_Bloc) is
 		tab_Bloc : T_Tab_Bloc;
