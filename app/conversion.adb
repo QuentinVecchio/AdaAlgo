@@ -30,6 +30,11 @@ package body conversion is
 	
 	procedure conversionAffectation(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
 	begin
+		if contains(m_bloc.vD, " mod ") AND THEN NOT(StartWith(m_bloc.vD, " mod ")then
+			replaceStr(m_bloc.vD, "mod", "rem", m_bloc.vD);
+		elsif contains(m_bloc.vD, " div ") AND THEN NOT(StartWith(m_bloc.vD, " div ")
+			replaceStr(m_bloc.vD, "div", "/", m_bloc.vD);
+		end if;
 		Ajout_queue(Ligne,m_bloc.vG + ":=" + m_bloc.vD + ";");
 	end conversionAffectation;
 
