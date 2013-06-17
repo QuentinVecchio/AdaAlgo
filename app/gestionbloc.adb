@@ -154,6 +154,21 @@ package body gestionbloc is
 		b.Liste := Liste_int;
 		ajoutElt(L,b);
 	end Ajout_Sinon;
+
+	procedure ajoutBlocCas(L: in out T_Tab_Bloc; ListeIntern: T_Tab_Bloc; var: chaine) is 
+	
+	begin
+		NULL;
+	end ajoutBlocCas;
+
+        procedure AjoutCas(L: in out T_Tab_Bloc; ListeInterne: T_Tab_Bloc; condition: chaine)is
+
+	begin
+		NULL;
+	end AjoutCas;
+
+
+
 	
 	function "="(L1, L2 : T_Tab_Bloc) return boolean is
 		begin

@@ -18,6 +18,7 @@ package body analyse is
 		                when tq		 => Ajout_tq (tab, Res);
 		                when repeter	 => Ajout_repeter (tab, Res);
 		                when cond        => Ajout_cond(tab, Res);
+				when testcase	 => Ajout_case(tab, Res);
 		                when others      => NULL;  -- sinon, sinonsi ,fsi, fpour, ftq, jusqu'a
 		        end case;
 		        enleve_enTete(tab);
@@ -209,7 +210,7 @@ package body analyse is
 	end Ajout_repeter;	
 	
 	procedure Ajout_cond (tab: in out T_tab_ligne ; Res: in out T_Tab_Bloc) is
-		Bloc : T_Tab_Bloc;
+		tab_Bloc : T_Tab_Bloc;
 		ListeInterne : T_Tab_Bloc;
 		L_courant : chaine;
 		type_cond : T_elmt;
@@ -230,11 +231,11 @@ package body analyse is
 			end if;
 
 
-			Analyse_Code(tab, Bloc);
+			Analyse_Code(tab, tab_Bloc);
 			case type_cond is
-				when si => Ajout_Si(Bloc, L_courant,ListeInterne);
-				when sinon => Ajout_SinonSi(Bloc, L_courant, ListeInterne);
-				when others => Ajout_Sinon(Bloc, ListeInterne);
+				when si => Ajout_Si(tab_Bloc, L_courant,ListeInterne);
+				when sinon => Ajout_SinonSi(tab_Bloc, L_courant, ListeInterne);
+				when others => Ajout_Sinon(tab_Bloc, ListeInterne);
 			end case;
 				
 			L_courant := donne_tete(tab);
@@ -244,7 +245,58 @@ package body analyse is
 		end loop;
 
 		--derniere etape : ajouter la condition dans la liste principale
-		ajoutBlocCond(Res, Bloc);	
+		ajoutBlocCond(Res, tab_Bloc);	
 	end Ajout_cond;
+
+	procedure Ajout_case(tab: in out T_tab_ligne ; Res: in out T_tab_bloc) is
+		tab_Bloc : T_Tab_Bloc;
+		L_courant : chaine;
+		ListeInterne : T_Tab_Bloc;
+		condition : chaine;
+		Variable : chaine;
+	begin
+		--recupération de la variable
+		L_courant := donne_tete(tab);
+		enleve_enTete(tab);
+		L_courant := trimLeft(L_courant);
+		L_courant := trimRight(L_courant);
+		
+		L_courant := substring(L_courant, 4, length(L_courant));
+		L_courant := substring(L_courant, 1, length(L_courant)-7);
+		Variable := L_courant;
+
+		
+		--enregistrement des instructions dans la mémoire
+		L_courant := donne_tete(tab);
+		enleve_enTete(tab);
+		loop				
+
+			L_courant := trimLeft(L_courant);
+			condition := L_courant;
+			
+			--mise en forme de la condition pour implementation mémoire
+			condition := substring(condition, 1, strpos(condition, ':')-1);
+			condition := trimLeft(condition);
+			condition := trimRight(condition);
+
+			
+
+
+			L_courant := substring(L_courant, strpos(L_courant, ':')+1, length(L_courant));
+			L_courant := trimLeft(L_courant);
+			
+			Ajout_enTete(tab, l_courant);
+
+			Analyse_code(tab, ListeInterne);
+
+			AjoutCas(tab_Bloc, ListeInterne, condition);
+
+		exit when contains(L_courant, "fincas");
+		end loop;	
+		--derniere etape : ajouter la condition dans la liste principale
+		AjoutBlocCas(Res, tab_Bloc,Variable);
+
+		
+	end Ajout_case;
 	
 end analyse;
