@@ -14,11 +14,13 @@ package body gestionbloc is
 
 	function estVide(L: T_Tab_Bloc)return boolean is
 		begin
+			put_line(createchaine("est vide"));
 			return (L.courant = null);
 	end estVide;
 	
 	function estFinListe(L: T_Tab_Bloc) return boolean is
 		begin
+			put_line(createchaine("estfinliste"));
 			return (L.suivant = null);
 	end estFinListe;
 	
@@ -61,13 +63,18 @@ package body gestionbloc is
 	
 	procedure enleveTete(L: in out T_Tab_Bloc)is
 		begin
-			if(NOT estFinListe(L) or estVide(L))then
-				L.suivant := null;
-				L.courant := null;
-			else
-				L.courant := new Bloc'(L.suivant.all.courant.all);
-				L.suivant.all := L.suivant.all.suivant.all;
-			end if;
+				if(estFinListe(L) and estVide(L))then
+					L.suivant := null;
+					L.courant := null;
+				else
+					if(NOT estVide(L.suivant.all))then
+						L.courant := new Bloc'(L.suivant.all.courant.all);
+						L.suivant.all := L.suivant.all.suivant.all;
+					else
+						L.suivant := null;
+						L.courant := null;
+					end if;			
+				end if;
 	end enleveTete;
 	
 	procedure ajoutCommentaire(L: in out T_Tab_Bloc; com: chaine)is
@@ -154,6 +161,25 @@ package body gestionbloc is
 		b.Liste := Liste_int;
 		ajoutElt(L,b);
 	end Ajout_Sinon;
+
+	procedure ajoutBlocCas(L: in out T_Tab_Bloc; ListeInterne: T_Tab_Bloc; var: chaine) is 
+		b: bloc(blocCase);
+	begin
+		b.variableATester := var;
+		b.Liste_case := ListeInterne;
+		ajoutElt(L, b);
+	end ajoutBlocCas;
+
+        procedure AjoutCas(L: in out T_Tab_Bloc; ListeInterne: T_Tab_Bloc; condition: chaine) is
+		b: bloc(BlocIntCase);
+	begin
+		b.instructCase := ListeInterne;
+		b.condCase := condition;
+		ajoutElt(L, b);
+	end AjoutCas;
+
+
+
 	
 	function "="(L1, L2 : T_Tab_Bloc) return boolean is
 		begin
