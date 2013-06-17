@@ -34,11 +34,13 @@ package gestionbloc is
 												Tab_Bloc : T_Tab_Bloc;
 					when blocCond           => MTab : T_Tab_Bloc;
 					when blocCase           => variableATester: chaine;
-												Liste_case : T_Tab_Bloc;
-												case Forme is
-														when defaut => null;
-														when others => CondCase: chaine;
-												end case;
+								   Liste_case: T_Tab_Bloc;
+					when BlocIntCase	=> instructCase : T_Tab_Bloc;
+								   case Forme is
+									when defaut => NULL;
+									when others => condCase : chaine;
+								   end case;
+
 					-- les si, sinon si, sinon
 					when others             => Liste: T_Tab_Bloc;
 												case Forme is
