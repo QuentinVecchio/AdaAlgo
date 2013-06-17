@@ -164,7 +164,7 @@ package body entetelexique is
 		l: ligne(variable);
 		
 		begin
-			l.nom:=nom,
+			l.nom:=nom;
 			l.commentaire:=commentaire;
 			l.leType:=typeValeur;
 		
