@@ -12,8 +12,12 @@ package body conversion is
                         	when pour => conversionPour(elt,listeLigne);
 				when tq => conversionTantque(elt,listeLigne);
 				when repeter => conversionRepeter(elt,listeLigne);
-                        	--when blocCond => 
-                      		--when blocCase => conversionCasParmi();                              
+                        	when blocCond => conversionCond(elt,listeLigne);
+				when si=> conversionSi(elt,listeLigne);
+				when sinonsi=> conversionSinonsi(elt,listeLigne);
+				when sinon=> conversionSinon(elt,listeLigne);
+                      		when blocCase => conversionCasParmi(elt, ListeLigne);
+                      		when BlocIntCase => conversionCasParmisInt(elt, ListeLigne);
 				when others => NULL;
 			end case;
 		end loop;
@@ -51,31 +55,66 @@ package body conversion is
 		
 		bi := substring(bi, strpos(bi, ' ')+1, length(bi));
 		
-		Ajout_queue(Ligne,"FOR I in "+bi+".."+bs+"loop");
+		Ajout_queue(Ligne,"FOR I in "+bi+".."+bs+" loop");
 		conversionAda(m_bloc.Tab_Bloc, Ligne); 
 		Ajout_queue(Ligne,CreateChaine("end loop;"));
 	end conversionPour;
 
 	procedure conversionTantque(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
         begin
-         --       Ajout_queue(Ligne,"while"+tabBloc.CondContinu+"loop");
-                --conversionAda(tabBloc.Tab_Bloc,);
-         --       Ajout_queue(Ligne,"end loop;");
+		Ajout_queue(Ligne,"while "+m_bloc.CondContinu+" loop");
+		conversionAda(m_bloc.Tab_Bloc, Ligne);
+		Ajout_queue(Ligne,CreateChaine("end loop;"));
          NULL;
         end conversionTantque;
 
 	procedure conversionRepeter(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
         begin
-	--	Ajout_queue(Ligne,"loop");
-                --conversionAda(tabBloc.Tab_Bloc,);
-         --       Ajout_queue(Ligne,"while" + tabBloc.CondContinu +";");
+		Ajout_queue(Ligne,CreateChaine("loop"));
+		conversionAda(m_bloc.Tab_Bloc, Ligne);
+		Ajout_queue(Ligne,"exit when "+ m_bloc.CondContinu +";");
+		Ajout_queue(ligne,CreateChaine("end loop;"));
          NULL;
         end conversionRepeter;
+        
+        
+	procedure conversionCond(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is 
+	begin
+		conversionAda(m_bloc.MTab, Ligne);
+		Ajout_queue(Ligne, CreateChaine("end if;"));
+	end conversionCond;
+
+	
+	procedure conversionSi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
+	begin
+		Ajout_queue(Ligne, "if "+m_bloc.cond+" then");
+		conversionAda(m_bloc.Liste, Ligne);
+	end conversionSi;
+	
+	procedure conversionSinonSi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
+	begin
+		Ajout_queue(Ligne, "elsif "+m_bloc.cond+" then");
+		conversionAda(m_bloc.Liste, Ligne);
+	end conversionSinonSi;
+	
+	procedure conversionSinon(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
+	begin
+		Ajout_queue(Ligne, CreateChaine("else"));
+		conversionAda(m_bloc.Liste, Ligne);
+	end conversionSinon;
 
 	procedure conversionCasParmi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
 	begin
-		NULL;
-		--:= "case" + tabBloc.variableATester + "is"
+		Ajout_queue(Ligne, "switch "+m_bloc.variableATester+" case");
+		conversionAda(m_bloc.Liste_case, Ligne);
+		Ajout_queue(Ligne, CreateChaine("end Case"));
 	end conversionCasParmi;
+	
+	procedure conversionCasParmisInt(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is 
+	
+	begin
+		Ajout_queue(Ligne, "when "+m_bloc.condCase+" => ");
+		conversionAda(m_bloc.instructCase, Ligne);
+	end conversionCasParmisInt;
 
 end conversion;
