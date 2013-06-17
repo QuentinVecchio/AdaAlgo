@@ -39,24 +39,37 @@ package body conversion is
 	end conversionModule;
 
 	procedure conversionPour(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
+		bi, bs: chaine; --représente respectivement la borne inf et la borne sup de la boucle
+		L_courant: chaine;
 	begin
-		Ajout_queue(Ligne,"FOR I in "+tabBloc.CondContinu(9)+".."+tabBloc.CondContinu(9)+"loop");
-		--conversionAda(); 
-		Ajout_queue(Ligne,"end loop;");
+		L_courant := m_bloc.CondContinu;
+		bi := substring(L_courant, 1, strpos(L_courant, 'a')-1);
+		bs := substring(L_courant, strpos(L_courant, 'a')+1, length(L_courant));
+		
+		bi := trimRight(bi);
+		bs := trimLeft(bs);
+		
+		bi := substring(bi, strpos(bi, ' ')+1, length(bi));
+		
+		Ajout_queue(Ligne,"FOR I in "+bi+".."+bs+"loop");
+		conversionAda(m_bloc.Tab_Bloc, Ligne); 
+		Ajout_queue(Ligne,CreateChaine("end loop;"));
 	end conversionPour;
 
 	procedure conversionTantque(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
         begin
-                Ajout_queue(Ligne,"while"+tabBloc.CondContinu+"loop");
+         --       Ajout_queue(Ligne,"while"+tabBloc.CondContinu+"loop");
                 --conversionAda(tabBloc.Tab_Bloc,);
-                Ajout_queue(Ligne,"end loop;");
+         --       Ajout_queue(Ligne,"end loop;");
+         NULL;
         end conversionTantque;
 
 	procedure conversionRepeter(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
         begin
-		Ajout_queue(Ligne,"loop");
+	--	Ajout_queue(Ligne,"loop");
                 --conversionAda(tabBloc.Tab_Bloc,);
-                Ajout_queue(Ligne,"while" + tabBloc.CondContinu +";");
+         --       Ajout_queue(Ligne,"while" + tabBloc.CondContinu +";");
+         NULL;
         end conversionRepeter;
 
 	procedure conversionCasParmi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
