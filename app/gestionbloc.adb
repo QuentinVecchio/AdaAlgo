@@ -155,10 +155,12 @@ package body gestionbloc is
 		ajoutElt(L,b);
 	end Ajout_Sinon;
 
-	procedure ajoutBlocCas(L: in out T_Tab_Bloc; ListeIntern: T_Tab_Bloc; var: chaine) is 
-	
+	procedure ajoutBlocCas(L: in out T_Tab_Bloc; ListeInterne: T_Tab_Bloc; var: chaine) is 
+		b: bloc(blocCase);
 	begin
-		NULL;
+		b.variableATester := var;
+		b.Liste_case := ListeInterne;
+		
 	end ajoutBlocCas;
 
         procedure AjoutCas(L: in out T_Tab_Bloc; ListeInterne: T_Tab_Bloc; condition: chaine) is
