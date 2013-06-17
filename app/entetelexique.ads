@@ -34,6 +34,15 @@ package entetelexique is
 
 	type T_Tab_Chaine is new listeChaine.T_PTR_LISTE;
 	
+	
+	--
+	-- Procedure qui analyse le lexique sous forme algorithmique et le stocke en mémoire
+	--
+	--
+	procedure analyseLexique(listeLexique: T_Tab_ligne);
+	
+	
+	
 	--
 	--	Fonction qui permet d'extraire la liste des noms d'une ligne donnée
 	--	C'est à dire tous les éléments séparées par une virgule entre le début et la première parenthèse
