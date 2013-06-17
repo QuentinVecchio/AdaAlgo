@@ -212,6 +212,7 @@ package body analyse is
 		ajoutRepeter(Res, condition, ListeInterne);
 										
 	end Ajout_repeter;	
+	--bla
 	
 	procedure Ajout_cond (tab: in out T_tab_ligne ; Res: in out T_Tab_Bloc) is
 		tab_Bloc : T_Tab_Bloc;
