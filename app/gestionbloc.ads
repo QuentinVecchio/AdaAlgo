@@ -179,6 +179,15 @@ package gestionbloc is
 	--
 	procedure Ajout_Sinon(L: in out T_Tab_Bloc; Liste_Int : T_Tab_Bloc);
 	
+	--
+	--      Ajout un bloc blocCas en fin de liste
+	--      @param L, la liste a manipuler
+	--      @param ListeInterne, le blocCond a ajouter
+	--	@param var, la variable du bloc switch case
+	--
+	procedure ajoutBlocCas(L: in out T_Tab_Bloc; ListeIntern: T_Tab_Bloc; var: chaine);
+
+	procedure AjoutCas(L: in out T_Tab_Bloc; ListeInterne: T_Tab_Bloc; condition: chaine);
 
 	--
 	--      Test l'égalité entre deux T_Tab_Bloc (compare uniquement le type des éléments)
