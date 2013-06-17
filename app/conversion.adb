@@ -18,8 +18,9 @@ package body conversion is
 				when sinon=> conversionSinon(elt,listeLigne);
                       		when blocCase => conversionCasParmi(elt, ListeLigne);
                       		when BlocIntCase => conversionCasParmisInt(elt, ListeLigne);
-				when others => NULL;
+				when others =>null;
 			end case;
+			enleveTete(listeBloc);
 		end loop;
 	end conversionAda;
 	
@@ -47,6 +48,8 @@ package body conversion is
 		L_courant: chaine;
 	begin
 		L_courant := m_bloc.CondContinu;
+		put_line(createchaine("Affiche:"));
+		put_line(L_courant);
 		bi := substring(L_courant, 1, strpos(L_courant, 'a')-1);
 		bs := substring(L_courant, strpos(L_courant, 'a')+1, length(L_courant));
 		

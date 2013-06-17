@@ -97,6 +97,17 @@ package body mstring is
 	return CreateChaine(s1) + s2;
   end "+";
 
+	function "+"(c1:chaine; carac: character) return chaine is
+		begin
+			return createchaine(c1.text&carac);
+	end "+";
+
+	function "+"(carac: character; c1:chaine) return chaine is
+		begin
+			return c1 + carac;
+	end "+";
+
+
   
   function contains(c: chaine; s: string) return boolean is
       contained: boolean:= FALSE ;
