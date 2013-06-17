@@ -177,7 +177,7 @@ package body analyse is
 		Analyse_Code(tab, ListeInterne);
 		
 		--on ajout en mémoire la boucle
-		ajoutPour(Res, condition, ListeInterne);
+		ajoutTq(Res, condition, ListeInterne);
 		
 	end Ajout_tq;
 
