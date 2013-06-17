@@ -79,5 +79,14 @@ Package analyse is
 	--
 	procedure Ajout_cond (tab: in out T_tab_ligne ;  Res: in out T_Tab_Bloc);
 	
+	--
+	--	Permet d'ajouter un bloc switch case
+	--	C'est à dire de cas 'variable' parmis à fcas
+	--	Modifie l'indice de la ligne courant, pointe sur  fsi
+	--	Renvoit l'ensemble des blocs contenus dans le bloc courant
+	--	@param tab, liste de ligne a partire du début de la condition
+	--	@param res, liste de bloc
+	--
+	procedure Ajout_case (tab: in out T_tab_ligne ;  Res: in out T_Tab_Bloc);
 	
 end analyse;
