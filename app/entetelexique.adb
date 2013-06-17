@@ -1,5 +1,12 @@
 package body entetelexique is
 
+
+		procedure analyseLexique(listeLexique: T_Tab_ligne) is
+				begin
+					null;
+		end analyseLexique;
+
+
 		function donneListeNom(ligneCourante: chaine) return T_Tab_Chaine is
 			liste: T_Tab_Chaine;
 			ligne:chaine:=ligneCourante+",";
