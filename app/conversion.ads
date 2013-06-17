@@ -28,7 +28,21 @@ procedure conversionTantque(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE);
 --procedure de conversion d'un bloc REPETER
 procedure conversionRepeter(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE);
 
+--procedure de conversion d'un bloc CONDITION
+procedure conversionCond(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE);
+
+--procedure de conversion d'un bloc SI
+procedure conversionSi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE);
+
+--procedure de conversion d'un bloc SINONSI
+procedure conversionSinonSi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE);
+
+--procedure de conversion d'un bloc SINON
+procedure conversionSinon(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE);
+
 --procedure de conversion d'un bloc CAS PARMI
 procedure conversionCasParmi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE);
+
+procedure conversionCasParmisInt(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE);
 
 end conversion;
