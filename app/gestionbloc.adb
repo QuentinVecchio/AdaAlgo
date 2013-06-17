@@ -160,7 +160,7 @@ package body gestionbloc is
 	begin
 		b.variableATester := var;
 		b.Liste_case := ListeInterne;
-		
+		ajoutElt(L, b);
 	end ajoutBlocCas;
 
         procedure AjoutCas(L: in out T_Tab_Bloc; ListeInterne: T_Tab_Bloc; condition: chaine) is
@@ -168,7 +168,7 @@ package body gestionbloc is
 	begin
 		b.instructCase := ListeInterne;
 		b.condCase := condition;
-		ajout(L, b);
+		ajoutElt(L, b);
 	end AjoutCas;
 
 

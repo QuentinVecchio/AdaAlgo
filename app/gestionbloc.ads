@@ -187,7 +187,7 @@ package gestionbloc is
 	--      @param ListeInterne, le blocCond a ajouter
 	--	@param var, la variable du bloc switch case
 	--
-	procedure ajoutBlocCas(L: in out T_Tab_Bloc; ListeIntern: T_Tab_Bloc; var: chaine);
+	procedure ajoutBlocCas(L: in out T_Tab_Bloc; ListeInterne: T_Tab_Bloc; var: chaine);
 
 	procedure AjoutCas(L: in out T_Tab_Bloc; ListeInterne: T_Tab_Bloc; condition: chaine);
 

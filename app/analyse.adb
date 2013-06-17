@@ -57,6 +57,10 @@ package body analyse is
 				typeligne:= repeter;
 			elsif(startWith(ligne, "jusqua"))then
 				typeligne:= jqa;
+			elsif(startWith(ligne, "cas"))then
+				typeligne:= testcase;
+			elsif(contains(ligne, ":"))then
+				typeligne:= lignecas;
 			end if;
 			
 			return typeligne;
