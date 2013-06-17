@@ -14,13 +14,11 @@ package body gestionbloc is
 
 	function estVide(L: T_Tab_Bloc)return boolean is
 		begin
-			put_line(createchaine("est vide"));
 			return (L.courant = null);
 	end estVide;
 	
 	function estFinListe(L: T_Tab_Bloc) return boolean is
 		begin
-			put_line(createchaine("estfinliste"));
 			return (L.suivant = null);
 	end estFinListe;
 	
@@ -63,18 +61,13 @@ package body gestionbloc is
 	
 	procedure enleveTete(L: in out T_Tab_Bloc)is
 		begin
-				if(estFinListe(L) and estVide(L))then
-					L.suivant := null;
-					L.courant := null;
-				else
-					if(NOT estVide(L.suivant.all))then
-						L.courant := new Bloc'(L.suivant.all.courant.all);
-						L.suivant.all := L.suivant.all.suivant.all;
-					else
-						L.suivant := null;
-						L.courant := null;
-					end if;			
-				end if;
+			if(NOT estFinListe(L) or estVide(L))then
+				L.suivant := null;
+				L.courant := null;
+			else
+				L.courant := new Bloc'(L.suivant.all.courant.all);
+				L.suivant.all := L.suivant.all.suivant.all;
+			end if;
 	end enleveTete;
 	
 	procedure ajoutCommentaire(L: in out T_Tab_Bloc; com: chaine)is
@@ -120,7 +113,7 @@ package body gestionbloc is
 	end ajoutPour;
 
 	procedure ajoutTq (L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc) is
-			b: Bloc(pour);
+			b: Bloc(tq);
 			begin
 					b.CondContinu := cond;
 					b.Tab_Bloc:= Liste_Int;
@@ -129,7 +122,7 @@ package body gestionbloc is
 	end ajoutTq;
 
 	procedure ajoutRepeter (L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc) is
-			b: Bloc(pour);
+			b: Bloc(repeter);
 			begin
 					b.CondContinu := cond;
 					b.Tab_Bloc:= Liste_Int;
