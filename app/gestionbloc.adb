@@ -154,6 +154,25 @@ package body gestionbloc is
 		b.Liste := Liste_int;
 		ajoutElt(L,b);
 	end Ajout_Sinon;
+
+	procedure ajoutBlocCas(L: in out T_Tab_Bloc; ListeInterne: T_Tab_Bloc; var: chaine) is 
+		b: bloc(blocCase);
+	begin
+		b.variableATester := var;
+		b.Liste_case := ListeInterne;
+		ajoutElt(L, b);
+	end ajoutBlocCas;
+
+        procedure AjoutCas(L: in out T_Tab_Bloc; ListeInterne: T_Tab_Bloc; condition: chaine) is
+		b: bloc(BlocIntCase);
+	begin
+		b.instructCase := ListeInterne;
+		b.condCase := condition;
+		ajoutElt(L, b);
+	end AjoutCas;
+
+
+
 	
 	function "="(L1, L2 : T_Tab_Bloc) return boolean is
 		begin
