@@ -51,7 +51,7 @@ package body conversion is
 		put_line(createchaine("Affiche:"));
 		put_line(L_courant);
 		bi := substring(L_courant, 1, strpos(L_courant, 'a')-1);
-		bs := substring(L_courant, strpos(L_courant, 'a')+1, length(L_courant));
+		bs := substring(L_courant, strpos(L_courant, 'a')+1, length(L_courant))+" ";
 		
 		bi := trimRight(bi);
 		bs := trimLeft(bs);
@@ -84,7 +84,7 @@ package body conversion is
 	procedure conversionCond(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is 
 	begin
 		conversionAda(m_bloc.MTab, Ligne);
-		Ajout_que ue(Ligne, CreateChaine("end if;"));
+		Ajout_queue(Ligne, CreateChaine("end if;"));
 	end conversionCond;
 
 	
