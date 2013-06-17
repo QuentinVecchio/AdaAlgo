@@ -18,9 +18,8 @@ package body conversion is
 				when sinon=> conversionSinon(elt,listeLigne);
                       		when blocCase => conversionCasParmi(elt, ListeLigne);
                       		when BlocIntCase => conversionCasParmisInt(elt, ListeLigne);
-				when others =>null;
+				when others => NULL;
 			end case;
-			enleveTete(listeBloc);
 		end loop;
 	end conversionAda;
 	
@@ -34,9 +33,9 @@ package body conversion is
 	procedure conversionAffectation(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
 	begin
 		if contains(m_bloc.vD, " mod ") AND THEN NOT(StartWith(m_bloc.vD, " mod "))then
-			 m_bloc.vD:=replaceStr(m_bloc.vD, "mod", "rem");
+			replaceStr(m_bloc.vD, "mod", "rem");
 		elsif contains(m_bloc.vD, " div ") AND THEN NOT(StartWith(m_bloc.vD, " div "))then
-			 m_bloc.vD:=replaceStr(m_bloc.vD, "div", "/");
+			replaceStr(m_bloc.vD, "div", "/");
 		end if;
 		Ajout_queue(Ligne,m_bloc.vG + ":=" + m_bloc.vD + ";");
 	end conversionAffectation;
@@ -55,10 +54,8 @@ package body conversion is
 		L_courant: chaine;
 	begin
 		L_courant := m_bloc.CondContinu;
-		put_line(createchaine("Affiche:"));
-		put_line(L_courant);
 		bi := substring(L_courant, 1, strpos(L_courant, 'a')-1);
-		bs := substring(L_courant, strpos(L_courant, 'a')+1, length(L_courant))+" ";
+		bs := substring(L_courant, strpos(L_courant, 'a')+1, length(L_courant));
 		
 		bi := trimRight(bi);
 		bs := trimLeft(bs);
@@ -91,7 +88,7 @@ package body conversion is
 	procedure conversionCond(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is 
 	begin
 		conversionAda(m_bloc.MTab, Ligne);
-		Ajout_queue(Ligne, CreateChaine("end if;"));
+		Ajout_que ue(Ligne, CreateChaine("end if;"));
 	end conversionCond;
 
 	
