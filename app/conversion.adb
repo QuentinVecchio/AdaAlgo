@@ -37,7 +37,7 @@ package body conversion is
 	procedure conversionModule(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
 	begin
 		if(startWith(m_bloc.MonMod,"LIRE")) then --On teste si c'est le module lire
-			Ajout_queue(Ligne,"GET" + substring(m_bloc.MonMod,5,length(m_bloc.MonMod)));
+			Ajout_queue(Ligne,"GET(" + substring(m_bloc.MonMod,5,length(m_bloc.MonMod))+")");
 		elsif(startWith(m_bloc.MonMod,"ECRIRE")) then -- On teste si c'est le module ecrire
 			Ajout_queue(Ligne,"PUT" + substring(m_bloc.MonMod,6,length(m_bloc.MonMod)));
 		end if;
@@ -84,25 +84,28 @@ package body conversion is
 	procedure conversionCond(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is 
 	begin
 		conversionAda(m_bloc.MTab, Ligne);
-		Ajout_queue(Ligne, CreateChaine("end if;"));
+		Ajout_que ue(Ligne, CreateChaine("end if;"));
 	end conversionCond;
 
 	
 	procedure conversionSi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
 	begin
 		Ajout_queue(Ligne, "if "+m_bloc.cond+" then");
+		enleve_enTete(Ligne);
 		conversionAda(m_bloc.Liste, Ligne);
 	end conversionSi;
 	
 	procedure conversionSinonSi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
 	begin
 		Ajout_queue(Ligne, "elsif "+m_bloc.cond+" then");
+		enleve_enTete(Ligne);
 		conversionAda(m_bloc.Liste, Ligne);
 	end conversionSinonSi;
 	
 	procedure conversionSinon(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
 	begin
 		Ajout_queue(Ligne, CreateChaine("else"));
+		enleve_enTete(Ligne);
 		conversionAda(m_bloc.Liste, Ligne);
 	end conversionSinon;
 

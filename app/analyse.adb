@@ -90,8 +90,8 @@ package body analyse is
 	begin
 		L_courant := trimLeft(L_courant);
 		L_courant := trimRight(L_courant);
-		partGauche := substring(L_courant, 1, strpos(L_courant, '<'));
-		partDroit := substring(L_courant, strpos(L_courant, '<')+1, length(L_courant));
+		partGauche := substring(L_courant, 1, strpos(L_courant, '<')-1);
+		partDroit := substring(L_courant, strpos(L_courant, '<')+2, length(L_courant));
 		partGauche := trimRight(partGauche);
 		partDroit := trimLeft(partDroit);
 		
@@ -124,7 +124,7 @@ package body analyse is
 		condition := trimLeft(condition);
 
 		--on enleve le 'faire'
-		condition := substring(condition, length(condition)-6, length(condition));
+		condition := substring(condition, 1, length(condition)-6);
 		condition := trimLeft(condition);
 
 		--on enleve le 'pour'
