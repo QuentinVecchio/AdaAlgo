@@ -88,18 +88,21 @@ package body conversion is
 	procedure conversionSi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
 	begin
 		Ajout_queue(Ligne, "if "+m_bloc.cond+" then");
+		enleve_enTete(Ligne);
 		conversionAda(m_bloc.Liste, Ligne);
 	end conversionSi;
 	
 	procedure conversionSinonSi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
 	begin
 		Ajout_queue(Ligne, "elsif "+m_bloc.cond+" then");
+		enleve_enTete(Ligne);
 		conversionAda(m_bloc.Liste, Ligne);
 	end conversionSinonSi;
 	
 	procedure conversionSinon(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
 	begin
 		Ajout_queue(Ligne, CreateChaine("else"));
+		enleve_enTete(Ligne);
 		conversionAda(m_bloc.Liste, Ligne);
 	end conversionSinon;
 

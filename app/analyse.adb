@@ -124,7 +124,7 @@ package body analyse is
 		condition := trimLeft(condition);
 
 		--on enleve le 'faire'
-		condition := substring(condition, length(condition)-6, length(condition));
+		condition := substring(condition, 1, length(condition)-6);
 		condition := trimLeft(condition);
 
 		--on enleve le 'pour'
