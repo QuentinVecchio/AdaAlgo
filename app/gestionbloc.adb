@@ -161,10 +161,12 @@ package body gestionbloc is
 		NULL;
 	end ajoutBlocCas;
 
-        procedure AjoutCas(L: in out T_Tab_Bloc; ListeInterne: T_Tab_Bloc; condition: chaine)is
-
+        procedure AjoutCas(L: in out T_Tab_Bloc; ListeInterne: T_Tab_Bloc; condition: chaine) is
+		b: bloc(BlocIntCase);
 	begin
-		NULL;
+		b.instructCase := ListeInterne;
+		b.condCase := condition;
+		ajout(L, b);
 	end AjoutCas;
 
 
