@@ -129,7 +129,7 @@ package body analyse is
 
                 --on enleve le 'pour'
                 condition := trimRight(condition);
-                condition := substring(condition, length(condition)-5, length(condition));
+                condition := substring(condition, 5, length(condition));
                 
                 --on eleve les eventuelle espaces
                 condition := trimLeft(condition);
