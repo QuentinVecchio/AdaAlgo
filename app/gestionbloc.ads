@@ -63,6 +63,8 @@ package gestionbloc is
 	--
 	procedure creerListe(L: out T_Tab_Bloc);
 
+	procedure detruireListe(L: in out T_Tab_Bloc);
+
 	--
 	--      Définit si une liste est vide
 	--      @param L, la liste a tester
