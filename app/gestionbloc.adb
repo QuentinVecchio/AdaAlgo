@@ -15,8 +15,10 @@ package body gestionbloc is
 	procedure detruireListe(L: in out T_Tab_Bloc) is
 	
 	begin
-					libere_suivant(L.suivant);
-					libere_courant(L.courant);
+		L.suivant := null;
+		L.courant := null;
+		--libere_suivant(L.suivant);
+		--libere_courant(L.courant);
 			
 	end detruireListe;
 
