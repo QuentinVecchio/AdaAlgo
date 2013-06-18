@@ -12,6 +12,14 @@ package body gestionbloc is
 		
 	end creerListe;
 
+	procedure detruireListe(L: in out T_Tab_Bloc) is
+	
+	begin
+		L.courant := NULL;
+		L.suivant := NULL;
+			
+	end detruireListe;
+
 	function estVide(L: T_Tab_Bloc)return boolean is
 		begin
 			return (L.courant = null);
@@ -139,7 +147,11 @@ package body gestionbloc is
 		b: bloc(si);	
 	begin
 		b.Liste := Liste_Int;
+		put_line(createChaine("Ajout_si1"));
+		AfficheTypeElt(b.Liste);
 		b.Cond := cond;
+		put_line("Ajout_si2");
+		afficheTypeelt(Liste_Int);
 		ajoutElt(L,b);
 		
 	end Ajout_Si;
