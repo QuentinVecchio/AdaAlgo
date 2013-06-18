@@ -8,19 +8,23 @@ package body analyse is
 
         type_ligne: T_type_ligne;
         begin
+
                 while NOT estVide(tab) loop
-                        type_ligne := GetType(donne_tete(tab));
-                        case type_ligne is
-                                when commentaire => Ajout_com(donne_tete(tab), Res);
-                                when affectation => Ajout_aff(donne_tete(tab), Res);
-                                when module      => Ajout_Mod(donne_tete(tab), Res);
-                                when pour        => Ajout_Pour (tab, Res);
-                                when tq          => Ajout_tq (tab, Res);
-                                when repeter     => Ajout_repeter (tab, Res);
-                                when cond        => Ajout_cond(tab, Res);
-                                when testcase    => Ajout_case(tab, Res);
-                                when others      => EXIT;  -- sinon, sinonsi ,fsi, fpour, ftq, jusqu'a
-                        end case;
+			if length(trimLeft(trimRight(donne_tete(tab)))) > 2 then
+				--put(createchaine("========================================================="));
+		                type_ligne := GetType(donne_tete(tab));
+		                case type_ligne is
+		                        when commentaire => Ajout_com(donne_tete(tab), Res);
+		                        when affectation => Ajout_aff(donne_tete(tab), Res);
+		                        when module      => Ajout_Mod(donne_tete(tab), Res);
+		                        when pour        => Ajout_Pour (tab, Res);
+		                        when tq          => Ajout_tq (tab, Res);
+		                        when repeter     => Ajout_repeter (tab, Res);
+		                        when cond        => Ajout_cond(tab, Res);
+		                        when testcase    => Ajout_case(tab, Res);
+		                        when others      => EXIT;  -- sinon, sinonsi ,fsi, fpour, ftq, jusqu'a
+		                end case;
+			end if;
                         enleve_enTete(tab);
                 end loop;
         end Analyse_Code;       
@@ -63,7 +67,6 @@ package body analyse is
                                 typeligne:= jqa;
                         elsif(startWith(ligne, "cas"))then
                                 typeligne:= testcase;
-
 			else
 				put_line(CreateChaine("TYPE INCONNU"));
                         end if;
@@ -225,8 +228,8 @@ package body analyse is
                 L_courant : chaine;
                 type_cond : T_elmt;
         begin
-		--creerListe(tab_Bloc);
 		L_courant := donne_tete(tab);
+		put_line(L_courant);
                 L_courant := trimLeft(L_courant);
 		
                 loop
@@ -237,7 +240,6 @@ package body analyse is
                                 type_cond := sinonsi;
 				L_courant := substring(L_courant, 9, length(L_courant));
 				L_courant := substring(L_courant, 1, length(L_courant)-5);
-				put_line(CreateChaine("===================C'est un sinon si"));
                         elsif(startWith(L_courant, "sinon")) then
                                 type_cond := sinon;
 
@@ -246,7 +248,10 @@ package body analyse is
 				L_courant := substring(L_courant, 1, length(L_courant)-5);  
                                 type_cond := si;
 			else
-				put_line(CreateChaine("=================== euhhh on sait pas trop chef"));
+				if length(trimLeft(trimRight(donne_tete(tab)))) > 2 then
+					enleve_enTete(tab);
+				end if;
+				--put_line(CreateChaine("=================== euhhh on sait pas trop chef"));
                         end if;
 
                         Analyse_Code(tab, ListeInterne);
