@@ -46,11 +46,13 @@ package body conversion is
         procedure conversionPour(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
                 bi, bs: chaine; --représente respectivement la borne inf et la borne sup de la boucle
                 L_courant: chaine;
+		variable : chaine;
         begin
                 L_courant := m_bloc.CondContinu;
                 put_line(createchaine("Affiche:"));
                 put_line(L_courant);
-                bi := substring(L_courant, 1, strpos(L_courant, 'a')-1);
+		variable := substring(L_courant, 1, strpos(L_courant, ' '));
+                bi := substring(L_courant, strpos(L_courant, ' ')+2, strpos(L_courant, 'a')-1);
                 bs := substring(L_courant, strpos(L_courant, 'a')+1, length(L_courant))+" ";
                 
                 bi := trimRight(bi);
@@ -58,7 +60,7 @@ package body conversion is
                 
                 bi := substring(bi, strpos(bi, ' ')+1, length(bi));
                 
-                Ajout_queue(Ligne,"FOR I in "+bi+".."+bs+" loop");
+                Ajout_queue(Ligne,"for "+variable+" in "+bi+".."+bs+" loop");
                 conversionAda(m_bloc.Tab_Bloc, Ligne); 
                 Ajout_queue(Ligne,CreateChaine("end loop;"));
         end conversionPour;
