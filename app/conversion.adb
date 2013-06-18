@@ -116,7 +116,7 @@ package body conversion is
         begin
                 Ajout_queue(Ligne, "switch "+m_bloc.variableATester+" case");
                 conversionAda(m_bloc.Liste_case, Ligne);
-                Ajout_queue(Ligne, CreateChaine("end Case"));
+                Ajout_queue(Ligne, CreateChaine("end case;"));
         end conversionCasParmi;
         
         procedure conversionCasParmisInt(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is 
