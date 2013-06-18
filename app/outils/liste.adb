@@ -45,7 +45,9 @@ package body liste is
 	
 	procedure donne_tete(L: T_PTR_LISTE; elt: out T_elt)is
 		begin
-			elt := L.all.courant;
+			if NOT estVide(L) then
+				elt := L.all.courant;
+			end if;
 	end donne_tete;
 	
 	function donne_tete(L: T_PTR_LISTE) return T_elt is
