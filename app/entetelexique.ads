@@ -3,13 +3,6 @@ use simple_io, definitions, mstring;
 
 package entetelexique is
 
-	
-	package listeLexique is new liste(ligne, affiche);
-	use listeLexique;
-
-	type T_tab_Lexique is new listeLexique.T_PTR_LISTE;
-
-
 	--
 	--	Représente les différents types de définition que l'on peut avoir
 	--
@@ -24,7 +17,7 @@ package entetelexique is
 	--	Le type table a un intervale, et un type d'élément qu'il contient
 	--	Pour les autres (module), il n'y a rien de plus de particulier
 	--
-	type ligne (Forme: T_typeline) is record
+	type ligne (Forme: T_typeline := variable) is record
 		commentaire	: chaine;
 		nom			: chaine;
 		
@@ -40,19 +33,25 @@ package entetelexique is
 		end case;
 	end record;
 
+	procedure affiche(elt: ligne);
+	
+	package listeLexique is new liste(ligne, affiche);
+	use listeLexique;
+
+	type T_tab_Lexique is new listeLexique.T_PTR_LISTE;	
+	
 	type T_Tab_Chaine is new listeChaine.T_PTR_LISTE;
 	
-
-	procedure affiche(elt: ligne);
 
 	
 	--
 	-- Procedure qui analyse le lexique sous forme algorithmique et le stocke en mémoire
 	--
 	--
-	procedure analyseLexique(listeLexique: T_Tab_ligne; resLexique: out T_Tab_Chaine);
+	procedure analyseLexique(listeLexique: T_Tab_ligne; resLexique: out T_tab_Lexique);
 	
-	
+	--
+	procedure pas_idee_nom(Lexique: T_tab_Lexique; resultat: out T_tab_ligne);
 	
 	--
 	--	Fonction qui permet d'extraire la liste des noms d'une ligne donnée
@@ -61,6 +60,9 @@ package entetelexique is
 	--	@return T_Tab_Chaine, une liste de l'ensemble des noms trouvés
 	--
 	function donneListeNom(ligneCourante: chaine) return T_Tab_Chaine;
+	
+	--
+	function donneNom(ligneCourante: chaine) return chaine;
 	
 	--
 	--	Permet de définir le type de ligne
