@@ -33,9 +33,13 @@ package body analyse is
         
                         if(startWith(ligne, "c:"))then
                                 typeligne:= commentaire;
+                        elsif(contains(ligne, ":"))then
+                                typeligne:= lignecas;
                         elsif(contains(ligne, "<-"))then
                                 typeligne:= affectation;
                         elsif(startWith(ligne, "sinonsi"))then
+                                typeligne := sinonsi;
+                        elsif(startWith(ligne, "fcas"))then
                                 typeligne := sinonsi;
                         elsif(startWith(ligne, "sinon"))then
                                 typeligne := sinon;
@@ -59,8 +63,9 @@ package body analyse is
                                 typeligne:= jqa;
                         elsif(startWith(ligne, "cas"))then
                                 typeligne:= testcase;
-                        elsif(contains(ligne, ":"))then
-                                typeligne:= lignecas;
+
+			else
+				put_line(CreateChaine("TYPE INCONNU"));
                         end if;
                         
                         return typeligne;
@@ -234,28 +239,25 @@ package body analyse is
 				L_courant := substring(L_courant, 1, length(L_courant)-5);
                         elsif(startWith(L_courant, "sinon")) then
                                 type_cond := sinon;
-				put_line(createchaine("jfdk"));
-			else
-				EXIT;
                         end if;
 
-                        Analyse_Code(tab, tab_Bloc);
-			put_line(createchaine("un si en plus"));
+                        Analyse_Code(tab, ListeInterne);
                         case type_cond is
                                 when si => Ajout_Si(tab_Bloc, L_courant,ListeInterne);
-						
-                                when sinon => Ajout_SinonSi(tab_Bloc, L_courant, ListeInterne);
+                                when sinonsi => Ajout_SinonSi(tab_Bloc, L_courant, ListeInterne);
                                 when others => Ajout_Sinon(tab_Bloc, ListeInterne);
                         end case;
 
                         
                         L_courant := donne_tete(tab);
+			
 			enleve_enTete(tab);
                         L_courant := trimLeft(L_courant);
                         L_courant := trimRight(L_courant);
+			
                 exit when contains(L_courant, "fsi");
                 end loop;
-
+		afficheTypeElt(tab_Bloc);
                 --derniere etape : ajouter la condition dans la liste principale
                 ajoutBlocCond(Res, tab_Bloc);   
         end Ajout_cond;
@@ -279,9 +281,10 @@ package body analyse is
 
                 
                 --enregistrement des instructions dans la mémoire
-                L_courant := donne_tete(tab);
-                enleve_enTete(tab);
+
                 loop                            
+		        L_courant := donne_tete(tab);
+		        enleve_enTete(tab);
 
                         L_courant := trimLeft(L_courant);
                         condition := L_courant;
@@ -303,7 +306,7 @@ package body analyse is
 
                         AjoutCas(tab_Bloc, ListeInterne, condition);
 
-                exit when contains(L_courant, "fincas");
+                exit when StartWith(donne_tete(tab), "fcas");
                 end loop;       
                 --derniere etape : ajouter la condition dans la liste principale
                 AjoutBlocCas(Res, tab_Bloc,Variable);
