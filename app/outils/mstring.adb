@@ -286,6 +286,17 @@ package body mstring is
 			return replaceStr( CreateChaine(depart),recherche,  CreateChaine(remplace));
 	end replaceStr;
 	
+	function tolowercase(depart: chaine) return chaine is
+		begin
+			for I in 1..depart.L loop
+				if(depart.text(I) in 'A'..'Z')then
+					depart.text(I) := character'value(character'val(depart.text(I))+32);
+				end if;
+			end loop;
+	end tolowercase;
+
+
+
 end mstring;
 
 

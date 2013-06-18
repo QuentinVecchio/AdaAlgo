@@ -167,6 +167,9 @@ package mstring is
 	
 	function replaceStr(depart: string; recherche: chaine; remplace: string) return chaine;
 	
+	function tolowercase(depart: chaine) return chaine;
+
+
 	private
 
 	type chaine(L: l_chaine:= 1) is record
