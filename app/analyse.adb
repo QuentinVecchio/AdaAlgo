@@ -225,23 +225,31 @@ package body analyse is
                 L_courant : chaine;
                 type_cond : T_elmt;
         begin
+		--creerListe(tab_Bloc);
 		L_courant := donne_tete(tab);
                 L_courant := trimLeft(L_courant);
-		enleve_enTete(tab);
+		
                 loop
-                        if(startWith(L_courant, "si")) then
+			enleve_enTete(tab);
+
+
+                        if(startWith(L_courant, "sinon si ")) then
+                                type_cond := sinonsi;
+				detruireListe(ListeInterne);
+				L_courant := substring(L_courant, 9, length(L_courant));
+				L_courant := substring(L_courant, 1, length(L_courant)-5);
+                        elsif(startWith(L_courant, "sinon ")) then
+				detruireListe(ListeInterne);
+                                type_cond := sinon;
+                        elsif(startWith(L_courant, "si ")) then
+				detruireListe(ListeInterne);
                               	L_courant := substring(L_courant, 3, length(L_courant));
 				L_courant := substring(L_courant, 1, length(L_courant)-5);  
                                 type_cond := si;
-                        elsif(startWith(L_courant, "sinon si")) then
-                                type_cond := sinonsi;
-				L_courant := substring(L_courant, 9, length(L_courant));
-				L_courant := substring(L_courant, 1, length(L_courant)-5);
-                        elsif(startWith(L_courant, "sinon")) then
-                                type_cond := sinon;
                         end if;
 
                         Analyse_Code(tab, ListeInterne);
+
                         case type_cond is
                                 when si => Ajout_Si(tab_Bloc, L_courant,ListeInterne);
                                 when sinonsi => Ajout_SinonSi(tab_Bloc, L_courant, ListeInterne);
@@ -250,14 +258,12 @@ package body analyse is
 
                         
                         L_courant := donne_tete(tab);
-			
-			enleve_enTete(tab);
                         L_courant := trimLeft(L_courant);
                         L_courant := trimRight(L_courant);
 			
                 exit when contains(L_courant, "fsi");
                 end loop;
-		afficheTypeElt(tab_Bloc);
+
                 --derniere etape : ajouter la condition dans la liste principale
                 ajoutBlocCond(Res, tab_Bloc);   
         end Ajout_cond;
