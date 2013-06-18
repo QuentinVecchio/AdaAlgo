@@ -118,7 +118,7 @@ package body gestionbloc is
 	end ajoutPour;
 
 	procedure ajoutTq (L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc) is
-			b: Bloc(pour);
+			b: Bloc(tq);
 			begin
 					b.CondContinu := cond;
 					b.Tab_Bloc:= Liste_Int;
@@ -127,7 +127,7 @@ package body gestionbloc is
 	end ajoutTq;
 
 	procedure ajoutRepeter (L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc) is
-			b: Bloc(pour);
+			b: Bloc(repeter);
 			begin
 					b.CondContinu := cond;
 					b.Tab_Bloc:= Liste_Int;
