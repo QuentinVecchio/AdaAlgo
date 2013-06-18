@@ -232,20 +232,21 @@ package body analyse is
                 loop
 			enleve_enTete(tab);
 
-
+			detruireListe(ListeInterne);
                         if(startWith(L_courant, "sinon si ")) then
                                 type_cond := sinonsi;
-				detruireListe(ListeInterne);
 				L_courant := substring(L_courant, 9, length(L_courant));
 				L_courant := substring(L_courant, 1, length(L_courant)-5);
-                        elsif(startWith(L_courant, "sinon ")) then
-				detruireListe(ListeInterne);
+				put_line(CreateChaine("===================C'est un sinon si"));
+                        elsif(startWith(L_courant, "sinon")) then
                                 type_cond := sinon;
+
                         elsif(startWith(L_courant, "si ")) then
-				detruireListe(ListeInterne);
                               	L_courant := substring(L_courant, 3, length(L_courant));
 				L_courant := substring(L_courant, 1, length(L_courant)-5);  
                                 type_cond := si;
+			else
+				put_line(CreateChaine("=================== euhhh on sait pas trop chef"));
                         end if;
 
                         Analyse_Code(tab, ListeInterne);
@@ -265,7 +266,10 @@ package body analyse is
                 end loop;
 
                 --derniere etape : ajouter la condition dans la liste principale
-                ajoutBlocCond(Res, tab_Bloc);   
+                ajoutBlocCond(Res, tab_Bloc);
+		put_line(CreateChaine("debut affichage"));
+		afficheTypeElt(tab_Bloc);   
+		put_line(CreateChaine("fin affichage"));
         end Ajout_cond;
 
         procedure Ajout_case(tab: in out T_tab_ligne ; Res: in out T_tab_bloc) is
