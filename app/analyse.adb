@@ -19,7 +19,7 @@ package body analyse is
                                 when repeter     => Ajout_repeter (tab, Res);
                                 when cond        => Ajout_cond(tab, Res);
                                 when testcase    => Ajout_case(tab, Res);
-                                when others      => NULL;  -- sinon, sinonsi ,fsi, fpour, ftq, jusqu'a
+                                when others      => EXIT;  -- sinon, sinonsi ,fsi, fpour, ftq, jusqu'a
                         end case;
                         enleve_enTete(tab);
                 end loop;
@@ -55,7 +55,7 @@ package body analyse is
                                 typeligne:= tq;
                         elsif(startWith(ligne, "repeter"))then
                                 typeligne:= repeter;
-                        elsif(startWith(ligne, "jusqua"))then
+                        elsif(startWith(ligne, "jqa"))then
                                 typeligne:= jqa;
                         elsif(startWith(ligne, "cas"))then
                                 typeligne:= testcase;
@@ -203,7 +203,7 @@ package body analyse is
 
                 --on enleve le 'tq'
                 condition := trimRight(condition);
-                condition := substring(condition, length(condition)-3, length(condition));
+                condition := substring(condition, 4, length(condition));
                 
                 --on eleve les eventuelle espaces
                 condition := trimLeft(condition);
@@ -220,30 +220,37 @@ package body analyse is
                 L_courant : chaine;
                 type_cond : T_elmt;
         begin
+		L_courant := donne_tete(tab);
+                L_courant := trimLeft(L_courant);
+		enleve_enTete(tab);
                 loop
-                        L_courant := donne_tete(tab);
-                        L_courant := trimLeft(L_courant);
-
-                        enleve_enTete(tab);
-                        
                         if(startWith(L_courant, "si")) then
-                                L_courant := substring(L_courant, 3, length(L_courant));
+                              	L_courant := substring(L_courant, 3, length(L_courant));
+				L_courant := substring(L_courant, 1, length(L_courant)-5);  
                                 type_cond := si;
                         elsif(startWith(L_courant, "sinon si")) then
                                 type_cond := sinonsi;
-                        else
+				L_courant := substring(L_courant, 9, length(L_courant));
+				L_courant := substring(L_courant, 1, length(L_courant)-5);
+                        elsif(startWith(L_courant, "sinon")) then
                                 type_cond := sinon;
+				put_line(createchaine("jfdk"));
+			else
+				EXIT;
                         end if;
 
-
                         Analyse_Code(tab, tab_Bloc);
+			put_line(createchaine("un si en plus"));
                         case type_cond is
                                 when si => Ajout_Si(tab_Bloc, L_courant,ListeInterne);
+						
                                 when sinon => Ajout_SinonSi(tab_Bloc, L_courant, ListeInterne);
                                 when others => Ajout_Sinon(tab_Bloc, ListeInterne);
                         end case;
-                                
+
+                        
                         L_courant := donne_tete(tab);
+			enleve_enTete(tab);
                         L_courant := trimLeft(L_courant);
                         L_courant := trimRight(L_courant);
                 exit when contains(L_courant, "fsi");
