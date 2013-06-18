@@ -2,6 +2,14 @@ with simple_io, definitions, mstring, liste, typeEnum;
 use simple_io, definitions, mstring;
 
 package entetelexique is
+
+	
+	package listeLexique is new liste(ligne, affiche);
+	use listeLexique;
+
+	type T_tab_Lexique is new listeLexique.T_PTR_LISTE;
+
+
 	--
 	--	Représente les différents types de définition que l'on peut avoir
 	--
@@ -34,12 +42,15 @@ package entetelexique is
 
 	type T_Tab_Chaine is new listeChaine.T_PTR_LISTE;
 	
+
+	procedure affiche(elt: ligne);
+
 	
 	--
 	-- Procedure qui analyse le lexique sous forme algorithmique et le stocke en mémoire
 	--
 	--
-	procedure analyseLexique(listeLexique: T_Tab_ligne);
+	procedure analyseLexique(listeLexique: T_Tab_ligne; resLexique: out T_Tab_Chaine);
 	
 	
 	

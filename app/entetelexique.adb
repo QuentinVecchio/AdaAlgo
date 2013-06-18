@@ -1,7 +1,12 @@
 package body entetelexique is
 
+		procedure affiche(elt: ligne)is
+		begin
+				null;
+		end affiche;
 
-		procedure analyseLexique(listeLexique: T_Tab_ligne) is
+
+		procedure analyseLexique(listeLexique: T_Tab_ligne; resLexique: out T_Tab_Chaine) is
 				begin
 					null;
 		end analyseLexique;
