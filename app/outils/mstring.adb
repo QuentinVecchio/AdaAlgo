@@ -165,7 +165,12 @@ package body mstring is
 	
 	begin
 	
-	if(debut <= fin) then
+	if(debut = fin) then
+		
+		ch := createchaine(character'image(c.text(debut)));
+		ch.text(1) := ' ';
+		ch.text(3) := ' ';
+	elsif(debut <= fin) then
 	  if(debut <= c.L AND THEN fin <= c.L) then
 	    ch := CreateChaine(c.text(debut..fin));
 	  end if;
@@ -200,7 +205,7 @@ package body mstring is
 		
 			tmp := substring(tmp, 1, length(motifTmp));
 			
-			return contains(tmp, motif);
+			return contains(tolowercase(tmp), tolowercase(motif));
 
   end startWith;
   
@@ -281,6 +286,21 @@ package body mstring is
 			return replaceStr( CreateChaine(depart),recherche,  CreateChaine(remplace));
 	end replaceStr;
 	
+	function tolowercase(depart: chaine) return chaine is
+		tmp : chaine := depart;		
+		begin
+			for I in 1..tmp.L loop
+				if(tmp.text(I) in 'A'..'Z')then
+					tmp.text(I) := character'val(character'pos(tmp.text(I))+32);
+				end if;
+			end loop;
+
+
+			return tmp;
+	end tolowercase;
+
+
+
 end mstring;
 
 
