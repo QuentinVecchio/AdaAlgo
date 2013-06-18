@@ -159,12 +159,13 @@ package body analyse is
                 condition := trimLeft(condition);
 
                 --on enleve le 'faire'
-                condition := substring(condition, length(condition)-6, length(condition));
+		put_line(condition);
+                condition := substring(condition, 1, length(condition)-5);
                 condition := trimLeft(condition);
 
                 --on enleve le 'tq'
                 condition := trimRight(condition);
-                condition := substring(condition, length(condition)-3, length(condition));
+                condition := substring(condition, 3, length(condition));
                 
                 --on eleve les eventuelle espaces
                 condition := trimLeft(condition);
@@ -177,7 +178,7 @@ package body analyse is
                 Analyse_Code(tab, ListeInterne);
                 
                 --on ajout en mémoire la boucle
-                ajoutPour(Res, condition, ListeInterne);
+                ajoutTq(Res, condition, ListeInterne);
                 
         end Ajout_tq;
 
@@ -209,7 +210,7 @@ package body analyse is
                 condition := trimRight(condition);              
         
                 --on ajout en mémoire la boucle
-                ajoutPour(Res, condition, ListeInterne);
+                ajoutRepeter(Res, condition, ListeInterne);
                                                                                 
         end Ajout_repeter;      
         

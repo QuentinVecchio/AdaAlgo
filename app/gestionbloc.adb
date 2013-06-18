@@ -59,16 +59,21 @@ package body gestionbloc is
 			end if;
 	end donneTete;
 	
-	procedure enleveTete(L: in out T_Tab_Bloc)is
-		begin
-			if(NOT estFinListe(L) or estVide(L))then
-				L.suivant := null;
-				L.courant := null;
-			else
-				L.courant := new Bloc'(L.suivant.all.courant.all);
-				L.suivant.all := L.suivant.all.suivant.all;
-			end if;
-	end enleveTete;
+        procedure enleveTete(L: in out T_Tab_Bloc)is
+                begin
+                                if(estFinListe(L) and estVide(L))then
+                                        L.suivant := null;
+                                        L.courant := null;
+                                else
+                                        if(NOT estVide(L.suivant.all))then
+                                                L.courant := new Bloc'(L.suivant.all.courant.all);
+                                                L.suivant.all := L.suivant.all.suivant.all;
+                                        else
+                                                L.suivant := null;
+                                                L.courant := null;
+                                        end if;                 
+                                end if;
+        end enleveTete;
 	
 	procedure ajoutCommentaire(L: in out T_Tab_Bloc; com: chaine)is
 		b:Bloc(commentaire);
@@ -113,7 +118,7 @@ package body gestionbloc is
 	end ajoutPour;
 
 	procedure ajoutTq (L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc) is
-			b: Bloc(tq);
+			b: Bloc(pour);
 			begin
 					b.CondContinu := cond;
 					b.Tab_Bloc:= Liste_Int;
@@ -122,7 +127,7 @@ package body gestionbloc is
 	end ajoutTq;
 
 	procedure ajoutRepeter (L: in out T_Tab_Bloc; cond: chaine; Liste_Int : T_Tab_Bloc) is
-			b: Bloc(repeter);
+			b: Bloc(pour);
 			begin
 					b.CondContinu := cond;
 					b.Tab_Bloc:= Liste_Int;
