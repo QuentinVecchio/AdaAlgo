@@ -126,7 +126,7 @@ package mstring is
 	--	@param c, la chaine a tester
 	--	@param motif, le motif qui devrait commencer la chaine
 	--	@return vrai, si la chaine c commence bien par le motif
-	--	@return fause, si ce n'est pas le cas
+	--	@return faux, si ce n'est pas le cas
 	--
 	function startWith(c: chaine; motif: chaine) return boolean;
 

@@ -205,7 +205,7 @@ package body mstring is
 		
 			tmp := substring(tmp, 1, length(motifTmp));
 			
-			return contains(tmp, motif);
+			return contains(tolowercase(tmp), tolowercase(motif));
 
   end startWith;
   
@@ -287,12 +287,16 @@ package body mstring is
 	end replaceStr;
 	
 	function tolowercase(depart: chaine) return chaine is
+		tmp : chaine := depart;		
 		begin
-			for I in 1..depart.L loop
-				if(depart.text(I) in 'A'..'Z')then
-					depart.text(I) := character'value(character'val(depart.text(I))+32);
+			for I in 1..tmp.L loop
+				if(tmp.text(I) in 'A'..'Z')then
+					tmp.text(I) := character'val(character'pos(tmp.text(I))+32);
 				end if;
 			end loop;
+
+
+			return tmp;
 	end tolowercase;
 
 
