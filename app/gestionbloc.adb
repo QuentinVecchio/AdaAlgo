@@ -199,8 +199,6 @@ package body gestionbloc is
 	end AjoutCas;
 
 
-
-	
 	function "="(L1, L2 : T_Tab_Bloc) return boolean is
 		begin
 		
