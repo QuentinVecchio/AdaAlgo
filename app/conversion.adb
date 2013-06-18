@@ -36,10 +36,10 @@ package body conversion is
 
         procedure conversionModule(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
         begin
-                if(startWith(m_bloc.MonMod,"LIRE")) then --On teste si c'est le module lire
-                        Ajout_queue(Ligne,"GET(" + substring(m_bloc.MonMod,5,length(m_bloc.MonMod))+")");
-                elsif(startWith(m_bloc.MonMod,"ECRIRE")) then -- On teste si c'est le module ecrire
-                        Ajout_queue(Ligne,"PUT" + substring(m_bloc.MonMod,6,length(m_bloc.MonMod)));
+                if(startWith(m_bloc.MonMod,"lire")) then --On teste si c'est le module lire
+                        Ajout_queue(Ligne,"get(" + substring(m_bloc.MonMod,5,length(m_bloc.MonMod))+")");
+                elsif(startWith(m_bloc.MonMod,"ecrire")) then -- On teste si c'est le module ecrire
+                        Ajout_queue(Ligne,"put" + substring(m_bloc.MonMod,6,length(m_bloc.MonMod)));
                 end if;
         end conversionModule;
 

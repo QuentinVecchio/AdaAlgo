@@ -311,7 +311,7 @@ package body analyse is
                         L_courant := trimLeft(L_courant);
                         
                         Ajout_enTete(tab, l_courant);
-
+								detruireListe(ListeInterne);
                         Analyse_code(tab, ListeInterne);
 
                         AjoutCas(tab_Bloc, ListeInterne, condition);
