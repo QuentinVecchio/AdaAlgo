@@ -4,19 +4,16 @@ package body gestionbloc is
 
 	procedure creerListe(L: out T_Tab_Bloc) is
 		begin
-			if(NOT estFinListe(L) and NOT estVide(L))then
-				raise liste_deja_cree;
-			end if;
-			L.courant := null;
-			L.suivant := null;
+					libere_suivant(L.suivant);
+					libere_courant(L.courant);
 		
 	end creerListe;
 
 	procedure detruireListe(L: in out T_Tab_Bloc) is
 	
 	begin
-		L.courant := NULL;
-		L.suivant := NULL;
+		L.courant := null;
+		L.suivant := null;
 			
 	end detruireListe;
 
@@ -68,19 +65,29 @@ package body gestionbloc is
 	end donneTete;
 	
         procedure enleveTete(L: in out T_Tab_Bloc)is
-                begin
-                                if(estFinListe(L) and estVide(L))then
-                                        L.suivant := null;
-                                        L.courant := null;
-                                else
-                                        if(NOT estVide(L.suivant.all))then
-                                                L.courant := new Bloc'(L.suivant.all.courant.all);
-                                                L.suivant.all := L.suivant.all.suivant.all;
-                                        else
-                                                L.suivant := null;
-                                                L.courant := null;
-                                        end if;                 
-                                end if;
+				tmp : T_Tab_Bloc;                
+				begin
+              if(estFinListe(L) and estVide(L))then
+					libere_suivant(L.suivant);
+					libere_courant(L.courant);
+                L.suivant := null;
+                L.courant := null;
+              else
+                if(NOT estVide(L.suivant.all))then
+						tmp := L;
+                  L.courant := new Bloc'(L.suivant.all.courant.all);
+                  L.suivant.all := L.suivant.all.suivant.all;
+						tmp.suivant := null;																
+						libere_suivant(tmp.suivant);
+						libere_courant(tmp.courant);
+                else
+						tmp := L;
+                  L.suivant := null;
+                  L.courant := null;
+						libere_suivant(L.suivant);
+						libere_courant(L.courant);
+                end if;                 
+              end if;
         end enleveTete;
 	
 	procedure ajoutCommentaire(L: in out T_Tab_Bloc; com: chaine)is
