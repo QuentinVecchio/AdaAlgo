@@ -165,7 +165,12 @@ package body mstring is
 	
 	begin
 	
-	if(debut <= fin) then
+	if(debut = fin) then
+		
+		ch := createchaine(character'image(c.text(debut)));
+		ch.text(1) := ' ';
+		ch.text(3) := ' ';
+	elsif(debut <= fin) then
 	  if(debut <= c.L AND THEN fin <= c.L) then
 	    ch := CreateChaine(c.text(debut..fin));
 	  end if;
