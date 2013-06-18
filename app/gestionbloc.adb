@@ -4,16 +4,19 @@ package body gestionbloc is
 
 	procedure creerListe(L: out T_Tab_Bloc) is
 		begin
-					libere_suivant(L.suivant);
-					libere_courant(L.courant);
+			if(NOT estFinListe(L) and NOT estVide(L))then
+				raise liste_deja_cree;
+			end if;
+			L.courant := null;
+			L.suivant := null;
 		
 	end creerListe;
 
 	procedure detruireListe(L: in out T_Tab_Bloc) is
 	
 	begin
-		L.courant := null;
-		L.suivant := null;
+					libere_suivant(L.suivant);
+					libere_courant(L.courant);
 			
 	end detruireListe;
 
