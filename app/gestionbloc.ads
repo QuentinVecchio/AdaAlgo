@@ -1,4 +1,4 @@
-with definitions, mstring, typeEnum;
+with definitions, mstring, typeEnum, Ada.Unchecked_Deallocation;
 use definitions, mstring;
 
 package gestionbloc is
@@ -13,7 +13,8 @@ package gestionbloc is
 
 	-- pointeur pour définition récursive
 	type T_ACCESS_Tab_Bloc is ACCESS T_Tab_Bloc;
-	
+
+
 	-- type bloc regroupant tout les types que l'on peut rencontrer dans un algo
 	-- C'est a dire que c'est une représentation des différents éléments que l'on rencontre dans une chaine
 	--      Le commentaire et le module sont composés d'un seul champs représentant la ligne
@@ -62,6 +63,8 @@ package gestionbloc is
 	--      @param L, la liste vide crée
 	--
 	procedure creerListe(L: out T_Tab_Bloc);
+
+	procedure detruireListe(L: in out T_Tab_Bloc);
 
 	--
 	--      Définit si une liste est vide
@@ -199,14 +202,16 @@ package gestionbloc is
 
 	
 	private
-	
+			type T_ACCESS_BLOC is access Bloc;
 		--
 		-- Modélise l'élément d'une chaine
 		--
 		type T_Tab_Bloc is record
 			
-			courant: ACCESS Bloc;
+			courant: T_ACCESS_BLOC;
 			suivant: T_ACCESS_Tab_Bloc;
-			
 		end record;	
+	
+	procedure libere_suivant is new Ada.Unchecked_Deallocation(T_Tab_Bloc, T_ACCESS_Tab_Bloc);
+	procedure libere_courant is new Ada.Unchecked_Deallocation(Bloc, T_ACCESS_BLOC);
 end gestionbloc;

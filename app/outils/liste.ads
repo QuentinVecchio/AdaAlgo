@@ -1,3 +1,4 @@
+with Ada.Unchecked_Deallocation;
 generic
 
 -- Le type des éléments de la liste
@@ -72,6 +73,14 @@ package liste is
 	--
 	procedure enleve_queue(L: in out T_PTR_LISTE);
 	
+
+	--
+	--	Procédure qui détruit entièrement une liste
+	--	@param L, la liste a détruire
+	--
+	procedure vide_liste(L: in out T_PTR_LISTE);
+
+
 	--
 	--	Fonction d'appartenance d'un élément:
 	--	@param L, la liste où se trouve possible l'élément
@@ -98,5 +107,6 @@ package liste is
 			courant : T_elt;
 			suivant : T_PTR_LISTE;
 		end record;
-		
+
+		procedure libere is new Ada.Unchecked_Deallocation(T_Liste, T_PTR_LISTE);
 end liste;

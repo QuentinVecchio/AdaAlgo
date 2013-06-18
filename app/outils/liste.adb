@@ -1,3 +1,4 @@
+
 package body liste is
 
 	function Creer_liste return T_PTR_LISTE is
@@ -44,7 +45,9 @@ package body liste is
 	
 	procedure donne_tete(L: T_PTR_LISTE; elt: out T_elt)is
 		begin
-			elt := L.all.courant;
+			if NOT estVide(L) then
+				elt := L.all.courant;
+			end if;
 	end donne_tete;
 	
 	function donne_tete(L: T_PTR_LISTE) return T_elt is
@@ -58,25 +61,43 @@ package body liste is
 	end donne_tete;
 	
 	procedure enleve_enTete(L: in out T_PTR_LISTE) is
+			
+		tmp: T_PTR_LISTE;
 		begin
 			if(NOT estVide(L)) then
+				tmp := L;
 				L := L.suivant;			
+				libere(tmp);
 			end if;
 	end enleve_enTete;
 	
 	procedure enleve_queue(L: in out T_PTR_LISTE) is
+
+		tmp: T_PTR_LISTE;
 		begin
 			if(NOT estVide(L)) then
 				if(estVide(L.all.suivant)) then
+					tmp := L;
 					L := null;
+					libere(tmp);
 				elsif(estVide(L.all.suivant.all.suivant)) then
+					tmp := L;
 					L.all.suivant := null;
+					libere(tmp);
 				else
 					enleve_queue(L.all.suivant);
 				end if;
 			end if;
 	end enleve_queue;
 	
+	procedure vide_liste(L: in out T_PTR_LISTE)is
+		begin
+			while (not estVide(L))loop
+					enleve_enTete(L);
+			end loop;
+
+	end vide_liste;
+
 	function appartient_liste(L: T_PTR_LISTE; elt: T_elt) return boolean is
 		begin
 			if(NOT estVide(L)) then

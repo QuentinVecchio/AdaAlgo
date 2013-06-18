@@ -35,12 +35,63 @@ package body conversion is
         end conversionAffectation;
 
         procedure conversionModule(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
+		parametre : T_TAB_LIGNE;
+		L_courant : chaine;
+		module : chaine;
+		existe_apres:boolean:=true;
+		i : integer;
+		guillemet : string(1..1);
+		var : chaine;
         begin
-                if(startWith(m_bloc.MonMod,"LIRE")) then --On teste si c'est le module lire
-                        Ajout_queue(Ligne,"GET(" + substring(m_bloc.MonMod,5,length(m_bloc.MonMod))+")");
-                elsif(startWith(m_bloc.MonMod,"ECRIRE")) then -- On teste si c'est le module ecrire
-                        Ajout_queue(Ligne,"PUT" + substring(m_bloc.MonMod,6,length(m_bloc.MonMod)));
+		guillemet(1) := character'val(34);
+                if(StartWith(m_bloc.MonMod,"lire")) then --On teste si c'est le module lire
+                        L_courant := substring(m_bloc.MonMod, 6, length(m_bloc.MonMod)-1)+",";
+			Module := CreateChaine("get");
+                elsif(startWith(m_bloc.MonMod,"ecrire")) then -- On teste si c'est le module ecrire
+                        L_courant := substring(m_bloc.MonMod, 8, length(m_bloc.MonMod)-1)+",";
+			Module := CreateChaine("put");
                 end if;
+	
+		while (existe_apres) loop
+			i := strpos(L_courant, ',');
+			if (i=length(L_courant)) then
+				if startWith(L_courant, guillemet) then
+					existe_apres:=False;
+					var := substring(L_courant, 2, length(L_courant));
+					
+					L_courant := substring(L_courant, 1, strpos(substring(L_Courant, 2, length(L_courant)), guillemet(1))+1);
+
+					L_courant := substring(L_courant, i-1, strpos(L_courant, guillemet(1)));
+					Ajout_queue(parametre,L_courant);
+					L_courant := substring(var, strpos(var, guillemet(1))+2 , length(var));
+				end if;
+				existe_apres:=false;
+				Ajout_queue(parametre,substring(L_courant,1,i-1));
+			else
+				existe_apres:=true;
+				if startWith(L_courant, guillemet) then
+					existe_apres:=True;
+					var := substring(L_courant, 2, length(L_courant));
+					L_courant := substring(L_courant, 1, strpos(substring(L_Courant, 2, length(L_courant)), guillemet(1))+1);
+					L_courant := substring(L_courant, i-1, strpos(L_courant, guillemet(1)));
+					Ajout_queue(parametre,L_courant);
+					L_courant := substring(var, strpos(var, guillemet(1))+2 , length(var));
+				else
+					existe_apres:=true;
+					Ajout_queue(parametre,substring(L_courant,1,i-1));
+				end if;
+				
+				L_courant := substring(L_courant, i+1, length(L_courant));
+				L_courant := trimLeft(L_courant);
+			end if;
+			put_line("a la fin de la boucle ca donne ca : "+L_courant);
+		end loop;
+
+		while NOT estVide(parametre) loop
+			Ajout_queue(Ligne, Module+"("+donne_tete(parametre)+");");
+			enleve_enTete(parametre);
+		end loop;
+		
         end conversionModule;
 
         procedure conversionPour(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
@@ -49,8 +100,6 @@ package body conversion is
 		variable : chaine;
         begin
                 L_courant := m_bloc.CondContinu;
-                put_line(createchaine("Affiche:"));
-                put_line(L_courant);
 		variable := substring(L_courant, 1, strpos(L_courant, ' '));
                 bi := substring(L_courant, strpos(L_courant, ' ')+2, strpos(L_courant, 'a')-1);
                 bs := substring(L_courant, strpos(L_courant, 'a')+1, length(L_courant))+" ";
@@ -93,21 +142,18 @@ package body conversion is
         procedure conversionSi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
         begin
                 Ajout_queue(Ligne, "if "+m_bloc.cond+" then");
-                enleve_enTete(Ligne);
                 conversionAda(m_bloc.Liste, Ligne);
         end conversionSi;
         
         procedure conversionSinonSi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
         begin
                 Ajout_queue(Ligne, "elsif "+m_bloc.cond+" then");
-                enleve_enTete(Ligne);
                 conversionAda(m_bloc.Liste, Ligne);
         end conversionSinonSi;
         
         procedure conversionSinon(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
         begin
                 Ajout_queue(Ligne, CreateChaine("else"));
-                enleve_enTete(Ligne);
                 conversionAda(m_bloc.Liste, Ligne);
         end conversionSinon;
 
@@ -115,7 +161,7 @@ package body conversion is
         begin
                 Ajout_queue(Ligne, "switch "+m_bloc.variableATester+" case");
                 conversionAda(m_bloc.Liste_case, Ligne);
-                Ajout_queue(Ligne, CreateChaine("end Case"));
+                Ajout_queue(Ligne, CreateChaine("end case;"));
         end conversionCasParmi;
         
         procedure conversionCasParmisInt(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is 
