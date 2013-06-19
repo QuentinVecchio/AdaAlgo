@@ -45,11 +45,11 @@ PROCEDURE application IS
 	--Page
 		page : T_page;
 	--TYPE
-		type T_Test is record
+		type T_AjoutOnglet is record
 			pag : T_Page;
 			ong : Gtk_Notebook;		
 		end record;
-		test : T_Test;
+		paramPage : T_AjoutOnglet;
 --SIGNAUX
 	--Quitter
 		PACKAGE P_Callback IS NEW Gtk.Handlers.Callback(Gtk_Widget_Record) ;
@@ -60,6 +60,158 @@ PROCEDURE application IS
 		BEGIN
    			Main_Quit;
 		END Stop_Program ;
+	PACKAGE P_CallbackAjout  IS NEW Gtk.Handlers.User_Callback(Gtk_Widget_Record,T_AjoutOnglet) ;
+	USE P_CallbackAjout;
+	--Fonction Ajout Si
+		PROCEDURE AjoutSi(Emetteur :  access Gtk_Widget_Record'class; pageParam : T_AjoutOnglet) IS
+			PRAGMA Unreferenced (Emetteur);
+			buffer : Gtk_Text_Buffer;
+		BEGIN
+			Gtk_New(buffer);
+			buffer := Get_Buffer(pageParam.pag.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+			Insert_At_Cursor(buffer,Character'val(13) &"si  alors"& Character'val(13));
+			Insert_At_Cursor(buffer,Character'val(13) & "fsi"& Character'val(13));
+			Grab_Focus(pageParam.pag.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+		END AjoutSi;
+	--Fonction Ajout Sinon Si
+		PROCEDURE AjoutSinonSi(Emetteur :  access Gtk_Widget_Record'class; pageParam : T_AjoutOnglet) IS
+			PRAGMA Unreferenced (Emetteur);
+			buffer : Gtk_Text_Buffer;
+		BEGIN
+			Gtk_New(buffer);
+			buffer := Get_Buffer(pageParam.pag.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+			Insert_At_Cursor(buffer,Character'val(13) &"sinon si  alors"& Character'val(13));
+			Grab_Focus(pageParam.pag.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+		END AjoutSinonSi;
+	--Fonction Ajout Sinon
+		PROCEDURE AjoutSinon(Emetteur :  access Gtk_Widget_Record'class;pageParam : T_AjoutOnglet) IS
+			PRAGMA Unreferenced (Emetteur);
+			buffer : Gtk_Text_Buffer;
+		BEGIN
+			Gtk_New(buffer);
+			buffer := Get_Buffer(pageParam.pag.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+			Insert_At_Cursor(buffer,Character'val(13) &"sinon");
+			Grab_Focus(pageParam.pag.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+		END AjoutSinon;
+	--Fonction Ajout Pour
+		PROCEDURE AjoutPour(Emetteur :  access Gtk_Widget_Record'class; pageParam : T_AjoutOnglet) IS
+			PRAGMA Unreferenced (Emetteur);
+			buffer : Gtk_Text_Buffer;
+		BEGIN
+			Gtk_New(buffer);
+			buffer := Get_Buffer(pageParam.pag.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+			Insert_At_Cursor(buffer,Character'val(13) &"pour  <-  a  faire"& Character'val(13));
+			Insert_At_Cursor(buffer,Character'val(13) & "fpour"& Character'val(13));
+			Grab_Focus(pageParam.pag.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+		END AjoutPour;
+	--Fonction Ajout Tant Que
+		PROCEDURE AjoutTantQue(Emetteur :  access Gtk_Widget_Record'class; pageParam : T_AjoutOnglet) IS
+			PRAGMA Unreferenced (Emetteur);
+			buffer : Gtk_Text_Buffer;
+		BEGIN
+			Gtk_New(buffer);
+			buffer := Get_Buffer(pageParam.pag.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+			Insert_At_Cursor(buffer,Character'val(13) &"tq faire"& Character'val(13));
+			Insert_At_Cursor(buffer,Character'val(13) & "ftq"& Character'val(13));
+			Grab_Focus(pageParam.pag.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+		END AjoutTantQue;
+	--Fonction Ajout Repeter
+		PROCEDURE AjoutRepeter(Emetteur :  access Gtk_Widget_Record'class; pageParam : T_AjoutOnglet) IS
+			PRAGMA Unreferenced (Emetteur);
+			buffer : Gtk_Text_Buffer;
+		BEGIN
+			Gtk_New(buffer);
+			buffer := Get_Buffer(pageParam.pag.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+			Insert_At_Cursor(buffer,Character'val(13) &"repeter"& Character'val(13));
+			Insert_At_Cursor(buffer,Character'val(13) & "jqa "& Character'val(13));
+			Grab_Focus(pageParam.pag.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+		END AjoutRepeter;
+	--Fonction Ajout Ecrire
+		PROCEDURE AjoutEcrire(Emetteur :  access Gtk_Widget_Record'class; pageParam : T_AjoutOnglet) IS
+			PRAGMA Unreferenced (Emetteur);
+			buffer : Gtk_Text_Buffer;
+		BEGIN
+			Gtk_New(buffer);
+			buffer := Get_Buffer(pageParam.pag.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+			Insert_At_Cursor(buffer,Character'val(13) &"ecrire()"& Character'val(13));
+			Grab_Focus(pageParam.pag.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+		END AjoutEcrire;
+	--Fonction Ajout Lire
+		PROCEDURE AjoutLire(Emetteur :  access Gtk_Widget_Record'class; pageParam : T_AjoutOnglet) IS
+			PRAGMA Unreferenced (Emetteur);
+			buffer : Gtk_Text_Buffer;
+		BEGIN
+			Gtk_New(buffer);
+			buffer := Get_Buffer(pageParam.pag.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+			Insert_At_Cursor(buffer,Character'val(13) &"lire()"& Character'val(13));
+			Grab_Focus(pageParam.pag.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+		END AjoutLire;
+	--Fonction Ajout Entier
+		PROCEDURE AjoutEntier(Emetteur :  access Gtk_Widget_Record'class; pageParam : T_AjoutOnglet) IS
+			PRAGMA Unreferenced (Emetteur);
+			buffer : Gtk_Text_Buffer;
+		BEGIN
+			Gtk_New(buffer);
+			buffer := Get_Buffer(pageParam.pag.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+			Insert_At_Cursor(buffer," (entier) : "& Character'val(13));
+			Grab_Focus(pageParam.pag.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+		END AjoutEntier;
+	--Fonction Ajout Reel
+		PROCEDURE AjoutReel(Emetteur :  access Gtk_Widget_Record'class; pageParam : T_AjoutOnglet) IS
+			PRAGMA Unreferenced (Emetteur);
+			buffer : Gtk_Text_Buffer;
+		BEGIN
+			Gtk_New(buffer);
+			buffer := Get_Buffer(pageParam.pag.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+			Insert_At_Cursor(buffer," (entier) : "& Character'val(13));
+			Grab_Focus(pageParam.pag.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+		END AjoutReel;
+	--Fonction Ajout Caractere
+		PROCEDURE AjoutCaractere(Emetteur :  access Gtk_Widget_Record'class; pageParam : T_AjoutOnglet) IS
+			PRAGMA Unreferenced (Emetteur);
+			buffer : Gtk_Text_Buffer;
+		BEGIN
+			Gtk_New(buffer);
+			buffer := Get_Buffer(pageParam.pag.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+			Insert_At_Cursor(buffer," (Caractere) : "& Character'val(13));
+			Grab_Focus(pageParam.pag.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+		END AjoutCaractere;
+	--Fonction Ajout Chaine
+		PROCEDURE AjoutChaine(Emetteur :  access Gtk_Widget_Record'class; pageParam : T_AjoutOnglet) IS
+			PRAGMA Unreferenced (Emetteur);
+			buffer : Gtk_Text_Buffer;
+		BEGIN
+			Gtk_New(buffer);
+			buffer := Get_Buffer(pageParam.pag.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+			Insert_At_Cursor(buffer," (Chaine) : "& Character'val(13));
+			Grab_Focus(pageParam.pag.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+		END AjoutChaine;
+	--Fonction Ajout Bool
+		PROCEDURE AjoutBool(Emetteur :  access Gtk_Widget_Record'class; pageParam : T_AjoutOnglet) IS
+			PRAGMA Unreferenced (Emetteur);
+			buffer : Gtk_Text_Buffer;
+		BEGIN
+			Gtk_New(buffer);
+			buffer := Get_Buffer(pageParam.pag.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+			Insert_At_Cursor(buffer," (Bool) : "& Character'val(13));
+			Grab_Focus(pageParam.pag.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1));
+		END AjoutBool;
+	--Nouveau Fichier
+		PACKAGE P_CallbackPage IS NEW Gtk.Handlers.User_Callback(Gtk_Widget_Record,T_Page) ;
+		USE P_CallbackPage;
+		PROCEDURE NouveauFichier(Emetteur :  access Gtk_Widget_Record'class; page : T_Page) IS
+			PRAGMA Unreferenced (Emetteur);
+		BEGIN	
+			Insert_Page(page.onglet,page.Table(3),page.labelTitre(3),Get_Current_Page(page.onglet));
+		END NouveauFichier;
+	--Fermer Onglet
+		PACKAGE P_CallbackNoteBook IS NEW Gtk.Handlers.User_Callback(Gtk_Widget_Record,Gtk_Notebook) ;
+		USE P_CallbackNoteBook;
+		PROCEDURE FermerFichier(Emetteur :  access Gtk_Widget_Record'class; oglt : Gtk_Notebook) IS
+		PRAGMA Unreferenced (Emetteur);
+		BEGIN
+			Remove_Page(oglt,Get_Current_Page(oglt)); 
+		END FermerFichier;
 	--Enregistrer
 		PACKAGE P_CallbackTV  IS NEW Gtk.Handlers.User_Callback(Gtk_Widget_Record,Gtk_Text_View) ;
 		USE P_CallbackTV;
@@ -80,161 +232,21 @@ PROCEDURE application IS
 			Gtk_new(dialog, "Sauvegarde du fichier", win,Action_Save);
 			dialog.Show;
 		END Enregistrer;
-	PACKAGE P_CallbackAjout  IS NEW Gtk.Handlers.User_Callback(Gtk_Widget_Record,T_test) ;
-	USE P_CallbackAjout;
-	--Fonction Ajout Si
-		PROCEDURE AjoutSi(Emetteur :  access Gtk_Widget_Record'class; test : T_Test) IS
+	---Compiler
+		PROCEDURE Compiler(Emetteur :  access Gtk_Widget_Record'class; pageParam : T_AjoutOnglet) IS
 			PRAGMA Unreferenced (Emetteur);
 			buffer : Gtk_Text_Buffer;
+			start_iter : Gtk_Text_Iter;
+			end_iter : Gtk_Text_Iter;
+			i : Integer; 
 		BEGIN
+			i := Integer'Value(Gint'Image(Get_Current_Page(pageParam.ong)))+1;
 			Gtk_New(buffer);
-			buffer := Get_Buffer(test.pag.zoneCode(1));
-			PUT_LINE(Gint'Image(Get_Current_Page(test.ong)));
-			Insert_At_Cursor(buffer,Character'val(13) &"si  alors"& Character'val(13));
-			Insert_At_Cursor(buffer,Character'val(13) & "fsi"& Character'val(13));
-			Grab_Focus(test.pag.zoneCode(1));
-		END AjoutSi;
-	--Fonction Ajout Sinon Si
-		PROCEDURE AjoutSinonSi(Emetteur :  access Gtk_Widget_Record'class; Text : Gtk_text_View) IS
-			PRAGMA Unreferenced (Emetteur);
-			buffer : Gtk_Text_Buffer;
-		BEGIN
-			Gtk_New(buffer);
-			buffer := Get_Buffer(Text);
-			Insert_At_Cursor(buffer,Character'val(13) &"sinon si  alors"& Character'val(13));
-			Grab_Focus(Text);
-		END AjoutSinonSi;
-	--Fonction Ajout Sinon
-		PROCEDURE AjoutSinon(Emetteur :  access Gtk_Widget_Record'class; Text : Gtk_text_View) IS
-			PRAGMA Unreferenced (Emetteur);
-			buffer : Gtk_Text_Buffer;
-		BEGIN
-			Gtk_New(buffer);
-			buffer := Get_Buffer(Text);
-			Insert_At_Cursor(buffer,Character'val(13) &"sinon");
-			Grab_Focus(Text);
-		END AjoutSinon;
-	--Fonction Ajout Pour
-		PROCEDURE AjoutPour(Emetteur :  access Gtk_Widget_Record'class; Text : Gtk_text_View) IS
-			PRAGMA Unreferenced (Emetteur);
-			buffer : Gtk_Text_Buffer;
-		BEGIN
-			Gtk_New(buffer);
-			buffer := Get_Buffer(Text);
-			Insert_At_Cursor(buffer,Character'val(13) &"pour  <-  a  faire"& Character'val(13));
-			Insert_At_Cursor(buffer,Character'val(13) & "fpour"& Character'val(13));
-			Grab_Focus(Text);
-		END AjoutPour;
-	--Fonction Ajout Tant Que
-		PROCEDURE AjoutTantQue(Emetteur :  access Gtk_Widget_Record'class; Text : Gtk_text_View) IS
-			PRAGMA Unreferenced (Emetteur);
-			buffer : Gtk_Text_Buffer;
-		BEGIN
-			Gtk_New(buffer);
-			buffer := Get_Buffer(Text);
-			Insert_At_Cursor(buffer,Character'val(13) &"tq faire"& Character'val(13));
-			Insert_At_Cursor(buffer,Character'val(13) & "ftq"& Character'val(13));
-			Grab_Focus(Text);
-		END AjoutTantQue;
-	--Fonction Ajout Repeter
-		PROCEDURE AjoutRepeter(Emetteur :  access Gtk_Widget_Record'class; Text : Gtk_text_View) IS
-			PRAGMA Unreferenced (Emetteur);
-			buffer : Gtk_Text_Buffer;
-		BEGIN
-			Gtk_New(buffer);
-			buffer := Get_Buffer(Text);
-			Insert_At_Cursor(buffer,Character'val(13) &"repeter"& Character'val(13));
-			Insert_At_Cursor(buffer,Character'val(13) & "jqa "& Character'val(13));
-			Grab_Focus(Text);
-		END AjoutRepeter;
-	--Fonction Ajout Ecrire
-		PROCEDURE AjoutEcrire(Emetteur :  access Gtk_Widget_Record'class; Text : Gtk_text_View) IS
-			PRAGMA Unreferenced (Emetteur);
-			buffer : Gtk_Text_Buffer;
-		BEGIN
-			Gtk_New(buffer);
-			buffer := Get_Buffer(Text);
-			Insert_At_Cursor(buffer,Character'val(13) &"ecrire()"& Character'val(13));
-			Grab_Focus(Text);
-		END AjoutEcrire;
-	--Fonction Ajout Lire
-		PROCEDURE AjoutLire(Emetteur :  access Gtk_Widget_Record'class; Text : Gtk_text_View) IS
-			PRAGMA Unreferenced (Emetteur);
-			buffer : Gtk_Text_Buffer;
-		BEGIN
-			Gtk_New(buffer);
-			buffer := Get_Buffer(Text);
-			Insert_At_Cursor(buffer,Character'val(13) &"lire()"& Character'val(13));
-			Grab_Focus(Text);
-		END AjoutLire;
-	--Fonction Ajout Entier
-		PROCEDURE AjoutEntier(Emetteur :  access Gtk_Widget_Record'class; Text : Gtk_text_View) IS
-			PRAGMA Unreferenced (Emetteur);
-			buffer : Gtk_Text_Buffer;
-		BEGIN
-			Gtk_New(buffer);
-			buffer := Get_Buffer(Text);
-			Insert_At_Cursor(buffer," (entier) : "& Character'val(13));
-			Grab_Focus(Text);
-		END AjoutEntier;
-	--Fonction Ajout Reel
-		PROCEDURE AjoutReel(Emetteur :  access Gtk_Widget_Record'class; Text : Gtk_text_View) IS
-			PRAGMA Unreferenced (Emetteur);
-			buffer : Gtk_Text_Buffer;
-		BEGIN
-			Gtk_New(buffer);
-			buffer := Get_Buffer(Text);
-			Insert_At_Cursor(buffer," (entier) : "& Character'val(13));
-			Grab_Focus(Text);
-		END AjoutReel;
-	--Fonction Ajout Caractere
-		PROCEDURE AjoutCaractere(Emetteur :  access Gtk_Widget_Record'class; Text : Gtk_text_View) IS
-			PRAGMA Unreferenced (Emetteur);
-			buffer : Gtk_Text_Buffer;
-		BEGIN
-			Gtk_New(buffer);
-			buffer := Get_Buffer(Text);
-			Insert_At_Cursor(buffer," (Caractere) : "& Character'val(13));
-			Grab_Focus(Text);
-		END AjoutCaractere;
-	--Fonction Ajout Chaine
-		PROCEDURE AjoutChaine(Emetteur :  access Gtk_Widget_Record'class; Text : Gtk_text_View) IS
-			PRAGMA Unreferenced (Emetteur);
-			buffer : Gtk_Text_Buffer;
-		BEGIN
-			Gtk_New(buffer);
-			buffer := Get_Buffer(Text);
-			Insert_At_Cursor(buffer," (Chaine) : "& Character'val(13));
-			Grab_Focus(Text);
-		END AjoutChaine;
-	--Fonction Ajout Bool
-		PROCEDURE AjoutBool(Emetteur :  access Gtk_Widget_Record'class; Text : Gtk_text_View) IS
-			PRAGMA Unreferenced (Emetteur);
-			buffer : Gtk_Text_Buffer;
-		BEGIN
-			Gtk_New(buffer);
-			buffer := Get_Buffer(Text);
-			Insert_At_Cursor(buffer," (Bool) : "& Character'val(13));
-			Grab_Focus(Text);
-		END AjoutBool;
-	--Nouveau Fichier
-		PACKAGE P_CallbackOnglet  IS NEW Gtk.Handlers.User_Callback(Gtk_Widget_Record,T_page) ;
-		USE P_CallbackOnglet;
-		PROCEDURE NouveauFichier(Emetteur :  access Gtk_Widget_Record'class; maPage : T_page) IS
-			PRAGMA Unreferenced (Emetteur);
-		BEGIN	
-			NULL;		
-		END NouveauFichier;
-	--Fermer Onglet
-		PACKAGE P_CallbackNoteBook IS NEW Gtk.Handlers.User_Callback(Gtk_Widget_Record,Gtk_Notebook) ;
-		USE P_CallbackNoteBook;
-		PROCEDURE FermerFichier(Emetteur :  access Gtk_Widget_Record'class; oglt : Gtk_Notebook) IS
-		PRAGMA Unreferenced (Emetteur);
-		pageCourante : Gint;
-		BEGIN
-			pageCourante := Get_Current_Page(oglt);
-			Remove_Page(oglt,pageCourante); 
-		END FermerFichier;
+			buffer := Get_Buffer(pageParam.pag.zoneCode(i));
+			Get_Start_Iter(buffer,start_iter);
+			Get_End_Iter(buffer,end_iter); 
+   			PUT_LINE(Get_Text(buffer,start_Iter,end_Iter,TRUE));
+		END Compiler;
 				
 --*****************CODE SOURCE*****************--
 BEGIN 
@@ -244,7 +256,7 @@ Init ;
    	fenetrePrincipale.Set_Title("AlgoAda");
    	fenetrePrincipale.set_default_size(Get_Width(Get_Default),Get_Height(Get_Default));
    	Connect(fenetrePrincipale, "destroy",Stop_Program'ACCESS);
-	Set_Rgb(couleurFenetrePrincipal,36864,36864,36864);
+	Set_Rgb(couleurFenetrePrincipal,45796,45796,45796);
 	modify_bg(fenetrePrincipale,State_Normal,couleurFenetrePrincipal); 
 --Initialisation de la table
 	Gtk_New(Table,25,40,True);
@@ -258,28 +270,29 @@ Init ;
 		table.attach(OutilAlgo.barreOutil,1,3,3,24);
 	--Zone central						
 		Table.attach(page.onglet,4,39,1,24);
-
- 	test.pag := page;
-	test.ong := page.onglet;
+ 	paramPage.pag := page;
+	paramPage.ong := page.onglet;
 --Initialisations des fonctions de boutons
 	fenetrePrincipale.Show_all ;
-	PUT_LINE(Gint'Image(Get_Current_Page(page.onglet)));
 	Connect(Outil.btnNouveau, "clicked",NouveauFichier'ACCESS, page);
-	Connect(Outil.btnEnregistrer, "clicked",Enregistrer'ACCESS, page.zoneCode(1));
-	Connect(page.btnFermer(1), "clicked",FermerFichier'ACCESS,page.onglet);
-	Connect(OutilAlgo.btnSi, "clicked",AjoutSi'ACCESS,test);
-	Connect(OutilAlgo.btnSinonSi, "clicked",AjoutSinonSi'ACCESS,page.zoneCode(1));
-	Connect(OutilAlgo.btnSinon, "clicked",AjoutSinon'ACCESS,page.zoneCode(1));
-	Connect(OutilAlgo.btnPour, "clicked",AjoutPour'ACCESS,page.zoneCode(1));
-	Connect(OutilAlgo.btnTantQue, "clicked",AjoutTantQue'ACCESS,page.zoneCode(1));
-	Connect(OutilAlgo.btnRepeter, "clicked",AjoutRepeter'ACCESS,page.zoneCode(1));
-	Connect(OutilAlgo.btnEcrire, "clicked",AjoutEcrire'ACCESS,page.zoneCode(1));
-	Connect(OutilAlgo.btnLire, "clicked",AjoutLire'ACCESS,page.zoneCode(1));
-	Connect(OutilAlgo.btnEntier, "clicked",AjoutEntier'ACCESS,page.zoneVariable(1));
-	Connect(OutilAlgo.btnReel, "clicked",AjoutReel'ACCESS,page.zoneVariable(1));
-	Connect(OutilAlgo.btnCaractere, "clicked",AjoutCaractere'ACCESS,page.zoneVariable(1));
-	Connect(OutilAlgo.btnChaine, "clicked",AjoutChaine'ACCESS,page.zoneVariable(1));
-	Connect(OutilAlgo.btnBool, "clicked",AjoutBool'ACCESS,page.zoneVariable(1));		
+	Connect(Outil.btnEnregistrer, "clicked",Enregistrer'ACCESS, page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
+	FOR I in 1..5 LOOP	
+		Connect(page.btnFermer(I), "clicked",FermerFichier'ACCESS,page.onglet);
+	END LOOP;
+	Connect(Outil.btnCompiler, "clicked",Compiler'ACCESS,paramPage);
+	Connect(OutilAlgo.btnSi, "clicked",AjoutSi'ACCESS,paramPage);
+	Connect(OutilAlgo.btnSinonSi, "clicked",AjoutSinonSi'ACCESS,paramPage);
+	Connect(OutilAlgo.btnSinon, "clicked",AjoutSinon'ACCESS,paramPage);
+	Connect(OutilAlgo.btnPour, "clicked",AjoutPour'ACCESS,paramPage);
+	Connect(OutilAlgo.btnTantQue, "clicked",AjoutTantQue'ACCESS,paramPage);
+	Connect(OutilAlgo.btnRepeter, "clicked",AjoutRepeter'ACCESS,paramPage);
+	Connect(OutilAlgo.btnEcrire, "clicked",AjoutEcrire'ACCESS,paramPage);
+	Connect(OutilAlgo.btnLire, "clicked",AjoutLire'ACCESS,paramPage);
+	Connect(OutilAlgo.btnEntier, "clicked",AjoutEntier'ACCESS,paramPage);
+	Connect(OutilAlgo.btnReel, "clicked",AjoutReel'ACCESS,paramPage);
+	Connect(OutilAlgo.btnCaractere, "clicked",AjoutCaractere'ACCESS,paramPage);
+	Connect(OutilAlgo.btnChaine, "clicked",AjoutChaine'ACCESS,paramPage);
+	Connect(OutilAlgo.btnBool, "clicked",AjoutBool'ACCESS,paramPage);		
 --Affichage de la fenetre  		
    	Main ;
 END application ;
