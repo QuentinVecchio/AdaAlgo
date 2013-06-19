@@ -19,6 +19,7 @@ with definitions; use definitions;
 with gestionbloc; use gestionbloc;
 with analyse; use analyse;
 with conversion; use conversion;
+with debug; use debug;
 
 PROCEDURE appli_test IS
 --*****************INITIALISATIONS DES VARIABLES ET SS-PGMES*****************--
