@@ -7,11 +7,6 @@ package body debug is
 		erreur : boolean := false;
 		nbLigne : integer := 0;
 	begin
-		if estUneVariable(CreateChaine("pa-tati")) then
-			put_line(CreateChaine("C'est une chaine"));
-		else
-			put_line(createchaine("bon ben tant pis"));
-		end if;
  		while NOT estVide(tmp) loop
 			if length(trimLeft(trimRight(donne_tete(tmp)))) > 2 then
 				nbLigne := nbLigne + 1;
@@ -92,13 +87,83 @@ begin
 end debug_aff;
 
 function debug_Mod(L : in chaine) return boolean is
+	tmp : chaine := L;
+	erreur : boolean := False;
+	guillemet : string(1..1);
+	i : integer;
 begin
-	return False;
+	put_line(CreateChaine("Verification de module"));
+	guillemet(1) := character'val(34);
+	-- ouvire quote mais pas fermé
+	-- presence de parentheses
+	-- si variables existes
+
+
+	--Guillemets
+	i := strpos(tmp, guillemet(1));
+	if i /= 0 Then
+		if strpos(substring(tmp, i+1, length(tmp)), guillemet(1)) = 0 then
+			put_line(CreateChaine("les guillemets n'ont pas été fermés"));
+			erreur := True;
+		end if;
+	end if;
+
+	--Parenthese
+	i := strpos(tmp, '(');
+	if i = 0 then
+		erreur := erreur AND True;
+		put_line(CreateChaine("il n'y a pas de parenthese ouvrante"));
+
+	end if;
+	if strpos(tmp, ')') = 0 then
+		put_line(CreateChaine("il n'y a pas de parenthese fermente"));
+		erreur := erreur AND True;
+	end if;
+	if i > strpos(tmp, ')') then
+		put_line(CreateChaine("Vous avez mal géré vos parenthese"));
+		erreur := erreur AND True;
+	end if;
+
+
+	--verification qu'il y ait au moins un parametre
+	tmp := substring(tmp, strpos(tmp, '('), strpos(tmp, ')'));
+	tmp := trimLeft(tmp);
+	tmp := trimRight(tmp);
+	if length(tmp) =2 then
+		erreur := erreur AND True;
+		put_line(CreateChaine("il faut mettre au moins un parametre dans cette fonction"));
+	end if;
+	return erreur;
+
+
 end debug_Mod;
 
 function debug_Pour(L : in chaine) return boolean is
+	bi, bs : chaine;
+	binf, bsup : string(1..10); m,n : integer;
+	tmp: chaine := L; 
+	inf, sup : integer;
+	erreur : boolean := False;
 begin
-	return False;
+	bi := substring(tmp, strpos(tmp, '-')+1, strpos(tmp, 'a')-1);
+        bs := substring(tmp, strpos(tmp, 'a')+1, length(tmp)-6)+" ";
+	bi := trimLeft(bi); bs := trimLeft(bs);
+	bi := trimRight(bi); bs := trimRight(bs);
+	put_line(bi);
+	put_line(bs);
+
+	toString(bi, binf, m);
+	tostring(bs, bsup, n);	
+	
+	--ERREUR ICI : raised CONSTRAINT_ERROR : s-valuti.adb:273 explicit raise
+	--inf := integer'Value(binf);
+	--sup := integer'Value(bsup);
+
+	if inf >= sup then
+		put_line(CreateChaine("euh... vous avez mal gérer vous bornes inf et sup"));
+		erreur := True;
+	end if;
+	return erreur;
 end debug_Pour;
 
 function debug_tq(L : in chaine) return boolean is
