@@ -17,6 +17,7 @@ PACKAGE P_Page IS
 type tab_code is array(1..5) of Gtk_Text_View;
 type tab_ada is array(1..5) of Gtk_Text_View;
 type tab_var is array(1..5) of Gtk_Text_View;
+type tab_debug is array(1..5) of Gtk_Text_View;
 type tab_label is array(1..5) of Gtk_Label;
 type tab_btn is array(1..5) of Gtk_Button;
 type tab_Table is array(1..5) of Gtk_Table;
@@ -28,13 +29,15 @@ type tab_Sepatateur is array(1..5) of Gtk_Vseparator;
 			zoneVariable : tab_var;
 		--label			
 			labelTitre : tab_label;
-			labelCode, labelVariable, labelAda : tab_label;
+			labelCode, labelVariable, labelAda,labelDebug: tab_label;
 		--button
 			btnFermer : tab_btn;
 		--Zone ada
 			zoneAda : tab_ada;
+		--Debug
+			zoneDebug : tab_debug;
 		--Barre de défilement
-			barre1,barre2,barre3 : Gtk_Scrolled_Window;
+			barre1,barre2,barre3,barre4 : Gtk_Scrolled_Window;
 		--Ajustement
 			ajust : Gtk_Adjustment;		
 		--table & Boite	
