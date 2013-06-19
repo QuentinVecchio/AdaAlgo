@@ -11,7 +11,6 @@ package body analyse is
 
                 while NOT estVide(tab) loop
 			if length(trimLeft(trimRight(donne_tete(tab)))) > 2 then
-				--put(createchaine("========================================================="));
 		                type_ligne := GetType(donne_tete(tab));
 		                case type_ligne is
 		                        when commentaire => Ajout_com(donne_tete(tab), Res);
@@ -167,7 +166,7 @@ package body analyse is
                 condition := trimLeft(condition);
 
                 --on enleve le 'faire'
-		put_line(condition);
+		--put_line(condition);
                 condition := substring(condition, 1, length(condition)-5);
                 condition := trimLeft(condition);
 
@@ -229,7 +228,7 @@ package body analyse is
                 type_cond : T_elmt;
         begin
 		L_courant := donne_tete(tab);
-		put_line(L_courant);
+		--put_line(L_courant);
                 L_courant := trimLeft(L_courant);
 		
                 loop
@@ -272,9 +271,9 @@ package body analyse is
 
                 --derniere etape : ajouter la condition dans la liste principale
                 ajoutBlocCond(Res, tab_Bloc);
-		put_line(CreateChaine("debut affichage"));
+		--put_line(CreateChaine("debut affichage"));
 		afficheTypeElt(tab_Bloc);   
-		put_line(CreateChaine("fin affichage"));
+		--put_line(CreateChaine("fin affichage"));
         end Ajout_cond;
 
         procedure Ajout_case(tab: in out T_tab_ligne ; Res: in out T_tab_bloc) is
