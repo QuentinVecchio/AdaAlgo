@@ -34,12 +34,14 @@ PACKAGE BODY P_Page IS
 		Gtk_New(P.barre1,null,P.ajust);
 		Gtk_New(P.barre2,null,P.ajust);
 		Gtk_New(P.barre3,null,P.ajust);
+		Gtk_New(P.barre4,null,P.ajust);
 	--Separateur
 		Gtk_New_Vseparator(P.separateur(i));
 	--Zone de saisie
 		Gtk_New(P.zoneCode(i));
 		Gtk_New(P.zoneVariable(i));
 		Gtk_New(P.zoneAda(i));
+		Gtk_New(P.zoneDebug(i));
 		Set_Border_Window_Size(P.zoneCode(i),Text_Window_Right,1);
 		Set_Border_Window_Size(P.zoneCode(i),Text_Window_Left,1);
 		Set_Border_Window_Size(P.zoneCode(i),Text_Window_Top,1);
@@ -52,29 +54,41 @@ PACKAGE BODY P_Page IS
 		Set_Border_Window_Size(P.zoneAda(i),Text_Window_Left,1);
 		Set_Border_Window_Size(P.zoneAda(i),Text_Window_Top,1);
 		Set_Border_Window_Size(P.zoneAda(i),Text_Window_Bottom,1);
+		Set_Border_Window_Size(P.zoneDebug(i),Text_Window_Right,1);
+		Set_Border_Window_Size(P.zoneDebug(i),Text_Window_Left,1);
+		Set_Border_Window_Size(P.zoneDebug(i),Text_Window_Top,1);
+		Set_Border_Window_Size(P.zoneDebug(i),Text_Window_Bottom,1);
 		modify_bg(P.zoneCode(i),State_Normal,P.couleur);
 		modify_bg(P.zoneVariable(i),State_Normal,P.couleur);
 		modify_bg(P.zoneAda(i),State_Normal,P.couleur);
+		modify_bg(P.zoneDebug(i),State_Normal,P.couleur);
 		Set_Wrap_Mode(P.zoneCode(i),Wrap_Word);
 		Set_Wrap_Mode(P.zoneVariable(i),Wrap_Word);
+		Set_Wrap_Mode(P.zoneAda(i),Wrap_Word);
 		Add_With_Viewport(P.barre1,P.zoneCode(i));
 		Add_With_Viewport(P.barre2,P.zoneVariable(i));
 		Add_With_Viewport(P.barre3,P.zoneAda(i));
+		Add_With_Viewport(P.barre4,P.zoneDebug(i));
 		Set_Editable(P.zoneAda(i),FALSE);
-		P.Table(i).attach(P.barre1,1,15,1,19);
-		P.Table(i).attach(P.barre2,16,20,1,19);
+		Set_Editable(P.zoneDebug(i),FALSE);
+		P.Table(i).attach(P.barre1,1,15,1,15);
+		P.Table(i).attach(P.barre2,16,20,1,15);
 		P.Table(i).attach(P.separateur(i),20,22,1,19);
-		P.Table(i).attach(P.barre3,22,31,1,19);
+		P.Table(i).attach(P.barre3,22,31,1,15);
+		P.Table(i).attach(P.barre4,1,20,16,19);
 	--label d'info
 		Gtk_New(P.labelCode(i),"<span foreground = 'white'>Algorithme</span>");
 		Gtk_New(P.labelVariable(i),"<span foreground = 'white'>Variables</span>");
 		Gtk_New(P.labelAda(i),"<span foreground = 'white'>Conversion Ada</span>");
+		Gtk_New(P.labelDebug(i),"<span foreground = 'white'>Deboggeur</span>");	
 		Set_Use_Markup(P.labelCode(i),TRUE);
 		Set_Use_Markup(P.labelVariable(i),TRUE);
 		Set_Use_Markup(P.labelAda(i),TRUE);
-		P.Table(i).attach(P.labelCode(i),1,15,19,20);
-		P.Table(i).attach(P.labelVariable(i),16,20,19,20);
-		P.Table(i).attach(P.labelAda(i),22,31,19,20);		
+		Set_Use_Markup(P.labelDebug(i),TRUE);
+		P.Table(i).attach(P.labelCode(i),1,15,15,16);
+		P.Table(i).attach(P.labelVariable(i),16,20,15,16);
+		P.Table(i).attach(P.labelAda(i),22,31,15,16);
+		P.Table(i).attach(P.labelDebug(i),1,4,15,16);		
 	--Label
 		Gtk_New(P.labelTitre(i),"<span foreground = 'black'>Nouveau"& Integer'Image(i) & ".alg</span>");
 		Set_Use_Markup(P.labelTitre(i),TRUE);
