@@ -51,7 +51,7 @@ package body conversion is
                         L_courant := substring(m_bloc.MonMod, 8, length(m_bloc.MonMod)-1)+",";
 			Module := CreateChaine("put");
                 end if;
-		put_line("L_courant au début avant la boucle "+L_courant);
+		--put_line("L_courant au début avant la boucle "+L_courant);
 		while (existe_apres) loop
 			i := strpos(L_courant, ',');
 			if (i=length(L_courant)) then
@@ -67,7 +67,7 @@ package body conversion is
 				else
 					Ajout_queue(parametre,substring(L_courant,1,i-1));
 					var := substring(L_courant,1,i-1);
-					put_line("dans le else ca donne ca : "+var);
+					--put_line("dans le else ca donne ca : "+var);
 				end if;
 				
 			else
@@ -82,16 +82,16 @@ package body conversion is
 				L_courant := substring(L_courant, strpos(L_courant, guillemet(1))+2, length(L_courant));	
 				else
 					var := substring(L_courant,1,i-1);
-					put_line("dans le else ca donne ca : "+var);
+					--put_line("dans le else ca donne ca : "+var);
 					Ajout_queue(parametre, var);
 					L_courant := substring(L_courant, length(var)+2, length(L_courant));
 				end if;
 				
 
-				put_line("L_courant a la fin des test, ca donne ca : "+L_courant);
+				--put_line("L_courant a la fin des test, ca donne ca : "+L_courant);
 				L_courant := trimLeft(L_courant);
 			end if;
-			put_line("a la fin de la boucle ca donne ca : "+L_courant);
+			--put_line("a la fin de la boucle ca donne ca : "+L_courant);
 		end loop;
 
 		while NOT estVide(parametre) loop
