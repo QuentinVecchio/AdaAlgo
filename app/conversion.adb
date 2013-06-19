@@ -102,8 +102,8 @@ package body conversion is
 		variable : chaine;
         begin
                 L_courant := m_bloc.CondContinu;
-		variable := substring(L_courant, 1, strpos(L_courant, ' '));
-                bi := substring(L_courant, strpos(L_courant, ' ')+2, strpos(L_courant, 'a')-1);
+		variable := substring(L_courant, 1, strpos(L_courant, '<')-1);
+                bi := substring(L_courant, strpos(L_courant, '-')+1, strpos(L_courant, 'a')-1);
                 bs := substring(L_courant, strpos(L_courant, 'a')+1, length(L_courant))+" ";
                 
                 bi := trimRight(bi);
