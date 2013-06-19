@@ -117,4 +117,13 @@ package body liste is
 			return (L = null);
 		
 	end estVide;
+
+	procedure donne_suivant(L: in out T_PTR_LISTE) is
+	begin
+		if NOT estVide(L) then
+			return L.all.suivant;
+		else
+			return NULL;
+		end if;
+	end donne_suivant;
 end liste;

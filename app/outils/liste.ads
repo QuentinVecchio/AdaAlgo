@@ -97,6 +97,12 @@ package liste is
 	--	@return faux, si la liste contient un ou plusieurs élément(s)
 	--
 	function estVide(L: T_PTR_LISTE) return boolean;
+
+	--
+	--	Procedure qui envoie la structure suivante
+	--	@param L, La liste a manipuler
+	--
+	procedure donne_suivant(L: in out T_PTR_LISTE);
 	
 	private
 		type T_Liste;
