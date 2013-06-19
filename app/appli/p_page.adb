@@ -10,25 +10,36 @@ WITH Gtk.Notebook;	USE Gtk.Notebook;
 WITH Gtk.Scrolled_Window;	USE Gtk.Scrolled_Window;
 WITH Gtk.Adjustment;	USE Gtk.Adjustment;
 WITH Glib;		USE Glib;
+WITH Gtk.Separator;	USE Gtk.Separator;
+WITH Pango;		USE Pango;
 WITH Ada.Finalization ; USE Ada.Finalization ;
 
 --WITH Ada.Finalization ; USE Ada.Finalization ;
 
 PACKAGE BODY P_Page IS
 	PROCEDURE Initialize(P : IN OUT T_Page) IS
-		test : Gdk_Color;
+		
 	BEGIN	
-		Set_Rgb(test,0,0,0);
+	--Couleur
+		Set_Rgb(P.couleur,0,0,0);
+		Set_Rgb(P.couleur2,15129,15376,19600);
+	--Onglet
+		Gtk_New(P.onglet);
+		modify_bg(P.onglet,State_Normal,P.couleur2);	
 		FOR I in 1..5 LOOP
 	--table Principale
 		Gtk_New(P.Table(i),20,32,True);
 	--Barre de défilement
 		Gtk_New(P.ajust,1.0,1.0,1.0,1.0,1.0,0.0);
-		Gtk_New(P.barre,null,P.ajust);
-		
+		Gtk_New(P.barre1,null,P.ajust);
+		Gtk_New(P.barre2,null,P.ajust);
+		Gtk_New(P.barre3,null,P.ajust);
+	--Separateur
+		Gtk_New_Vseparator(P.separateur(i));
 	--Zone de saisie
 		Gtk_New(P.zoneCode(i));
 		Gtk_New(P.zoneVariable(i));
+		Gtk_New(P.zoneAda(i));
 		Set_Border_Window_Size(P.zoneCode(i),Text_Window_Right,1);
 		Set_Border_Window_Size(P.zoneCode(i),Text_Window_Left,1);
 		Set_Border_Window_Size(P.zoneCode(i),Text_Window_Top,1);
@@ -37,25 +48,43 @@ PACKAGE BODY P_Page IS
 		Set_Border_Window_Size(P.zoneVariable(i),Text_Window_Left,1);
 		Set_Border_Window_Size(P.zoneVariable(i),Text_Window_Top,1);
 		Set_Border_Window_Size(P.zoneVariable(i),Text_Window_Bottom,1);
-		modify_bg(P.zoneCode(i),State_Normal,test);
-		modify_bg(P.zoneVariable(i),State_Normal,test);
+		Set_Border_Window_Size(P.zoneAda(i),Text_Window_Right,1);
+		Set_Border_Window_Size(P.zoneAda(i),Text_Window_Left,1);
+		Set_Border_Window_Size(P.zoneAda(i),Text_Window_Top,1);
+		Set_Border_Window_Size(P.zoneAda(i),Text_Window_Bottom,1);
+		modify_bg(P.zoneCode(i),State_Normal,P.couleur);
+		modify_bg(P.zoneVariable(i),State_Normal,P.couleur);
+		modify_bg(P.zoneAda(i),State_Normal,P.couleur);
 		Set_Wrap_Mode(P.zoneCode(i),Wrap_Word);
 		Set_Wrap_Mode(P.zoneVariable(i),Wrap_Word);
-		Add_With_Viewport(P.barre,P.zoneCode(i));
-		Add_With_Viewport(P.barre,P.zoneVariable(i));
-		P.Table(i).attach(P.barre,1,25,1,19);
-		P.Table(i).attach(P.zoneVariable(i),26,30,1,19);
+		Add_With_Viewport(P.barre1,P.zoneCode(i));
+		Add_With_Viewport(P.barre2,P.zoneVariable(i));
+		Add_With_Viewport(P.barre3,P.zoneAda(i));
+		Set_Editable(P.zoneAda(i),FALSE);
+		P.Table(i).attach(P.barre1,1,15,1,19);
+		P.Table(i).attach(P.barre2,16,20,1,19);
+		P.Table(i).attach(P.separateur(i),20,22,1,19);
+		P.Table(i).attach(P.barre3,22,31,1,19);
+	--label d'info
+		Gtk_New(P.labelCode(i),"<span foreground = 'white'>Algorithme</span>");
+		Gtk_New(P.labelVariable(i),"<span foreground = 'white'>Variables</span>");
+		Gtk_New(P.labelAda(i),"<span foreground = 'white'>Conversion Ada</span>");
+		Set_Use_Markup(P.labelCode(i),TRUE);
+		Set_Use_Markup(P.labelVariable(i),TRUE);
+		Set_Use_Markup(P.labelAda(i),TRUE);
+		P.Table(i).attach(P.labelCode(i),1,15,19,20);
+		P.Table(i).attach(P.labelVariable(i),16,20,19,20);
+		P.Table(i).attach(P.labelAda(i),22,31,19,20);		
 	--Label
-		Gtk_New(P.labelTitre(i),"Nouveau"& Integer'Image(i) & ".alg");
+		Gtk_New(P.labelTitre(i),"<span foreground = 'black'>Nouveau"& Integer'Image(i) & ".alg</span>");
+		Set_Use_Markup(P.labelTitre(i),TRUE);
 	--Bouton
 		Gtk_New(P.btnFermer(i));
 		Gtk_New(P.imageFermer,"logo/croixFermer.png");
 		Set_Image(P.btnFermer(i),P.imageFermer);
 		P.Table(i).attach(P.btnFermer(i),31,32,0,1);
-		END LOOP;
-	--Onglet
-		Gtk_New(P.onglet);
+		END LOOP;	
 		Append_Page(P.onglet,P.Table(1),P.labelTitre(1));
-		Append_Page(P.onglet,P.Table(2),P.labelTitre(2));		
+		Append_Page(P.onglet,P.Table(2),P.labelTitre(2));
 	END Initialize;	
 END P_Page;

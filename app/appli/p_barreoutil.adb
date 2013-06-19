@@ -13,7 +13,8 @@ PACKAGE BODY P_barreOutil IS
 	BEGIN
 	--Création de la barre	
 		Gtk_New(B.barreOutil);
-		Set_Rgb(B.couleurBarreOutil,3136,1681,2916);		 
+		Set_Rgb(B.couleurBarreOutil,0,0,0);
+		modify_bg(B.barreOutil,State_Normal,B.couleurBarreOutil);	 
 	--Création du bouton Nouveau fichier
 		Gtk_New(B.btnNouveau);
 		Gtk_New(B.imageNouveau,"logo/nouveau_fichier.png");
@@ -53,13 +54,12 @@ PACKAGE BODY P_barreOutil IS
 		Append_Widget(B.barreOutil,B.btnArreter);
 		Append_Space(B.barreOutil);
 	--Création de la barre de chargement
-		Gtk_New(B.chargement);
-		Set_Text(B.chargement,"0%");
-		Set_Pulse_Step(B.chargement,10.0);
-		Set_Fraction(B.chargement,0.0);
-		Append_Widget(B.barreOutil,B.chargement);	
+		--Gtk_New(B.chargement);
+		--Set_Text(B.chargement,"0%");
+		--Set_Pulse_Step(B.chargement,10.0);
+		--Set_Fraction(B.chargement,0.0);
+		--Append_Widget(B.barreOutil,B.chargement);	
 	--Couleur
-		modify_bg(B.barreOutil,State_Normal,B.couleurBarreOutil);
 	END Initialize;
 
 	
