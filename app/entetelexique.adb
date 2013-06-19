@@ -63,22 +63,118 @@ package body entetelexique is
 		
 		
 		
-		procedure pas_idee_nom(Lexique: T_tab_Lexique; resultat: out T_tab_ligne) is
+		procedure conversionLexique(Lexique: T_tab_Lexique; resultat: out T_tab_ligne) is
 		resultat_conv:T_tab_ligne;
-		ligne_courante:chaine;
-		begin
-			null;
--- 			resultat_conv:=Creer_liste;
--- 			--While (not estVide(liste_lexique)) loop
--- 				if (Lexique.Forme=Variable) then
--- 					ligne_courante:=liste_lexique.nom+'('+ligne_courante.leType+')'+liste_lexique.commentaire;
--- 				end if;
--- 				resultat:=ligne_courante;
+		liste_lexique:T_tab_Lexique:=Lexique;
+		ligne_courante:ligne:=donne_tete(Lexique);
+		ligne_convertie:chaine;
+		retour_ligne:string(1..1);
+		liste_ligne_convertie:T_tab_ligne;
+		type_booleen:string(1..7);
+		type_boolean:chaine;
+		type_chaine:string(1..6);
+		type_string:chaine;
+		type_reel:string(1..4);
+		type_float:chaine;
+		type_entier:string(1..6);
+		type_integer:chaine;
+		contient_type_booleen:boolean:=false;
+		contient_type_reel:boolean:=false;
+		contient_type_entier:boolean:=false;
+		contient_type_chaine:boolean:=false;
 				
-		end pas_idee_nom;
+		begin
+			retour_ligne(1):=ASCII.LF;
+ 			resultat_conv:=Creer_liste;
+ 			type_booleen:="booleen";
+ 			type_boolean:=createchaine(type_booleen);
+ 			type_chaine:="chaine";
+ 			type_string:=createchaine(type_chaine);
+ 			type_reel:="reel";
+ 			type_float:=createchaine(type_reel);
+ 			type_entier:="entier";
+ 			type_integer:=createchaine(type_entier);
+			While (not estVide(liste_lexique)) loop
+				ligne_courante:=donne_tete(liste_lexique);
+				if (ligne_courante.Forme=Variable) then
+					ligne_convertie:=ligne_courante.nom+':';
+					if (ligne_courante.leType=type_boolean) then
+						ligne_convertie:=ligne_convertie+"boolean;";
+					elsif (ligne_courante.leType=type_string) then
+						ligne_convertie:=ligne_convertie+"string;";
+					elsif (ligne_courante.leType=type_float) then
+						ligne_convertie:=ligne_convertie+"float;";
+					elsif (ligne_courante.leType=type_integer) then
+						ligne_convertie:=ligne_convertie+"integer;";
+					else
+						ligne_convertie:=ligne_convertie+ligne_courante.leType;
+					end if;
+					ligne_convertie:=ligne_convertie+(" --"+ligne_courante.commentaire);
+				elsif (ligne_courante.Forme=constante) then
+					ligne_convertie:=ligne_courante.nom+":constant ";
+					if (ligne_courante.leType=type_boolean) then
+						ligne_convertie:=ligne_convertie+"boolean:=";
+					elsif (ligne_courante.leType=type_string) then
+						ligne_convertie:=ligne_convertie+"string;";
+					elsif (ligne_courante.leType=type_float) then
+						ligne_convertie:=ligne_convertie+"float:=";
+					elsif (ligne_courante.leType=type_integer) then
+						ligne_convertie:=ligne_convertie+"integer:=";
+					else
+						ligne_convertie:=ligne_convertie+(ligne_courante.leType+":=");
+					end if;
+					ligne_convertie:=ligne_convertie+(ligne_courante.valeur+';');
+					ligne_convertie:=ligne_convertie+(" --"+ligne_courante.commentaire);
+				elsif (ligne_courante.Forme=table) then
+					ligne_convertie:=("type "+ligne_courante.nom);
+					ligne_convertie:=ligne_convertie+(" is array("+ligne_courante.intervalle);
+					if (ligne_courante.typeElement=type_boolean) then
+						ligne_convertie:=ligne_convertie+") of boolean;";
+					elsif (ligne_courante.typeElement=type_string) then
+						ligne_convertie:=ligne_convertie+") of string;";
+					elsif (ligne_courante.typeElement=type_float) then
+						ligne_convertie:=ligne_convertie+") of float;";
+					elsif (ligne_courante.typeElement=type_integer) then
+						ligne_convertie:=ligne_convertie+") of integer;";
+					else
+						ligne_convertie:=ligne_convertie+(") of "+ligne_courante.typeElement);
+					end if;
+					ligne_convertie:=ligne_convertie+(" --"+ligne_courante.commentaire);
+				elsif (ligne_courante.Forme=structure) then
+					contient_type_booleen:=contains(ligne_courante.ensElement,"booleen");
+					contient_type_chaine:=contains(ligne_courante.ensElement,"chaine");
+					contient_type_entier:=contains(ligne_courante.ensElement,"entier");
+					contient_type_reel:=contains(ligne_courante.ensElement,"reel");
+					ligne_convertie:=("type "+ligne_courante.nom);
+					ligne_convertie:=ligne_convertie+" is record  ";
+					ligne_convertie:=ligne_convertie+retour_ligne;
+					while ((contient_type_booleen) or (contient_type_chaine) or (contient_type_entier) or (contient_type_reel)) loop
+					if (contient_type_booleen) then
+						ligne_courante.ensElement:=replaceStr(ligne_courante.ensElement,"booleen","boolean");
+						contient_type_booleen:=false;
+					elsif (contient_type_chaine) then
+						ligne_courante.ensElement:=replaceStr(ligne_courante.ensElement,"chaine","string");
+						contient_type_chaine:=false;
+					elsif (contient_type_entier) then
+						ligne_courante.ensElement:=replaceStr(ligne_courante.ensElement,"entier","integer");
+						contient_type_entier:=false;
+					elsif (contient_type_reel) then
+						ligne_courante.ensElement:=replaceStr(ligne_courante.ensElement,"reel","float");
+						contient_type_reel:=false;
+					end if;
+					end loop;
+					ligne_convertie:=ligne_convertie+ligne_courante.ensElement;
+					ligne_convertie:=ligne_convertie+';';
+					ligne_convertie:=ligne_convertie+(retour_ligne+"end record;");
+					ligne_convertie:=ligne_convertie+(" --"+ligne_courante.commentaire);
+				end if;
+ 				Ajout_queue(liste_ligne_convertie,ligne_convertie);
+ 				enleve_enTete(liste_lexique);
+ 			end loop;
+ 			resultat:=liste_ligne_convertie;
+				
+		end conversionLexique;
 					
-					
-			
 
 
 		function donneListeNom(ligneCourante: chaine) return T_Tab_Chaine is
@@ -143,7 +239,7 @@ package body entetelexique is
 		i:integer;
 		ligne:chaine:=ligneCourante;
 		type_ligne:T_typeline;
-		pas_de_com:string:="/";
+		pas_de_com:string:=" ";
 		begin
 			type_ligne:=donneTypeLigne(ligne);
 			if (type_ligne=structure) then
