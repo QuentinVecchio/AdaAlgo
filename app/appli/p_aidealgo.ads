@@ -3,6 +3,7 @@ WITH Gtk.Image;		USE Gtk.Image;
 WITH Gtk.Button ;       USE Gtk.Button ;
 WITH Gdk.Color;		USE Gdk.Color;
 WITH Gtk.Enums ;        USE Gtk.Enums ;
+WITH  Gtk.Tooltips;	USE  Gtk.Tooltips;
 WITH Ada.Finalization ; USE Ada.Finalization ;
 
 PACKAGE P_aideAlgo IS
@@ -26,6 +27,8 @@ PACKAGE P_aideAlgo IS
 			btnBool : Gtk_Button;
 		--Couleur
 			couleurBarreOutil : Gdk_Color;
+		--aide
+			aide : Gtk_Tooltips;
 	END RECORD;
 
 	PROCEDURE Initialize(B : IN OUT T_BarreAideAlgo);
