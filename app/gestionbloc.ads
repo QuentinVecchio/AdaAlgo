@@ -1,3 +1,18 @@
+-----------------------------------------------------------------------------------------
+--
+--	Paquetage GestionBloc:
+--
+--		Paquetaque regroupant toutes les fonctionnalités de gestion d'une liste de bloc complexe.
+--		Chaque bloc représente un élément de l'algorithme (condition, affectation, commentaire..)
+--		Certains blocs (boucles, conditions) contiennent également d'autres listes de blocs
+--		D'ou le besoin de créer un paquetage particulier
+--		
+--
+--		@author Matthieu Clin
+--		@version 1.0.0.0
+--		@date 22-06-2013
+--
+-----------------------------------------------------------------------------------------
 with definitions, mstring, typeEnum, Ada.Unchecked_Deallocation;
 use definitions, mstring;
 
@@ -64,6 +79,10 @@ package gestionbloc is
 	--
 	procedure creerListe(L: out T_Tab_Bloc);
 
+	--
+	--			Permet de détruire une liste
+	--			@param L, la liste à détruire
+	--
 	procedure detruireListe(L: in out T_Tab_Bloc);
 
 	--
@@ -188,7 +207,7 @@ package gestionbloc is
 	--      Ajout un bloc blocCas en fin de liste
 	--      @param L, la liste a manipuler
 	--      @param ListeInterne, le blocCond a ajouter
-	--	@param var, la variable du bloc switch case
+	--		  @param var, la variable du bloc switch case
 	--
 	procedure ajoutBlocCas(L: in out T_Tab_Bloc; ListeInterne: T_Tab_Bloc; var: chaine);
 
@@ -197,6 +216,8 @@ package gestionbloc is
 	--
 	--      Test l'égalité entre deux T_Tab_Bloc (compare uniquement le type des éléments)
 	--      @param L1,L2 sont les listes de bloc a comparer
+	--		  @return boolean, vrai si chaque type est égal
+	--		  @return boolean, faux si un type au moins est pas égal
 	--
 	function "="(L1, L2 : T_Tab_Bloc) return boolean;
 
@@ -212,6 +233,9 @@ package gestionbloc is
 			suivant: T_ACCESS_Tab_Bloc;
 		end record;	
 	
+	--
+	--	Procédure permettant de libérer un élément de la liste
+	--
 	procedure libere_suivant is new Ada.Unchecked_Deallocation(T_Tab_Bloc, T_ACCESS_Tab_Bloc);
 	procedure libere_courant is new Ada.Unchecked_Deallocation(Bloc, T_ACCESS_BLOC);
 end gestionbloc;
