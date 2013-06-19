@@ -51,7 +51,7 @@ package entetelexique is
 	procedure analyseLexique(listeLexique: T_Tab_ligne; resLexique: out T_tab_Lexique);
 	
 	--
-	procedure pas_idee_nom(Lexique: T_tab_Lexique; resultat: out T_tab_ligne);
+	procedure conversionLexique(Lexique: T_tab_Lexique; resultat: out T_tab_ligne);
 	
 	--
 	--	Fonction qui permet d'extraire la liste des noms d'une ligne donnée
