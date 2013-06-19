@@ -38,6 +38,8 @@ package body analyse is
                                 typeligne:= commentaire;
                         elsif(contains(ligne, ":"))then
                                 typeligne:= lignecas;
+                        elsif(startWith(ligne, "pour"))then
+                                typeligne:= pour;
                         elsif(contains(ligne, "<-"))then
                                 typeligne:= affectation;
                         elsif(startWith(ligne, "sinonsi"))then
@@ -52,8 +54,7 @@ package body analyse is
                                 typeligne:= fsi;
                         elsif(startWith(ligne, "lire") or else startWith(ligne, "ecrire"))then
                                 typeligne:= module;
-                        elsif(startWith(ligne, "pour"))then
-                                typeligne:= pour;
+
                         elsif(startWith(ligne, "fpour"))then
                                 typeligne:= fpour;
                         elsif(startWith(ligne, "ftq"))then
@@ -147,7 +148,7 @@ package body analyse is
 
                 --on rappel analyse code sur l'interieure de la boucle
                 Analyse_Code(tab, ListeInterne);
-                
+                put_line(condition);
                 --on ajout en mémoire la boucle
                 ajoutPour(Res, condition, ListeInterne);
         
