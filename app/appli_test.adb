@@ -112,15 +112,15 @@ PROCEDURE appli_test IS
 						donne_tete(entree, tmp);
 						enleve_enTete(entree);
 
-						if(startwith(tmp, "when") or else startwith(tmp, "end") or else startwith(tmp, "elsif") or else startwith(tmp, "else"))then
+						if(startwith(tmp, "when") or else startwith(tmp, "end") or else startwith(tmp, "elsif") 
+						or else startwith(tmp, "else"))then
 							nbTab := nbTab -1;
 						end if;
 						sortie := sortie+ASCII.LF+donneHT(nbTab)+tmp;
 
-						if(startwith(tmp, "switch") or else startwith(tmp, "when") or else startwith(tmp, "if") or else startwith(tmp, "elsif") or else startwith(tmp, "else") or else
-							startwith(tmp, "for") or else startwith(tmp, "while") or else startwith(tmp, "loop")
-						or else startwith(tmp, "swith"))then
-
+						if(startwith(tmp, "switch") or else startwith(tmp, "when") or else startwith(tmp, "if") 
+						or else startwith(tmp, "elsif") or else startwith(tmp, "else") or else startwith(tmp, "for") 
+						or else startwith(tmp, "while") or else startwith(tmp, "loop")	or else startwith(tmp, "swith"))then
 								nbTab := nbTab +1;
 						end if;
 					end loop;
@@ -143,19 +143,16 @@ PROCEDURE appli_test IS
 			Get_End_Iter(buffer,end_iter); 
 
 			code := createChaine(Get_Text(buffer,start_Iter,end_Iter,TRUE));
-<<<<<<< local
-=======
+
    		
 			while(contains(code, ASCII.LF&ASCII.LF)) loop
-				put_line("Trouver"+" boucle");
 				code := replaceStr(code, createchaine(ASCII.LF&ASCII.LF), createChaine(ASCII.LF));
 			end loop;
 			while(strpos(code, ASCII.HT) /=0) loop
-				put_line("Trouver"+" boucle");
+
 				code := replaceStr(code, createchaine(ASCII.HT), createChaine(' '));
 			end loop;
 			put_line(code);
->>>>>>> other
 
 			labeltoStr(code, monCode);
 			--return;
