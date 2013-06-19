@@ -117,18 +117,24 @@ package body conversion is
         end conversionPour;
 
         procedure conversionTantque(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
+		L_courant : chaine := m_bloc.CondContinu;
         begin
-                Ajout_queue(Ligne,"while "+m_bloc.CondContinu+" loop");
+		L_courant := replaceStr(L_courant, " ou ", " or ");
+		L_courant := replaceStr(L_courant, " et ", " and ");
+                Ajout_queue(Ligne,"while "+L_courant+" loop");
                 conversionAda(m_bloc.Tab_Bloc, Ligne);
                 Ajout_queue(Ligne,CreateChaine("end loop;"));
          NULL;
         end conversionTantque;
 
         procedure conversionRepeter(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
+		L_courant : chaine :=  m_bloc.CondContinu;
         begin
+		L_courant := replaceStr(L_courant, " ou ", " or ");
+		L_courant := replaceStr(L_courant, " et ", " and ");
                 Ajout_queue(Ligne,CreateChaine("loop"));
                 conversionAda(m_bloc.Tab_Bloc, Ligne);
-                Ajout_queue(Ligne,"exit when "+ m_bloc.CondContinu +";");
+                Ajout_queue(Ligne,"exit when "+ L_courant +";");
                 Ajout_queue(ligne,CreateChaine("end loop;"));
          NULL;
         end conversionRepeter;
@@ -142,14 +148,20 @@ package body conversion is
 
         
         procedure conversionSi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
+		L_courant : chaine := m_bloc.cond;
         begin
-                Ajout_queue(Ligne, "if "+m_bloc.cond+" then");
+		L_courant := replaceStr(L_courant, " ou ", " or ");
+		L_courant := replaceStr(L_courant, " et ", " and ");
+                Ajout_queue(Ligne, "if "+L_courant+" then");
                 conversionAda(m_bloc.Liste, Ligne);
         end conversionSi;
         
         procedure conversionSinonSi(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is
+		L_courant : chaine := m_bloc.cond;
         begin
-                Ajout_queue(Ligne, "elsif "+m_bloc.cond+" then");
+		L_courant := replaceStr(L_courant, " ou ", " or ");
+		L_courant := replaceStr(L_courant, " et ", " and ");
+                Ajout_queue(Ligne, "if "+L_courant+" then");
                 conversionAda(m_bloc.Liste, Ligne);
         end conversionSinonSi;
         
