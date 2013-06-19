@@ -6,6 +6,7 @@ WITH Gtk.Enums ;        USE Gtk.Enums ;
 WITH Gtk.File_Chooser_Dialog;	USE Gtk.File_Chooser_Dialog;
 WITH Gtk.File_Chooser;	USE Gtk.File_Chooser;
 WITH Gtk.Progress_Bar;	USE Gtk.Progress_Bar;
+WITH  Gtk.Tooltips;	USE  Gtk.Tooltips;
 WITH Ada.Finalization ; USE Ada.Finalization ;
 
 PACKAGE P_barreOutil IS
@@ -16,23 +17,19 @@ PACKAGE P_barreOutil IS
 		--Images Boutons		
 			imageNouveau : Gtk_Image;
 			imageEnregistrer : Gtk_Image; 
-			imageEnregistrerTout : Gtk_Image;
-			imageEnregistrerSous : Gtk_Image;
+			imageOuvrir : Gtk_Image;
 			imageCompiler : Gtk_Image;
-			imagePause : Gtk_Image;
-			imageArreter : Gtk_Image;
 		--Boutons		
 			btnNouveau : Gtk_Button;
 			btnEnregistrer : Gtk_Button; 
-			btnEnregistrerTout : Gtk_Button;
-			btnEnregistrerSous : Gtk_Button;
+			btnOuvrir : Gtk_Button;
 			btnCompiler : Gtk_Button;
-			btnPause : Gtk_Button;
-			btnArreter : Gtk_Button;
 		--Chargement
 			chargement : Gtk_Progress_Bar;
 		--Couleur
 			couleurBarreOutil : Gdk_Color;
+		--aide
+			aide : Gtk_Tooltips;
 	END RECORD;
 --Fonctions	
 	PROCEDURE Initialize(B : IN OUT T_BarreOutil);	
