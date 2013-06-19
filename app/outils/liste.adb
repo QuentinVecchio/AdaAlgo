@@ -121,9 +121,9 @@ package body liste is
 	procedure donne_suivant(L: in out T_PTR_LISTE) is
 	begin
 		if NOT estVide(L) then
-			return L.all.suivant;
+			L := L.all.suivant;
 		else
-			return NULL;
+			L:= NULL;
 		end if;
 	end donne_suivant;
 end liste;
