@@ -1,23 +1,35 @@
+-----------------------------------------------------------------------------------------
+--
+--	Paquetage Analyse:
+--		Paquetage analyse permettant de transcrire du texte algorithmique en représentation
+--		Mémoire (voir gestionbloc pour plus d'information)
+--		Ce paquetage par du principe que la syntaxe est correcte !
+--		
+--
+--		@author Nicolas Weissenbach, Matthieu Clin
+--		@version 1.0.0.0
+--		@date 22-06-2013
+--
+-----------------------------------------------------------------------------------------
 with mstring, gestionbloc, definitions;
 use mstring, gestionbloc, definitions;
---------------------------------------
--- SPÉCIFICATION DU PACKAGE ANALYSE --
---------------------------------------
 
 Package analyse is
 
+	--
+	-- Fonction principale permettant de convertir le code algorithmique
+	--	@param tab, la ltable a convertir
+	--	@return res, la représentation mémoire de l'algorithme
+	--
 	procedure Analyse_Code(tab: in out T_tab_ligne; res: out T_Tab_Bloc);
-	-- analyse une ligne du code et envoie les information aux differentes procedures
-	
+
 	--
 	--	Fonction qui permet de déterminer le type d'une ligne
 	--	Renvoit le type de la ligne
+	--	@param ligne, la chaine dont on doit déterminer le type
+	--	@return T_type_ligne, le type de la ligne (voir definitions.ads)
 	--
 	function GetType(ligne: chaine)return T_type_ligne;
-	
-	------------------------
-	-- PROCEDURES D'AJOUT --
-	------------------------	
 	
 	--
 	--	Permet d'ajouter un commentaire
