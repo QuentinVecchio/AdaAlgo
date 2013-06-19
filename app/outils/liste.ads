@@ -100,6 +100,7 @@ package liste is
 
 	--
 	--	Procedure qui envoie la structure suivante
+	--	/!\ il faut stocker le pointeur du début de la liste, autrement il est perdu!!
 	--	@param L, La liste a manipuler
 	--
 	procedure donne_suivant(L: in out T_PTR_LISTE);
