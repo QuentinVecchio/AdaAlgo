@@ -20,21 +20,21 @@ procedure testentetelexique is
 
 	begin
 	
-	Creer_liste(testlexique, CreateChaine("nom,prenom(string)"));
+	Creer_liste(testlexique, CreateChaine("nom,prenom(reel)"));
 	Ajout_queue(testlexique, CreateChaine("existe(booleen):dis si la personne existe ou non"));
-	Ajout_queue(testlexique, CreateChaine("departement(cste/integer=57)"));
-	Ajout_queue(testlexique, CreateChaine("Moyenne(module):calcul la moyenne d'une personne"));
-	Ajout_queue(testlexique, CreateChaine("total_eleve(type)=table[1..100]string"));
-	Ajout_queue(testlexique, CreateChaine("Coefficient(fonction/integer):calcul le coefficient d'une matière"));
-	Ajout_queue(testlexique, CreateChaine("carte_identite(type)=structure(nom:string;date_naissance:integer;fille:booleen)"));
-	
-	analyseLexique(testlexique,resultat);
+	Ajout_queue(testlexique, CreateChaine("departement(cste/reel=57.8)"));
+	--Ajout_queue(testlexique, CreateChaine("Moyenne(module):calcul la moyenne d'une personne"));
+	Ajout_queue(testlexique, CreateChaine("total_eleve(type)=table[1..100]reel"));
+	--Ajout_queue(testlexique, CreateChaine("Coefficient(fonction/integer):calcul le coefficient d'une matière"));
+	Ajout_queue(testlexique, CreateChaine("carte_identite(type)=structure(nom:integer;date_naissance:reel;fille:booleen)"));
+
 	Affiche_liste(testlexique);
-	New_Line;
+	analyseLexique(testlexique,resultat);
+	--New_Line;
 	Put("------------------------------------");
 	New_Line;
-	Affiche_liste(resultat);
-	pas_idee_nom(resultat,resultat_conv);
+	--Affiche_liste(resultat);
+	conversionLexique(resultat,resultat_conv);
 	Affiche_liste(resultat_conv);
 --lala:= donneListeNom(createchaine(essai));
  --Affiche_liste(lala);
