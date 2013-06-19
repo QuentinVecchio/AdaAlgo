@@ -9,7 +9,7 @@ package definitions is
 	--
         type T_elmt is (si, sinonsi, sinon, pour, tq, repeter, affectation, module, commentaire, blocCond, blocCase, defaut, BlocIntCase);
 
-        type T_type_ligne is(commentaire,affectation, module, pour, tq, repeter, cond, jqa, fpour, ftq, sinonsi, sinon, fsi, testcase, lignecas);
+        type T_type_ligne is(commentaire,affectation, module, pour, tq, repeter, cond, jqa, fpour, ftq, sinonsi, sinon, fsi, testcase, lignecas, inconnu);
         
 	package listeChaine is new liste(chaine, mstring.put_line);
 	use listeChaine;
