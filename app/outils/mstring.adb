@@ -13,6 +13,14 @@ package body mstring is
 	   return c;
       end CreateChaine;
       
+
+	function CreateChaine(c: character) return chaine is
+	tmp: chaine(1);	
+	begin	
+		tmp.text(1) := c;
+		return tmp;
+	end CreateChaine;
+
      procedure Put(c: chaine) is
 	  begin
 	  

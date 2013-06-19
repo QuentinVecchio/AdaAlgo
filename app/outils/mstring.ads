@@ -11,6 +11,15 @@ package mstring is
 	--
 	function CreateChaine(S: string) return chaine;
 
+
+	--
+	-- Creer une chaine à partir d'un caractère
+	--	@param c, le caractère a transformer en chaine
+	-- @return chaine, un élément de type chaine contenant un caractère
+	--
+	function CreateChaine(c: character) return chaine;
+
+
 	--
 	--	Affiche la chaine
 	--	@param c, la chaine a afficher
