@@ -51,7 +51,7 @@ package body gestionbloc is
 	procedure afficheTypeElt(L: in T_Tab_Bloc)is
 		begin
 			if(NOT estVide(L)) then
-				put_line(L.courant.all.forme);
+				--put_line(L.courant.all.forme);
 				if(NOT estFinListe(L))then
 					afficheTypeElt(L.suivant.all);
 				end if;

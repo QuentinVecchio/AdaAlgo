@@ -118,15 +118,15 @@ PROCEDURE appli_test IS
 			Get_End_Iter(buffer,end_iter); 
 
 			code := createChaine(Get_Text(buffer,start_Iter,end_Iter,TRUE));
-   		put_line(code);
+   		--put_line(code);
 
 			labeltoStr(code, monCode);
 
 			Analyse_Code(monCode, resBloc);
 			conversionAda(resBloc, listeLigne);
 
-			put_line("Affiche:");
-			Affiche_liste(listeLigne);
+			--put_line("Affiche:");
+			--Affiche_liste(listeLigne);
 
 			strtolabel(listeLigne, result);
 			toString(result, resultString, l_result);
