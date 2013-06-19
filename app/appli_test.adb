@@ -90,6 +90,21 @@ PROCEDURE appli_test IS
 			procedure strtolabel(entree: in out T_Tab_ligne; sortie: in out chaine)is
 				
 				tmp : chaine;
+
+				function donneHT(nb: integer) return chaine is
+				tmp: chaine := createchaine(' ');				
+				begin
+						if(nb > 0)then
+							tmp := createchaine(ASCII.HT);
+							for I in 2..nb loop
+
+								tmp := tmp + ASCII.HT;
+							end loop;
+						end if;
+						return tmp;
+				end donneHT;
+
+				nbTab : integer := 0;
 				begin
 					donne_tete(entree, sortie);
 					enleve_enTete(entree);
@@ -97,7 +112,17 @@ PROCEDURE appli_test IS
 						donne_tete(entree, tmp);
 						enleve_enTete(entree);
 
-						sortie := sortie+ASCII.LF+tmp;
+						if(startwith(tmp, "when") or else startwith(tmp, "end") or else startwith(tmp, "elsif") or else startwith(tmp, "else"))then
+							nbTab := nbTab -1;
+						end if;
+						sortie := sortie+ASCII.LF+donneHT(nbTab)+tmp;
+
+						if(startwith(tmp, "switch") or else startwith(tmp, "when") or else startwith(tmp, "if") or else startwith(tmp, "elsif") or else startwith(tmp, "else") or else
+							startwith(tmp, "for") or else startwith(tmp, "while") or else startwith(tmp, "loop")
+						or else startwith(tmp, "swith"))then
+
+								nbTab := nbTab +1;
+						end if;
 					end loop;
 			end strtolabel;
 
@@ -118,10 +143,19 @@ PROCEDURE appli_test IS
 			Get_End_Iter(buffer,end_iter); 
 
 			code := createChaine(Get_Text(buffer,start_Iter,end_Iter,TRUE));
-   		put_line(code);
+   		
+			while(contains(code, ASCII.LF&ASCII.LF)) loop
+				put_line("Trouver"+" boucle");
+				code := replaceStr(code, createchaine(ASCII.LF&ASCII.LF), createChaine(ASCII.LF));
+			end loop;
+			while(strpos(code, ASCII.HT) /=0) loop
+				put_line("Trouver"+" boucle");
+				code := replaceStr(code, createchaine(ASCII.HT), createChaine(' '));
+			end loop;
+			put_line(code);
 
 			labeltoStr(code, monCode);
-
+			--return;
 			Analyse_Code(monCode, resBloc);
 			conversionAda(resBloc, listeLigne);
 
@@ -130,13 +164,13 @@ PROCEDURE appli_test IS
 
 			strtolabel(listeLigne, result);
 			toString(result, resultString, l_result);
-			
-   	Gtk_New(win,Window_Toplevel);
-   	win.Set_Title("Fenetre");
-   	win.set_default_size(500,400);
-		gtk_new(label, resultString(1..l_result));
-		win.add(label);
-		win.show_all;
+
+			Gtk_New(win,Window_Toplevel);
+			win.Set_Title("Fenetre");
+			win.set_default_size(500,400);
+			gtk_new(label, resultString(1..l_result));
+			win.add(label);
+			win.show_all;
 
    	
 		END Compiler;
