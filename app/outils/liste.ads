@@ -77,6 +77,14 @@ package liste is
 	function donne_tete(L: T_PTR_LISTE) return T_elt;
 	
 	--
+	--	Donne le dernier élément d'une liste
+	--	@param L, la liste ou se trouve l'élément
+	--	@return l'élément en fin de liste
+	--
+	function donne_queue(L: T_PTR_LISTE) return T_elt;
+
+
+	--
 	--	Enlève le premier élément de la liste (le dernier ajouté)
 	--	@param L, la liste où se trouve l'élément a enlever
 	--
