@@ -61,6 +61,8 @@ package entetelexique is
 	--
 	function donneListeNom(ligneCourante: chaine) return T_Tab_Chaine;
 	
+	procedure variableExiste(listedesvariables:T_tab_Lexique; variable:chaine; existe:out boolean; type_variable: out chaine);
+	
 	--
 	function donneNom(ligneCourante: chaine) return chaine;
 	
