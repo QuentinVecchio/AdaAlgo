@@ -1,3 +1,16 @@
+-----------------------------------------------------------------------------------------
+--
+--	Paquetage entetelexique:
+--
+--		Paquetaque regroupant toutes les fonctionnalités de gestion du lexique de l'algorithme.
+--		Le lexique est représenté sous forme de liste où chaque ligne de cette liste réprésente
+--		une variable.
+--
+--		@author Cindy Binder
+--		@version 1.0.0.0
+--		@date 22-06-2013
+--
+-----------------------------------------------------------------------------------------
 with simple_io, definitions, mstring, liste, typeEnum;
 use simple_io, definitions, mstring;
 
@@ -45,12 +58,16 @@ package entetelexique is
 
 	
 	--
-	-- Procedure qui analyse le lexique sous forme algorithmique et le stocke en mémoire
-	--
+	-- Procedure qui analyse le lexique sous forme algorithmique et le stocke en mémoire.
+	-- Cette procédure prend en entrée la liste représentant le lexique tel qu'il est dans l'algorithme.
+	--Elle retourne une liste sous forme algorithmique qui sera stockée en mémoire.
 	--
 	procedure analyseLexique(listeLexique: T_Tab_ligne; resLexique: out T_tab_Lexique);
 	
 	--
+	-- Procedure qui convertie le lexique sous forme algorithme en déclarations Ada.
+	-- Elle prend en entrée la liste stockée en mémoire sous forme algorithmique (liste résultat de la procédure "analyseLexique". 
+	-- Elle retourne une liste de déclarations Ada. C'est la traduction en Ada du Lexique de l'algorithme.
 	procedure conversionLexique(Lexique: T_tab_Lexique; resultat: out T_tab_ligne);
 	
 	--
@@ -61,9 +78,18 @@ package entetelexique is
 	--
 	function donneListeNom(ligneCourante: chaine) return T_Tab_Chaine;
 	
+	--
+	-- Procedure qui recherche une variable dans une liste sous forme algorithmique de variable.
+	-- Elle prend en entrée la liste des variables, la variable recherchée.
+	-- Elle retourne un booléen disant si oui ou non la variable existe, et si elle existe, elle dit son type.
+	
 	procedure variableExiste(listedesvariables:T_tab_Lexique; variable:chaine; existe:out boolean; type_variable: out chaine);
 	
 	--
+	-- Fonction qui permet de donner le nom d'une variable.
+	-- @param ligneCourante, la ligne à analyser
+	-- @return chaine contenant le nom de la variable.
+	
 	function donneNom(ligneCourante: chaine) return chaine;
 	
 	--
@@ -73,7 +99,7 @@ package entetelexique is
 	--
 	function donneTypeLigne(ligneCourante: chaine) return T_typeline;
 	
-	--
+	-- 
 	--	Permet de donner le commentaire d'une ligne donnée si il en existe un
 	--	@param ligneCourantee, la ligne où se trouve le commentaire
 	--	@return chaine, contenant le commentaire
