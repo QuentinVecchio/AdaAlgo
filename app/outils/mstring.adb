@@ -239,6 +239,23 @@ package body mstring is
 		
 		return pos;
 	end strpos;
+
+	function strlastpos(c: chaine; motif: character) return indice_chaine is
+		pos: indice_chaine := 0;
+		i:l_chaine := c.L-1;
+		begin
+		
+		while(c.text(i) /= motif and i > 0) loop
+			i := i-1;
+		end loop;
+		
+		if(c.text(i) = motif) then
+			pos := i;
+		end if;
+		
+		return pos;
+	end strlastpos;
+
   
 	function replaceStr(depart, recherche, remplace : chaine) return chaine is
 		
@@ -306,8 +323,6 @@ package body mstring is
 
 			return tmp;
 	end tolowercase;
-
-
 
 end mstring;
 

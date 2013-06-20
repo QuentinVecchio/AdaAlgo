@@ -126,4 +126,11 @@ package body liste is
 			L:= NULL;
 		end if;
 	end donne_suivant;
+
+	function donne_suivant(L: T_PTR_LISTE) return T_PTR_LISTE is 
+		tmp : T_PTR_LISTE := L;
+	begin
+		donne_suivant(tmp);
+		return tmp;
+	end donne_suivant;
 end liste;

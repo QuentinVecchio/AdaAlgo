@@ -1,3 +1,18 @@
+-----------------------------------------------------------------------------------------
+--
+--	Paquetage liste:
+--
+--		Paquetage de gestion de liste générique.
+--		permet de gérer une liste d'élément simplement
+--		
+--
+--		@author Matthieu Clin
+--		@version 1.0.0.0
+--		@date 22-06-2013
+--
+-----------------------------------------------------------------------------------------
+
+
 with Ada.Unchecked_Deallocation;
 generic
 
@@ -104,6 +119,8 @@ package liste is
 	--	@param L, La liste a manipuler
 	--
 	procedure donne_suivant(L: in out T_PTR_LISTE);
+
+	function donne_suivant(L: T_PTR_LISTE) return T_PTR_LISTE;
 	
 	private
 		type T_Liste;

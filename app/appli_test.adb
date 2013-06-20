@@ -136,6 +136,7 @@ PROCEDURE appli_test IS
 
 			resBloc: T_Tab_Bloc;
 			listeLigne : T_TAB_LIGNE;
+			descrErreurs : T_Tab_Ligne;
  
 		BEGIN
 			Gtk_New(buffer);
@@ -156,12 +157,14 @@ PROCEDURE appli_test IS
 			put_line(code);
 
 			labeltoStr(code, monCode);
-			--return;
-			Analyse_Code(monCode, resBloc);
-			conversionAda(resBloc, listeLigne);
+			debuggage(monCode, descrErreurs);
+			put_line(CreateChaine("essai"));
+			
+			--Analyse_Code(monCode, resBloc);
+			--conversionAda(resBloc, listeLigne);
 
 
-			strtolabel(listeLigne, result);
+			strtolabel(descrErreurs, result);
 			toString(result, resultString, l_result);
 
 			Gtk_New(win,Window_Toplevel);
