@@ -49,7 +49,7 @@ package body liste is
 				elt := L.all.courant;
 			end if;
 	end donne_tete;
-	
+
 	function donne_tete(L: T_PTR_LISTE) return T_elt is
 		tmp: T_elt;
 		
@@ -60,6 +60,18 @@ package body liste is
 			return tmp;
 	end donne_tete;
 	
+	
+	function donne_queue(L: T_PTR_LISTE) return T_elt is
+	begin
+		if( NOT estVide(L)) then
+				if(NOT estVide(donne_suivant(L)))then
+						return donne_queue(donne_suivant(L));
+				else
+						return L.courant;
+				end if;
+		end if;
+	end donne_queue;
+
 	procedure enleve_enTete(L: in out T_PTR_LISTE) is
 			
 		tmp: T_PTR_LISTE;
