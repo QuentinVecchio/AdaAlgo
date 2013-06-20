@@ -160,8 +160,11 @@ PROCEDURE appli_test IS
 			labeltoStr(code, monCode);
 			ok := debuggage(monCode, descrErreurs);
 			if ok then
+				put_line(CreateChaine("C'est OK"));
 				Analyse_Code(monCode, resBloc);
 				conversionAda(resBloc, listeLigne);
+			else
+				put_line(CreateChaine("C'est pas OK"));
 			end if;
 			
 			
