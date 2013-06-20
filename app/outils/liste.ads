@@ -1,3 +1,18 @@
+-----------------------------------------------------------------------------------------
+--
+--	Paquetage liste:
+--
+--		Paquetage de gestion de liste générique.
+--		permet de gérer une liste d'élément simplement
+--		
+--
+--		@author Matthieu Clin
+--		@version 1.0.0.0
+--		@date 22-06-2013
+--
+-----------------------------------------------------------------------------------------
+
+
 with Ada.Unchecked_Deallocation;
 generic
 
