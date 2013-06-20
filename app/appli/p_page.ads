@@ -23,7 +23,7 @@ type tab_btn is array(1..5) of Gtk_Button;
 type tab_Table is array(1..5) of Gtk_Table;
 type tab_Boite is array(1..5) of Gtk_HBox;
 type tab_Sepatateur is array(1..5) of Gtk_Vseparator;
-type tab_dispo is array(1..5) of Boolean;	
+	
 	TYPE T_Page IS NEW Controlled WITH RECORD
 		--Zones de saisie			
 			zoneCode : tab_code;			
@@ -54,10 +54,6 @@ type tab_dispo is array(1..5) of Boolean;
 			onglet : Gtk_Notebook;
 		--separateur
                         separateur : tab_Sepatateur;
-		--Onglet dispo
-			ongletDispo : tab_dispo;
-		--i
-			i : Integer;
 	END RECORD;
 
 	PROCEDURE Initialize(P : IN OUT T_Page);

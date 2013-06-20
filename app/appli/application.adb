@@ -23,17 +23,19 @@ WITH Gtk.Dialog;	USE Gtk.Dialog;
 WITH Gtk.Notebook;	USE Gtk.Notebook;
 WITH Glib;		USE Glib;
 WITH Gtk.Handlers;	USE Gtk.Handlers;
+WITh Gtk.File_Filter;	USE Gtk.File_Filter;
 --Mes Packages
 WITH P_Menu;		USE P_Menu;
 WITH P_BarreOutil;	USE P_BarreOutil;
 WITH P_Page;		USE P_Page;
 WITH P_aideAlgo;	USE P_aideAlgo;	
 --Packages Compilation
-with mstring;	use mstring;
-with definitions; use definitions;
-with gestionbloc; use gestionbloc;
-with analyse; use analyse;
-with conversion; use conversion;
+with mstring;		use mstring;
+with definitions; 	use definitions;
+with gestionbloc; 	use gestionbloc;
+with analyse; 		use analyse;
+with conversion; 	use conversion;
+with generateur;	use generateur;
 
 PROCEDURE application IS
 --*****************INITIALISATIONS DES VARIABLES ET SS-PGMES*****************--
@@ -52,6 +54,7 @@ PROCEDURE application IS
 	--Page
 		page : T_page;
 	--TYPES
+		type tab_dispo is array(1..5) of Boolean;
 		type T_AjoutOnglet is record
 			pag : T_Page;
 			ong : Gtk_Notebook;		
@@ -59,17 +62,36 @@ PROCEDURE application IS
 		paramPage : T_AjoutOnglet;
 		type T_EnregFic is record
 			texte : String(1..100000);
-			i : integer;
+			variable : String(1..100000);
+			iCode,iVariable : integer;
 			Chr : GTK_File_Chooser; 		
 		end record;
+		ongletDispo : tab_dispo;
+		Type T_Pointeur is access tab_dispo;
+		type T_GestionOnglet is record
+			page : T_Page;
+			pointeur : T_Pointeur;
+		end record;
+		type T_OuvrirFic is record
+			page : T_Page;
+			Chr : GTK_File_Chooser;
+			GestionOnglet : T_GestionOnglet;	
+		end record;
+		GestionOnglet : T_GestionOnglet;
 
 --*****************INITIALISATIONS DES FONCTIONS*****************-- 
 	--Procedure a Matthieu
-	PROCEDURE labeltoStr(entree: chaine; sortie: out T_Tab_ligne) IS
+	PROCEDURE labeltoStr(entree: in out chaine; sortie: out T_Tab_ligne) IS
 		i: integer;	
 		tmp: chaine := entree;	
 	BEGIN
 		sortie := Creer_liste;
+		while(contains(entree, ASCII.LF&ASCII.LF)) loop
+				entree := replaceStr(entree, createchaine(ASCII.LF&ASCII.LF), createChaine(ASCII.LF));
+		end loop;
+		while(strpos(entree, ASCII.HT) /=0) loop
+				entree := replaceStr(entree, createchaine(ASCII.HT), createChaine(' '));
+		end loop;
 		loop
 			i := strpos(tmp, ASCII.LF);
 			if(i /= 0)then
@@ -136,13 +158,19 @@ PROCEDURE application IS
 	USE P_CallbackNoteBook;
 		
 	PACKAGE P_CallbackTV  IS NEW Gtk.Handlers.User_Callback(Gtk_Widget_Record,Gtk_Text_View) ;
-	USE P_CallbackTV;	
+	USE P_CallbackTV;
+
+	PACKAGE P_CallbackGestionOnglet  IS NEW Gtk.Handlers.User_Callback(Gtk_Widget_Record,T_GestionOnglet) ;
+	USE P_CallbackGestionOnglet;
 
 	PACKAGE P_CallbackEnreg  IS NEW Gtk.Handlers.User_Callback(Gtk_Widget_Record,T_EnregFic) ;
 	USE P_CallbackEnreg;
 
 	PACKAGE P_CallbackFermerDialog  IS NEW Gtk.Handlers.User_Callback(Gtk_Widget_Record,GTK_File_Chooser_Dialog) ;
 	USE P_CallbackFermerDialog;
+
+	PACKAGE P_CallbackOuvrir  IS NEW Gtk.Handlers.User_Callback(Gtk_Widget_Record,T_OuvrirFic) ;
+	USE P_CallbackOuvrir;
 
 	--Quitter
 		PROCEDURE Stop_Program(Emetteur : access Gtk_Widget_Record'class) IS
@@ -299,26 +327,28 @@ PROCEDURE application IS
 		END AjoutBool;
 
 	--Nouveau Fichier
-		PROCEDURE NouveauFichier(Emetteur :  access Gtk_Widget_Record'class; page : T_Page) IS
+		PROCEDURE NouveauFichier(Emetteur :  access Gtk_Widget_Record'class; GestionOnglet : T_GestionOnglet) IS
 			PRAGMA Unreferenced (Emetteur);
 			n : Integer := 0;		
 		BEGIN	
 			FOR I in 1..5 LOOP
-				if(page.ongletDispo(i) = TRUE AND n = 0) then
+				if(GestionOnglet.pointeur(i) = TRUE AND n = 0) then
 					n := I;
 				end if;
 			END LOOP;
-			Set_No_Show_All(page.Table(n),FALSE);
-			Set_No_Show_All(page.Boite(n),FALSE);
-			Show_All(page.Table(n));
-			Show_all(page.Boite(n));
-			--page.ongletDispo(n) := NOT page.ongletDispo(n);
-			Grab_Focus(page.zoneCode(n));
+			if n /= 0 then
+				Set_No_Show_All(GestionOnglet.page.Table(n),FALSE);
+				Set_No_Show_All(GestionOnglet.page.Boite(n),FALSE);
+				Show_All(GestionOnglet.page.Table(n));
+				Show_all(GestionOnglet.page.Boite(n));
+				GestionOnglet.pointeur(n) := NOT GestionOnglet.pointeur(n);
+				Grab_Focus(GestionOnglet.page.zoneCode(n));
+			end if;
 		END NouveauFichier;
 
 
 	--Fermer Onglet
-		PROCEDURE FermerFichier(Emetteur :  access Gtk_Widget_Record'class; page :  T_Page) IS
+		PROCEDURE FermerFichier(Emetteur :  access Gtk_Widget_Record'class; GestionOnglet :  T_GestionOnglet) IS
 			PRAGMA Unreferenced (Emetteur);
 			n : Integer;
 			bufferCode : Gtk_Text_Buffer;
@@ -326,31 +356,40 @@ PROCEDURE application IS
 			bufferVariable : Gtk_Text_Buffer;
 			bufferDebug : Gtk_Text_Buffer;
 		BEGIN
-			n := Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1;
+			n := Integer'Value(Gint'Image(Get_Current_Page(GestionOnglet.page.onglet)))+1;
 			Gtk_New(bufferCode);
 			Gtk_New(bufferAda);
 			Gtk_New(bufferVariable);
 			Gtk_New(bufferDebug);
-			bufferCode := Get_Buffer(page.zoneCode(n));
-			bufferAda := Get_Buffer(page.zoneAda(n));
-			bufferVariable := Get_Buffer(page.zoneVariable(n));
-			bufferDebug := Get_Buffer(page.zoneDebug(n));
+			bufferCode := Get_Buffer(GestionOnglet.page.zoneCode(n));
+			bufferAda := Get_Buffer(GestionOnglet.page.zoneAda(n));
+			bufferVariable := Get_Buffer(GestionOnglet.page.zoneVariable(n));
+			bufferDebug := Get_Buffer(GestionOnglet.page.zoneDebug(n));
 			Set_Text(bufferCode,"");
 			Set_Text(bufferAda,"");
 			Set_Text(bufferVariable,"");
 			Set_Text(bufferDebug,"");			
-			--page.ongletDispo(n) := NOT page.ongletDispo(n);
-			Set_No_Show_All(page.Table(n),TRUE);
-			Set_No_Show_All(page.Boite(n),TRUE);					
+			GestionOnglet.pointeur(n) := NOT GestionOnglet.pointeur(n);
+			Set_No_Show_All(GestionOnglet.page.Table(n),TRUE);
+			Set_No_Show_All(GestionOnglet.page.Boite(n),TRUE);
+			Show_All(GestionOnglet.page.Table(n));
+			Show_all(GestionOnglet.page.Boite(n));				
 		END FermerFichier;
 	--Enregistrer fichier
 			PROCEDURE EnregistrerFichier(Emetteur :  access Gtk_Widget_Record'class; Enreg : T_EnregFic) IS
 				PRAGMA Unreferenced (Emetteur);
-				fichier : File_type;
+				code: T_Tab_ligne;
+				variable : T_Tab_ligne;
+				ch1 : chaine;
+				ch2 : chaine;
 			BEGIN
-				Create(fichier,OUT_File,Get_Filename(Enreg.Chr));
-				Put (Fichier,Enreg.texte(1..Enreg.i));
-				close(fichier);
+				if Enreg.iCode /= 0 and Enreg.iVariable /= 0 then
+					ch1 := createChaine(Enreg.texte(1..Enreg.iCode));
+					ch2 := createChaine(Enreg.variable(1..Enreg.iVariable));
+					labeltoStr(ch1, code);
+					labeltoStr(ch2, variable);
+					enregistrer(Get_Filename(Enreg.Chr),code,variable);
+				end if;
 			END EnregistrerFichier;
 
 	--Fermer Dialog
@@ -360,33 +399,46 @@ PROCEDURE application IS
 				dialog.destroy;
 			END FermerDialog;
 	--Enregistrer
-		PROCEDURE Enregistrer(Emetteur :  access Gtk_Widget_Record'class; Text : Gtk_Text_View) IS
+		PROCEDURE Enregistrer(Emetteur :  access Gtk_Widget_Record'class; page : T_Page) IS
 			PRAGMA Unreferenced (Emetteur);
 			buffer : Gtk_Text_Buffer;
+			bufferVariable : Gtk_Text_Buffer;
 			start_iter : Gtk_Text_Iter;
-			end_iter : Gtk_Text_Iter; 
+			end_iter : Gtk_Text_Iter;
+			start_iterVariable : Gtk_Text_Iter;
+			end_iterVariable : Gtk_Text_Iter; 
 			dialog  : GTK_File_Chooser_Dialog;
 			Chooser : GTK_File_Chooser; 
 			win : Gtk_Window;
 			btnEnregistrer : Gtk_Button;
 			EnregFic : T_EnregFic;
+			n : Integer;
 		BEGIN
+			n := Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1;
+			
+			--Recuperation du code
+				Gtk_New(buffer);
+				buffer := Get_Buffer(page.zoneCode(n));
+				Get_Start_Iter(buffer,start_iter);
+				Get_End_Iter(buffer,end_iter);
+			--Recuperation des variables
+				Gtk_New(bufferVariable);
+				bufferVariable := Get_Buffer(page.zoneVariable(n));
+				Get_Start_Iter(bufferVariable,start_iterVariable);
+				Get_End_Iter(bufferVariable,end_iterVariable);
+			--Initialisation de la structure
+				EnregFic.texte(1..Integer'Value(Gint'Image(Get_Char_Count(buffer)))) := Get_Text(buffer,start_Iter,end_Iter,TRUE);
+				EnregFic.iCode := Integer'Value(Gint'Image(Get_Char_Count(buffer)));
+				EnregFic.iVariable := Integer'Value(Gint'Image(Get_Char_Count(bufferVariable)));
+				EnregFic.variable(1..Integer'Value(Gint'Image(Get_Char_Count(bufferVariable)))) := Get_Text(bufferVariable,start_IterVariable,end_IterVariable,TRUE);
 			--Initialisation de la boite de dialogue
 				Gtk_New(btnEnregistrer,"Enregistrer"); 						
 				Gtk_New(Win,Window_Toplevel);
 				Gtk_new(dialog, "Sauvegarde du fichier", win,Action_Save);
 				Chooser:=+dialog; 
+				EnregFic.Chr := Chooser;
 				Set_Current_Name(Chooser,"MonFichier.alg");
 				Set_Extra_Widget(Chooser,btnEnregistrer);
-			--Recuperation du texte
-				Gtk_New(buffer);
-				buffer := Get_Buffer(Text);
-				Get_Start_Iter(buffer,start_iter);
-				Get_End_Iter(buffer,end_iter); 
-   				PUT_LINE(Get_Text(buffer,start_Iter,end_Iter,TRUE));
-				EnregFic.texte(1..Integer'Value(Gint'Image(Get_Char_Count(buffer)))) := Get_Text(buffer,start_Iter,end_Iter,TRUE);
-				EnregFic.Chr := Chooser;
-				EnregFic.i := Integer'Value(Gint'Image(Get_Char_Count(buffer)));
 			--Fonction Bouton
 				Connect(btnEnregistrer,"clicked",EnregistrerFichier'ACCESS,EnregFic);
 				Connect(btnEnregistrer,"clicked",FermerDialog'ACCESS,dialog);	
@@ -394,7 +446,78 @@ PROCEDURE application IS
 				dialog.Show;
 		END Enregistrer;
 
-	---Compiler
+	--Ouvrir fichier
+			PROCEDURE OuvrirFichier(Emetteur :  access Gtk_Widget_Record'class; Ouvrir : T_OuvrirFic) IS
+				PRAGMA Unreferenced (Emetteur);
+				n : Integer := 2;
+				bufferCode : Gtk_Text_Buffer;
+				bufferVariable : Gtk_Text_Buffer;
+				code : T_Tab_ligne;
+				variable : T_Tab_ligne;
+				ch1,ch2 : chaine;
+				s1,s2 : string(1..100000);
+				n1,n2 : Integer;
+			BEGIN
+				--Recuperation d'un onglet libre
+				FOR I in 1..5 LOOP
+					if(Ouvrir.GestionOnglet.pointeur(i) = TRUE AND n = 0) then
+						n := I;
+					end if;
+				END LOOP;
+				
+				--Recuperation du code et des variables
+					generateur.ouvrir(Get_Filename(Ouvrir.Chr),code,variable);
+				--Affichage code
+					Gtk_New(bufferCode);
+					bufferCode := Get_Buffer(Ouvrir.page.zoneCode(n));
+					strtolabel(code,ch1);
+					toString(ch1,s1,n1);
+					Set_Text(bufferCode,s1(1..n1));
+				--Affichage variable
+					Gtk_New(bufferVariable);
+					bufferVariable := Get_Buffer(Ouvrir.page.zoneVariable(n));
+					strtolabel(variable,ch2);
+					toString(ch2,s2,n2);
+					Set_Text(bufferVariable,s2(1..n2));			
+				--Gestion Onglets	
+					Set_No_Show_All(page.Table(n),FALSE);
+					Set_No_Show_All(page.Boite(n),FALSE);
+					Show_All(page.Table(n));
+					Show_all(page.Boite(n));
+					Ouvrir.GestionOnglet.pointeur(n) := NOT Ouvrir.GestionOnglet.pointeur(n);
+					Grab_Focus(page.zoneCode(n));			
+			END OuvrirFichier;
+
+	--Ouvrir
+		PROCEDURE Ouvrir(Emetteur :  access Gtk_Widget_Record'class; GestionOnglet : T_GestionOnglet) IS
+			PRAGMA Unreferenced (Emetteur);
+			dialog  : GTK_File_Chooser_Dialog;
+			Chooser : GTK_File_Chooser; 
+			win : Gtk_Window;
+			btnValider : Gtk_Button;
+			OuvrirFic : T_OuvrirFic;
+			filtre : Gtk_File_Filter;
+		BEGIN
+			--Initialisation de la boite de dialogue
+				Gtk_New(filtre);
+				Gtk_New(btnValider,"Ouvrir"); 						
+				Gtk_New(Win,Window_Toplevel);
+				Gtk_new(dialog, "Ouvertur du fichier", win,Action_Open);
+				Chooser:=+dialog;
+			--Initialisation de la structure
+				OuvrirFic.page := GestionOnglet.page;
+				OuvrirFic.Chr := Chooser;
+				OuvrirFic.GestionOnglet := GestionOnglet;
+				Set_Name(filtre,"Fichier algo");
+				filtre.Add_Pattern("*.alg");
+				Set_Extra_Widget(Chooser,btnValider);
+				Add_Filter(Chooser,filtre);
+				Connect(btnValider,"clicked",OuvrirFichier'ACCESS,OuvrirFic);
+				Connect(btnValider,"clicked",FermerDialog'ACCESS,dialog);		
+			--Affichage					 
+				dialog.Show;
+		END Ouvrir;
+	--Compiler
 		PROCEDURE Compiler(Emetteur :  access Gtk_Widget_Record'class; pageParam : T_AjoutOnglet) IS
 			PRAGMA Unreferenced (Emetteur);
 			buffer : Gtk_Text_Buffer;
@@ -421,12 +544,6 @@ PROCEDURE application IS
 			Get_Start_Iter(bufferAda,start_iterAda);
 			Get_End_Iter(bufferada,end_iterAda);
 			code := createChaine(Get_Text(buffer,start_Iter,end_Iter,TRUE));
-			while(contains(code, ASCII.LF&ASCII.LF)) loop
-				code := replaceStr(code, createchaine(ASCII.LF&ASCII.LF), createChaine(ASCII.LF));
-			end loop;
-			while(strpos(code, ASCII.HT) /=0) loop
-				code := replaceStr(code, createchaine(ASCII.HT), createChaine(' '));
-			end loop;
 			labeltoStr(code, monCode);
 			Analyse_Code(monCode, resBloc);
 			conversionAda(resBloc, listeLigne);
@@ -439,6 +556,13 @@ PROCEDURE application IS
 --*****************CODE SOURCE*****************--
 BEGIN 
 Init ;
+--Initialisation structure pour gestion onglet
+	GestionOnglet.page := page;
+	for I in 1..5  loop
+		ongletDispo(i) := TRUE;
+	end loop;
+	ongletDispo(1) := FALSE;
+	GestionOnglet.pointeur := new tab_dispo'(ongletDispo);
 --Initialisation de la fenetre principale
    	Gtk_New(fenetrePrincipale,Window_Toplevel);
    	fenetrePrincipale.Set_Title("AlgoAda");
@@ -462,11 +586,16 @@ Init ;
 	paramPage.ong := page.onglet;
 --Initialisations des fonctions de boutons
 	fenetrePrincipale.Show_all ;
-	Connect(Outil.btnNouveau, "clicked",NouveauFichier'ACCESS, page);
-	Connect(Outil.btnEnregistrer, "clicked",Enregistrer'ACCESS, page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
+	--Bouton de la barre d'outil
+	Connect(Outil.btnNouveau, "clicked",NouveauFichier'ACCESS, GestionOnglet);
+	Connect(Outil.btnEnregistrer, "clicked",Enregistrer'ACCESS, page);
+	Connect(Outil.btnOuvrir, "clicked",Ouvrir'ACCESS,GestionOnglet);
+	--bouton fermer de page
 	FOR I in 1..5 LOOP	
-		Connect(page.btnFermer(I), "clicked",FermerFichier'ACCESS,page);
+		Connect(page.btnFermer(I), "clicked",FermerFichier'ACCESS,GestionOnglet);
+		
 	END LOOP;
+	--Bouton de la barre d'aide algo
 	Connect(Outil.btnCompiler, "clicked",Compiler'ACCESS,paramPage);
 	Connect(OutilAlgo.btnSi, "clicked",AjoutSi'ACCESS,paramPage);
 	Connect(OutilAlgo.btnSinonSi, "clicked",AjoutSinonSi'ACCESS,paramPage);

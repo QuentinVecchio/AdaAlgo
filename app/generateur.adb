@@ -46,7 +46,10 @@ package body generateur is
 
 		loop
 			get_line(fic, ligne_courante,l_courant);
-			Ajout_queue(variable, createchaine(ligne_courante(1..l_courant)));
+			
+			if ligne_courante(1..6) /= "</var>" then
+				Ajout_queue(variable, createchaine(ligne_courante(1..l_courant)));
+			end if;
 		exit when ligne_courante(1..6) = "</var>";
 		end loop;
 
@@ -55,7 +58,10 @@ package body generateur is
 
 		loop
 			get_line(fic, ligne_courante,l_courant);
-			Ajout_queue(algo, createchaine(ligne_courante(1..l_courant)));
+			
+			if ligne_courante(1..7) /= "</algo>" then
+				Ajout_queue(algo, createchaine(ligne_courante(1..l_courant)));
+			end if;
 		exit when ligne_courante(1..7) = "</algo>";
 		end loop;
 
