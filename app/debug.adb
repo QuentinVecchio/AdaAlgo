@@ -1,40 +1,38 @@
 with definitions; use definitions;
 package body debug is
 
-	procedure debuggage(tab: in out T_tab_ligne; descrErrors : in out T_Tab_Ligne) is
+	function debuggage(tab: in out T_tab_ligne; descrErrors : in out T_Tab_Ligne) return boolean is
 		type_ligne: T_type_ligne;
 		tmp : T_tab_ligne := tab;
-		erreur : boolean := false;
+		ok : boolean := True;
 		nbLigne : integer := 0;
 
 	begin
  		while NOT estVide(tmp) loop
 			if length(trimLeft(trimRight(donne_tete(tmp)))) > 2 then
-				erreur := False;
+				ok := False;
 				nbLigne := nbLigne + 1;
 		                type_ligne := GetType(donne_tete(tmp));
 				if type_ligne = inconnu then
 					put_line("le type de ligne n'a pas ete reconnu, a la ligne : "+integer'image(nbLigne)+" ,copie de la ligne  => "+ donne_tete(tmp));
-					erreur := true;
+					ok := False;
 				else
 				        case type_ligne is
 				                when commentaire => NULL;
-				                when affectation => erreur := debug_aff(donne_tete(tmp), descrErrors);
-				                when module      => erreur := debug_Mod(donne_tete(tmp), descrErrors);
-				                when pour        => erreur := debug_Pour (donne_tete(tmp), descrErrors);
-				                when tq          => erreur := debug_tq (donne_tete(tmp), descrErrors);
-				                when repeter     => erreur := debug_repeter (donne_tete(tmp), descrErrors);
-				                when cond        => erreur := debug_cond(donne_tete(tmp), descrErrors);
-				                when testcase    => erreur := debug_case(donne_tete(tmp), descrErrors);
+				                when affectation => ok := debug_aff(donne_tete(tmp), descrErrors);
+				                when module      => ok := debug_Mod(donne_tete(tmp), descrErrors);
+				                when pour        => ok := debug_Pour (donne_tete(tmp), descrErrors);
+				                when tq          => ok := debug_tq (donne_tete(tmp), descrErrors);
+				                when repeter     => ok := debug_repeter (donne_tete(tmp), descrErrors);
+				                when cond        => ok := debug_cond(donne_tete(tmp), descrErrors);
+				                when testcase    => ok := debug_case(donne_tete(tmp), descrErrors);
 				                when others      => EXIT;  -- sinon, sinonsi ,fsi, fpour, ftq, jusqu'a
 				        end case;
-					if erreur then
-						put_line("il y a une erreur a la ligne : "+integer'image(nbLigne)+" copie de la ligne => "+ donne_tete(tmp));
-					end if;
 				end if;
 			end if;
                         donne_suivant(tmp);
                 end loop;
+		return ok;
 	end debuggage;
 
 
@@ -90,7 +88,7 @@ end debug_aff;
 
 function debug_Mod(L : in chaine; descr: in out T_Tab_Ligne) return boolean is
 	tmp : chaine := L;
-	erreur : boolean := False;
+	ok : boolean := False;
 	guillemet : string(1..1);
 	i : integer;
 begin
@@ -106,38 +104,38 @@ begin
 	if i /= 0 Then
 		if strpos(substring(tmp, i+1, length(tmp)), guillemet(1)) = 0 then
 			Ajout_queue(descr, CreateChaine("les guillemets n'ont pas été fermés"));
-			erreur := True;
+			ok := False;
 		end if;
 	end if;
 
 	--Parenthese
 	i := strpos(tmp, '(');
 	if i = 0 then
-		erreur := erreur AND True;
+		ok := ok AND False;
 		Ajout_queue(descr, CreateChaine("il n'y a pas de parenthese ouvrante"));
 
 	end if;
 	if strpos(tmp, ')') = 0 then
 		Ajout_queue(descr, CreateChaine("il n'y a pas de parenthese fermente"));
-		erreur := erreur AND True;
+		ok := ok AND False;
 	end if;
 	if i > strpos(tmp, ')') AND strpos(tmp, '(') /= 0 then
 		Ajout_queue(descr, CreateChaine("Vous avez mal géré vos parenthese"));
-		erreur := erreur AND True;
+		ok := ok AND False;
 	end if;
 
 
-	if NOT erreur then
+	if NOT ok then
 		--verification qu'il y ait au moins un parametre
 		tmp := substring(tmp, strpos(tmp, '('), strpos(tmp, ')'));
 		tmp := trimLeft(tmp);
 		tmp := trimRight(tmp);
 		if length(tmp) =2 then
-			erreur := erreur AND True;
+			ok := ok AND False;
 			Ajout_queue(descr, CreateChaine("il faut mettre au moins un parametre dans cette fonction"));
 		end if;
 	end if;
-	return erreur;
+	return ok;
 
 
 end debug_Mod;
@@ -147,7 +145,7 @@ function debug_Pour(L : in chaine; descr: in out T_Tab_Ligne) return boolean is
 	binf, bsup : string(1..10); m,n : integer;
 	tmp: chaine := L; 
 	inf, sup : integer;
-	erreur : boolean := False;
+	ok : boolean := True;
 	ss_chaine : T_Tab_Ligne;
 begin
 	-- Verification de la présence de '<-' 'a' et 'faire'
@@ -155,7 +153,7 @@ begin
 	SplitChaine(tmp, ss_chaine);
 	if NOT (appartient_liste(ss_chaine, CreateChaine("<-")) AND appartient_liste(ss_chaine, CreateChaine("a")) AND appartient_liste(ss_chaine, CreateChaine("faire"))) then
 		Ajout_queue(descr, CreateChaine("il manque des elements dans votre condition"));
-		erreur := erreur AND False;
+		ok := ok AND False;
 	else
 		-- Verification des bornes inf et des bornes sup!
 		bi := substring(tmp, strpos(tmp, '-')+1, strpos(tmp, 'a')-1);
@@ -173,24 +171,41 @@ begin
 
 		if inf >= sup then
 			Ajout_queue(descr, CreateChaine("euh... vous avez mal gérer vous bornes inf et sup"));
-			erreur := True;
+			ok := False AND ok;
 		end if;
 	end if;
 
 
 
 	
-	return erreur;
+	return ok;
 end debug_Pour;
 
 function debug_tq(L : in chaine; descr: in out T_Tab_Ligne) return boolean is
 begin
+	-- Verifier la présence du 'faire'
 	return False;
 end debug_tq;
 
 function debug_repeter(L : in chaine; descr: in out T_Tab_Ligne) return boolean is
+	tmp : chaine := L;
+	ss_chaine : T_tab_ligne;
+	ok : boolean := True;
 begin
-	return False;
+	-- Verifier la présence du 'faire'
+	-- verifier la présence d'au moins une condition
+	SplitChaine(tmp, ss_chaine);
+	enleve_enTete(ss_chaine);
+--	if donne_queue(ss_chaine) /= "faire" then
+--		Ajout_queue(descr, CreateChaine("Il manque le faire a la fin de la ligne"));
+--		ok := False AND ok;
+--	else
+--		enleve_queue(ss_chaine);
+--		if estVide(ss_chaine) then 
+--			Ajout_queue(descr, CreateChaine("il n'y a pas de condition"));
+--		end if;
+--	end if;
+	return ok;
 end debug_repeter;
 
 function debug_cond(L : in chaine; descr: in out T_Tab_Ligne) return boolean is
@@ -215,14 +230,14 @@ begin
 	tostring(ch, s, l);
 	
 	if s(1) in T_CaractMaj OR s(1) in T_caractMin then
-		ok := true AND ok;
+		ok := False AND ok;
 	end if;
 
 	while i <= l  and ok loop
 		if s(i) in T_CaractMaj OR s(i) in T_caractMin OR s(i) = '_' then
-			ok := true;
+			ok := False AND ok;
 		else
-			ok := false;			
+			ok := False AND ok;			
 		end if;
 		i := i +1;
 	end loop;
