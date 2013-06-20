@@ -6,8 +6,7 @@ package body debug is
 		tmp : T_tab_ligne := tab;
 		erreur : boolean := false;
 		nbLigne : integer := 0;
-		--descrErrors : T_Tab_Ligne;
-		coucou : chaine;
+
 	begin
  		while NOT estVide(tmp) loop
 			if length(trimLeft(trimRight(donne_tete(tmp)))) > 2 then
@@ -122,7 +121,7 @@ begin
 		Ajout_queue(descr, CreateChaine("il n'y a pas de parenthese fermente"));
 		erreur := erreur AND True;
 	end if;
-	if i > strpos(tmp, ')') then
+	if i > strpos(tmp, ')') AND strpos(tmp, '(') /= 0 then
 		Ajout_queue(descr, CreateChaine("Vous avez mal géré vos parenthese"));
 		erreur := erreur AND True;
 	end if;
@@ -151,32 +150,35 @@ function debug_Pour(L : in chaine; descr: in out T_Tab_Ligne) return boolean is
 	erreur : boolean := False;
 	ss_chaine : T_Tab_Ligne;
 begin
-	-- Verification des bornes inf et des bornes sup!
-	bi := substring(tmp, strpos(tmp, '-')+1, strpos(tmp, 'a')-1);
-        bs := substring(tmp, strpos(tmp, 'a')+1, length(tmp)-6)+" ";
-	bi := trimLeft(bi); bs := trimLeft(bs);
-	bi := trimRight(bi); bs := trimRight(bs);
-	put_line(bi);
-	put_line(bs);
-
-	toString(bi, binf, m);
-	tostring(bs, bsup, n);	
-	
-	inf := integer'Value(binf(1..m));
-	sup := integer'Value(bsup(1..n));
-
-	if inf >= sup then
-		Ajout_queue(descr, CreateChaine("euh... vous avez mal gérer vous bornes inf et sup"));
-		erreur := True;
-	end if;
-
 	-- Verification de la présence de '<-' 'a' et 'faire'
 	tmp := L;
 	SplitChaine(tmp, ss_chaine);
-	if appartient_liste(tmp, CreateChaine("<-")) AND appartient_liste(tmp, CreateChaine("a")) AND appartient_liste(tmp, CreateChaine("faire")) then
+	if NOT (appartient_liste(ss_chaine, CreateChaine("<-")) AND appartient_liste(ss_chaine, CreateChaine("a")) AND appartient_liste(ss_chaine, CreateChaine("faire"))) then
 		Ajout_queue(descr, CreateChaine("il manque des elements dans votre condition"));
-		erreur := erreurs AND False;
-	end if
+		erreur := erreur AND False;
+	else
+		-- Verification des bornes inf et des bornes sup!
+		bi := substring(tmp, strpos(tmp, '-')+1, strpos(tmp, 'a')-1);
+		bs := substring(tmp, strpos(tmp, 'a')+1, length(tmp)-6)+" ";
+		bi := trimLeft(bi); bs := trimLeft(bs);
+		bi := trimRight(bi); bs := trimRight(bs);
+		put_line(bi);
+		put_line(bs);
+
+		toString(bi, binf, m);
+		tostring(bs, bsup, n);	
+	
+		inf := integer'Value(binf(1..m));
+		sup := integer'Value(bsup(1..n));
+
+		if inf >= sup then
+			Ajout_queue(descr, CreateChaine("euh... vous avez mal gérer vous bornes inf et sup"));
+			erreur := True;
+		end if;
+	end if;
+
+
+
 	
 	return erreur;
 end debug_Pour;
