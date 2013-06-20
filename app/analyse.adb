@@ -68,7 +68,7 @@ package body analyse is
                         elsif(startWith(ligne, "cas"))then
                                 typeligne:= testcase;
 			else
-				put_line(CreateChaine("TYPE INCONNU"));
+				NULL;
                         end if;
                         
                         return typeligne;
