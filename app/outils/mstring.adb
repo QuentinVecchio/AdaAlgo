@@ -324,8 +324,6 @@ package body mstring is
 			return tmp;
 	end tolowercase;
 
-
-
 end mstring;
 
 

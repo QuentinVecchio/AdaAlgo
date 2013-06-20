@@ -1,7 +1,21 @@
+-----------------------------------------------------------------------------------------
+--
+--	Paquetage mstring:
+--
+--		Paquetage de gestion de string.
+--		Permet de manipuler les strings plus facilement et de faire des opérations dessus
+--		Opération souvent présentent dans d'autres langages comme startwith ...
+--		
+--
+--		@author Matthieu Clin
+--		@version 1.0.0.0
+--		@date 22-06-2013
+--
+-----------------------------------------------------------------------------------------
 package mstring is
 
 	type chaine is private;
-	subtype l_chaine is Integer range 1..1000;
+	subtype l_chaine is Integer range 1..100000;
 	subtype indice_chaine is Integer range 0..l_chaine'last;
 
 	--
@@ -185,6 +199,12 @@ package mstring is
 	
 	function replaceStr(depart: string; recherche: chaine; remplace: string) return chaine;
 	
+
+	--
+	--	Permet de mettre tout les caractères majuscules en minuscule (sauf accent)
+	--	@param depart, la chaine a mettre en minuscule
+	--	@return chaine, la chaine une fois traitée
+	--
 	function tolowercase(depart: chaine) return chaine;
 
 
