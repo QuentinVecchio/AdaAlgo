@@ -137,6 +137,7 @@ PROCEDURE appli_test IS
 			resBloc: T_Tab_Bloc;
 			listeLigne : T_TAB_LIGNE;
 			descrErreurs : T_Tab_Ligne;
+			ok : boolean;
  
 		BEGIN
 			Gtk_New(buffer);
@@ -157,14 +158,26 @@ PROCEDURE appli_test IS
 			put_line(code);
 
 			labeltoStr(code, monCode);
-			debuggage(monCode, descrErreurs);
-			put_line(CreateChaine("essai"));
+			ok := debuggage(monCode, descrErreurs);
+			if ok then
+				Analyse_Code(monCode, resBloc);
+				conversionAda(resBloc, listeLigne);
+			end if;
 			
-			--Analyse_Code(monCode, resBloc);
-			--conversionAda(resBloc, listeLigne);
+			
 
 
 			strtolabel(descrErreurs, result);
+			toString(result, resultString, l_result);
+
+			Gtk_New(win,Window_Toplevel);
+			win.Set_Title("Fenetre");
+			win.set_default_size(500,400);
+			gtk_new(label, resultString(1..l_result));
+			win.add(label);
+			win.show_all;
+
+			strtolabel(listeLigne, result);
 			toString(result, resultString, l_result);
 
 			Gtk_New(win,Window_Toplevel);
