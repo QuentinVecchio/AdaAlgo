@@ -199,6 +199,33 @@ package body entetelexique is
 				return liste;
 		end donneListeNom;
 
+		
+		
+		procedure variableExiste(listedesvariables:T_tab_Lexique; variable:chaine; existe:out boolean; type_variable: out chaine)is
+		se_trouve:boolean:=false;
+		liste_ligne:T_Tab_Lexique:=listedesvariables;
+		element_a_analyser:ligne;
+		pas_trouve:chaine:=createchaine("variable non trouve");
+		begin
+			element_a_analyser:=donne_tete(liste_ligne);
+			While ((not se_trouve) and (not estVide(liste_ligne))) loop
+				element_a_analyser:=donne_tete(liste_ligne);
+				if (element_a_analyser.nom=variable) then
+					existe:=true;
+					se_trouve:=true;
+					type_variable:=element_a_analyser.leType;
+				else
+					existe:=false;
+					enleve_enTete(liste_ligne);
+					type_variable:=pas_trouve;
+				end if;
+			end loop;
+		end variableExiste;
+		
+		
+		
+		
+		
 	function donneNom(ligneCourante: chaine) return chaine is
 		ligne:chaine:=ligneCourante;
 		i:integer;

@@ -15,8 +15,14 @@ procedure testentetelexique is
 -- 	package afficheTypeLigne is new typeenum(T_typeline);
 -- 	use afficheTypeLigne;
  testlexique: T_Tab_Ligne;
- resultat:T_tab_lexique;
+ resultat:T_tab_Lexique;
  resultat_conv:T_Tab_Ligne;
+ exemple1:string:="grenouille";
+ chaine1:chaine;
+ chaine2:chaine;
+ exemple2:string:="dents";
+ existe:boolean;
+ type_variable:chaine;
 
 	begin
 	
@@ -33,9 +39,21 @@ procedure testentetelexique is
 	--New_Line;
 	Put("------------------------------------");
 	New_Line;
-	--Affiche_liste(resultat);
-	conversionLexique(resultat,resultat_conv);
-	Affiche_liste(resultat_conv);
+	chaine1:=CreateChaine(exemple1);
+	chaine2:=CreateChaine(exemple2);
+	Affiche_liste(resultat);
+	Put("oooooooooooooooooooooooooooooooooooooooo");
+	New_Line;
+	--conversionLexique(resultat,resultat_conv);
+	--Affiche_liste(resultat_conv);
+	variableExiste(resultat,chaine1,existe,type_variable);
+	--Put_line(existe);
+	if (existe) then
+		Put("La variable existe, son type est: ");
+		Put_Line(type_variable);
+	else
+		Put("La variable n'existe pas dans cette liste");
+	end if;
 --lala:= donneListeNom(createchaine(essai));
  --Affiche_liste(lala);
  --typeligne:=donneTypeLigne(createchaine(essai));
