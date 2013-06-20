@@ -1,0 +1,57 @@
+WITH Gtk.ToolBar;	USE Gtk.ToolBar;
+WITH Gtk.Image;		USE Gtk.Image;
+WITH Gtk.Button ;       USE Gtk.Button ;
+WITH Gdk.Color;		USE Gdk.Color;
+WITH Gtk.File_Chooser_Dialog;	USE Gtk.File_Chooser_Dialog;
+WITH Gtk.File_Chooser;	USE Gtk.File_Chooser;
+WITH Gtk.Progress_Bar;	USE Gtk.Progress_Bar;
+WITH  Gtk.Tooltips;	USE  Gtk.Tooltips;
+WITH Gtk.Handlers;
+
+PACKAGE BODY P_barreOutil IS
+	
+	PROCEDURE Initialize(B : IN OUT T_BarreOutil) IS
+	BEGIN
+	--aide
+		Gtk_New(B.aide);
+	--Création de la barre	
+		Gtk_New(B.barreOutil);
+		Set_Rgb(B.couleurBarreOutil,0,0,0);
+		modify_bg(B.barreOutil,State_Normal,B.couleurBarreOutil);	 
+	--Création du bouton Nouveau fichier
+		Gtk_New(B.btnNouveau);
+		Gtk_New(B.imageNouveau,"logo/nouveau_fichier.png");
+		Set_Image(B.btnNouveau,B.imageNouveau);
+		Set_Tip(B.aide,B.btnNouveau,"Nouveau Fichier");
+		Append_Widget(B.barreOutil,B.btnNouveau);
+		Append_Space(B.barreOutil);
+	--Création du bouton Ouvrir
+		Gtk_New(B.btnOuvrir);
+		Gtk_New(B.imageOuvrir,"logo/ouvrir_fichier.png");
+		Set_Image(B.btnOuvrir,B.imageOuvrir);
+		Set_Tip(B.aide,B.btnOuvrir,"Ouvrir Fichier");
+		Append_Widget(B.barreOutil,B.btnOuvrir);
+	--Création du bouton Enregistrer
+		Gtk_New(B.btnEnregistrer);
+		Gtk_New(B.imageEnregistrer,"logo/enregistrer.png");
+		Set_Image(B.btnEnregistrer,B.imageEnregistrer);
+		Set_Tip(B.aide,B.btnEnregistrer,"Enregistrer Fichier");
+		Append_Widget(B.barreOutil,B.btnEnregistrer);	
+	--Création du bouton Compiler
+		Gtk_New(B.btnCompiler);
+		Gtk_New(B.imageCompiler,"logo/compiler.png");
+		Set_Image(B.btnCompiler,B.imageCompiler);
+		Set_Tip(B.aide,B.btnCompiler,"Compiler");
+		Append_Widget(B.barreOutil,B.btnCompiler);
+		Append_Space(B.barreOutil);
+	--Création de la barre de chargement
+		--Gtk_New(B.chargement);
+		--Set_Text(B.chargement,"0%");
+		--Set_Pulse_Step(B.chargement,10.0);
+		--Set_Fraction(B.chargement,0.0);
+		--Append_Widget(B.barreOutil,B.chargement);	
+	--Couleur
+	END Initialize;
+
+	
+END P_barreOutil;
