@@ -286,7 +286,7 @@ package body analyse is
                 L_courant := trimRight(L_courant);
                 
                 L_courant := substring(L_courant, 4, length(L_courant));
-                L_courant := substring(L_courant, 1, length(L_courant)-7);
+                L_courant := substring(L_courant, 1, length(L_courant)-6);
                 Variable := L_courant;
 
                 
