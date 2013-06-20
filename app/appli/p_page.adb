@@ -18,9 +18,7 @@ WITH Ada.Finalization ; USE Ada.Finalization ;
 
 PACKAGE BODY P_Page IS
 	PROCEDURE Initialize(P : IN OUT T_Page) IS	
-	BEGIN
-	--i
-		P.i := 1;	
+	BEGIN	
 	--Couleur
 		Set_Rgb(P.couleur,0,0,0);
 		Set_Rgb(P.couleur2,15129,15376,19600);
@@ -28,8 +26,6 @@ PACKAGE BODY P_Page IS
 		Gtk_New(P.onglet);
 		modify_bg(P.onglet,State_Normal,P.couleur2);	
 		FOR I in 1..5 LOOP
-	--Onglet Dispo
-		P.ongletDispo(i) := TRUE;
 	--table Principale
 		Gtk_New(P.Table(i),16,12,True);
 	--Box
@@ -117,6 +113,5 @@ PACKAGE BODY P_Page IS
 		END LOOP;
 		Set_No_Show_All(P.Table(1),FALSE);
 		Set_No_Show_All(P.Boite(1),FALSE);
-		P.ongletDispo(1) := FALSE;	
 	END Initialize;
 END P_Page;
