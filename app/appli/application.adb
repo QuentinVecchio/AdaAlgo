@@ -34,7 +34,7 @@ with definitions; use definitions;
 with gestionbloc; use gestionbloc;
 with analyse; use analyse;
 with conversion; use conversion;
-with generateur; use generateur;
+
 PROCEDURE application IS
 --*****************INITIALISATIONS DES VARIABLES ET SS-PGMES*****************--
 --VARIABLES
@@ -65,20 +65,12 @@ PROCEDURE application IS
 
 --*****************INITIALISATIONS DES FONCTIONS*****************-- 
 	--Procedure a Matthieu
-	PROCEDURE labeltoStr(entree: in out chaine; sortie: out T_Tab_ligne) IS
+	PROCEDURE labeltoStr(entree: chaine; sortie: out T_Tab_ligne) IS
 		i: integer;	
 		tmp: chaine := entree;	
 	BEGIN
 		sortie := Creer_liste;
 		loop
-
-			while(contains(entree, ASCII.LF&ASCII.LF)) loop
-				entree := replaceStr(entree, createchaine(ASCII.LF&ASCII.LF), createChaine(ASCII.LF));
-			end loop;
-			while(strpos(entree, ASCII.HT) /=0) loop
-				entree := replaceStr(entree, createchaine(ASCII.HT), createChaine(' '));
-			end loop;
-
 			i := strpos(tmp, ASCII.LF);
 			if(i /= 0)then
 				if(i = length(tmp) or else i = 1)then
@@ -324,16 +316,10 @@ PROCEDURE application IS
 			PROCEDURE EnregistrerFichier(Emetteur :  access Gtk_Widget_Record'class; Enreg : T_EnregFic) IS
 				PRAGMA Unreferenced (Emetteur);
 				fichier : File_type;
-
-				var, algo : T_Tab_ligne;
-				ch_var, ch_algo: chaine;
 			BEGIN
-				--ch_var := createchaine(Enreg.texte(1..Enreg.i));
-				--ch_algo := createchaine(Enreg.texte(1..Enreg.i));
-				--labeltoStr(ch_var, var);
-				--labeltoStr(ch_algo, algo);
-
-				ouvrir(Get_Filename(Enreg.Chr), var,algo);
+				Create(fichier,OUT_File,Get_Filename(Enreg.Chr));
+				Put (Fichier,Enreg.texte(1..Enreg.i));
+				close(fichier);
 			END EnregistrerFichier;
 
 	--Fermer Dialog
