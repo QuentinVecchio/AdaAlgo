@@ -23,6 +23,7 @@ PACKAGE BODY P_barreOutil IS
 		Gtk_New(B.imageNouveau,"logo/nouveau_fichier.png");
 		Set_Image(B.btnNouveau,B.imageNouveau);
 		Set_Tip(B.aide,B.btnNouveau,"Nouveau Fichier");
+		Set_Relief(B.btnNouveau,Relief_None);
 		Append_Widget(B.barreOutil,B.btnNouveau);
 		Append_Space(B.barreOutil);
 	--Création du bouton Ouvrir
@@ -30,19 +31,22 @@ PACKAGE BODY P_barreOutil IS
 		Gtk_New(B.imageOuvrir,"logo/ouvrir_fichier.png");
 		Set_Image(B.btnOuvrir,B.imageOuvrir);
 		Set_Tip(B.aide,B.btnOuvrir,"Ouvrir Fichier");
+		Set_Relief(B.btnOuvrir,Relief_None);
 		Append_Widget(B.barreOutil,B.btnOuvrir);
 	--Création du bouton Enregistrer
 		Gtk_New(B.btnEnregistrer);
 		Gtk_New(B.imageEnregistrer,"logo/enregistrer.png");
 		Set_Image(B.btnEnregistrer,B.imageEnregistrer);
 		Set_Tip(B.aide,B.btnEnregistrer,"Enregistrer Fichier");
+		Set_Relief(B.btnEnregistrer,Relief_None);
 		Append_Widget(B.barreOutil,B.btnEnregistrer);	
 	--Création du bouton Compiler
 		Gtk_New(B.btnCompiler);
 		Gtk_New(B.imageCompiler,"logo/compiler.png");
 		Set_Image(B.btnCompiler,B.imageCompiler);
 		Set_Tip(B.aide,B.btnCompiler,"Compiler");
-		Append_Widget(B.barreOutil,B.btnCompiler);
+		Set_Relief(B.btnCompiler,Relief_None);
+		Append_Widget(B.barreOutil,B.btnCompiler);		
 		Append_Space(B.barreOutil);
 	--Création de la barre de chargement
 		--Gtk_New(B.chargement);

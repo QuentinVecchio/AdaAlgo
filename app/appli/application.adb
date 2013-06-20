@@ -301,16 +301,47 @@ PROCEDURE application IS
 	--Nouveau Fichier
 		PROCEDURE NouveauFichier(Emetteur :  access Gtk_Widget_Record'class; page : T_Page) IS
 			PRAGMA Unreferenced (Emetteur);
+			n : Integer := 0;		
 		BEGIN	
-			Insert_Page(page.onglet,page.Table(3),page.labelTitre(3),Get_Current_Page(page.onglet));
+			FOR I in 1..5 LOOP
+				if(page.ongletDispo(i) = TRUE AND n = 0) then
+					n := I;
+				end if;
+			END LOOP;
+			Set_No_Show_All(page.Table(n),FALSE);
+			Set_No_Show_All(page.Boite(n),FALSE);
+			Show_All(page.Table(n));
+			Show_all(page.Boite(n));
+			--page.ongletDispo(n) := NOT page.ongletDispo(n);
+			Grab_Focus(page.zoneCode(n));
 		END NouveauFichier;
 
 
 	--Fermer Onglet
-		PROCEDURE FermerFichier(Emetteur :  access Gtk_Widget_Record'class; oglt : Gtk_Notebook) IS
-		PRAGMA Unreferenced (Emetteur);
+		PROCEDURE FermerFichier(Emetteur :  access Gtk_Widget_Record'class; page :  T_Page) IS
+			PRAGMA Unreferenced (Emetteur);
+			n : Integer;
+			bufferCode : Gtk_Text_Buffer;
+			bufferAda : Gtk_Text_Buffer;
+			bufferVariable : Gtk_Text_Buffer;
+			bufferDebug : Gtk_Text_Buffer;
 		BEGIN
-			Remove_Page(oglt,Get_Current_Page(oglt)); 
+			n := Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1;
+			Gtk_New(bufferCode);
+			Gtk_New(bufferAda);
+			Gtk_New(bufferVariable);
+			Gtk_New(bufferDebug);
+			bufferCode := Get_Buffer(page.zoneCode(n));
+			bufferAda := Get_Buffer(page.zoneAda(n));
+			bufferVariable := Get_Buffer(page.zoneVariable(n));
+			bufferDebug := Get_Buffer(page.zoneDebug(n));
+			Set_Text(bufferCode,"");
+			Set_Text(bufferAda,"");
+			Set_Text(bufferVariable,"");
+			Set_Text(bufferDebug,"");			
+			--page.ongletDispo(n) := NOT page.ongletDispo(n);
+			Set_No_Show_All(page.Table(n),TRUE);
+			Set_No_Show_All(page.Boite(n),TRUE);					
 		END FermerFichier;
 	--Enregistrer fichier
 			PROCEDURE EnregistrerFichier(Emetteur :  access Gtk_Widget_Record'class; Enreg : T_EnregFic) IS
@@ -394,7 +425,6 @@ PROCEDURE application IS
 				code := replaceStr(code, createchaine(ASCII.LF&ASCII.LF), createChaine(ASCII.LF));
 			end loop;
 			while(strpos(code, ASCII.HT) /=0) loop
-
 				code := replaceStr(code, createchaine(ASCII.HT), createChaine(' '));
 			end loop;
 			labeltoStr(code, monCode);
@@ -417,17 +447,17 @@ Init ;
 	Set_Rgb(couleurFenetrePrincipal,45796,45796,45796);
 	modify_bg(fenetrePrincipale,State_Normal,couleurFenetrePrincipal); 
 --Initialisation de la table
-	Gtk_New(Table,25,40,True);
+	Gtk_New(Table,19,16,True);
 	fenetrePrincipale.Add(table);
 --Initialisation du menu
-	table.attach(Menu.barreMenu,0,40,0,1);
+	table.attach(Menu.barreMenu,0,16,0,1);
 --Initialisation de la barre de tache
-	table.attach(Outil.barreOutil,0,40,0,1);	
+	table.attach(Outil.barreOutil,0,16,0,1);	
 --Initialisation du box Central
 	--Création de la barre Aide
-		table.attach(OutilAlgo.barreOutil,1,3,3,24);
+		table.attach(OutilAlgo.barreOutil,0,1,2,18);
 	--Zone central						
-		Table.attach(page.onglet,4,39,1,24);
+		Table.attach(page.onglet,1,15,1,18);
  	paramPage.pag := page;
 	paramPage.ong := page.onglet;
 --Initialisations des fonctions de boutons
@@ -435,7 +465,7 @@ Init ;
 	Connect(Outil.btnNouveau, "clicked",NouveauFichier'ACCESS, page);
 	Connect(Outil.btnEnregistrer, "clicked",Enregistrer'ACCESS, page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
 	FOR I in 1..5 LOOP	
-		Connect(page.btnFermer(I), "clicked",FermerFichier'ACCESS,page.onglet);
+		Connect(page.btnFermer(I), "clicked",FermerFichier'ACCESS,page);
 	END LOOP;
 	Connect(Outil.btnCompiler, "clicked",Compiler'ACCESS,paramPage);
 	Connect(OutilAlgo.btnSi, "clicked",AjoutSi'ACCESS,paramPage);
