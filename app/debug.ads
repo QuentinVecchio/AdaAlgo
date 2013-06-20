@@ -7,7 +7,7 @@ Package debug is
 function GetType(ligne: chaine)return T_type_ligne;
 
 
-procedure debuggage(tab: in out T_tab_ligne; descrErrors : in out T_Tab_Ligne);
+function debuggage(tab: in out T_tab_ligne; descrErrors : in out T_Tab_Ligne)return boolean;
 
 
 
