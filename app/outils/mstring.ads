@@ -155,6 +155,15 @@ package mstring is
 	--
 	function strpos(c: chaine; motif: character) return indice_chaine;
 
+
+	--
+	-- Renvoit la position de la DERNIERE occurence d'un caractère dans une chaine
+	--	@param c, la chaine a tester
+	--	@param motif, le caractère a rechercher
+	-- @return 0, si le caractère n'est pas dans la chaine
+	--	@return indice_chaine, la position du caractère dans la chaine
+	function strlastpos(c: chaine; motif: character) return indice_chaine;
+
 	
 	--
 	--	Permet de remplacer un morceau de chaine par un autre

@@ -3,13 +3,8 @@ use mstring, simple_io,definitions;
 
 package generateur is
 
-	procedure creerFic(nom: string; fic: out text_io.file_type);
+	procedure enregistrer(chemin: string; algo, variable: T_Tab_ligne);
 
-	procedure init(nomModule: chaine; fic: text_io.file_type);
-
-	procedure ecrireCorps(defVariable, instructions: in out T_Tab_Ligne; fic: text_io.file_type);
-
-
-	procedure fermer(nomModule: chaine; fic: in out text_io.file_type);
+	procedure ouvrir(chemin: string; algo, variable: in out T_Tab_ligne);
 
 end generateur;
