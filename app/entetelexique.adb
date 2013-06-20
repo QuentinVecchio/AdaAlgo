@@ -24,23 +24,25 @@ package body entetelexique is
 					Put_line(elt.intervalle);
 					Put("Type des élements de la table: ");
 					Put_line(elt.typeElement);
-				end if;
-				New_Line;
-				
+				end if; 
+				New_Line;				
 		end affiche;
-
-
+		
+		
+		
+		
+		
 		procedure analyseLexique(listeLexique: T_Tab_ligne; resLexique: out T_tab_Lexique) is
 			liste_ligne:T_Tab_ligne:=listeLexique;
-			ligne_courant: chaine:=donne_tete(listeLexique);
-			Forme_ligne:T_typeline:=donneTypeLigne(ligne_courant);
-			courant:ligne;
-			liste_nom:T_Tab_Chaine;
-			resultat:T_tab_Lexique;			
+			ligne_courant: chaine:=donne_tete(listeLexique); --ligne courante à étudier
+			Forme_ligne:T_typeline:=donneTypeLigne(ligne_courant); --type de la ligne courante (fonction,variable,table...)
+			courant:ligne; --ligne courante après l'analyse qui sera stockée dans resLexique
+			
 				begin
 					While (not estVide(liste_ligne)) loop
 						ligne_courant:=donne_tete(liste_ligne);
 						Forme_ligne:=donneTypeLigne(ligne_courant);
+						--création de l'élement en fonction du type
 						if (Forme_ligne=fonction) then
 							courant:=donnerFonction(donneNom(ligne_courant),donneCommentaire(ligne_courant),donneType(ligne_courant));
 						elsif (Forme_ligne=variable) then
@@ -63,6 +65,7 @@ package body entetelexique is
 		
 		
 		
+		
 		procedure conversionLexique(Lexique: T_tab_Lexique; resultat: out T_tab_ligne) is
 		resultat_conv:T_tab_ligne;
 		liste_lexique:T_tab_Lexique:=Lexique;
@@ -78,6 +81,7 @@ package body entetelexique is
 		type_float:chaine;
 		type_entier:string(1..6);
 		type_integer:chaine;
+		--booleen qui permet de voir si la ligne courante contient un certain type
 		contient_type_booleen:boolean:=false;
 		contient_type_reel:boolean:=false;
 		contient_type_entier:boolean:=false;
@@ -86,18 +90,20 @@ package body entetelexique is
 		begin
 			retour_ligne(1):=ASCII.LF;
  			resultat_conv:=Creer_liste;
- 			type_booleen:="booleen";
+ 			type_booleen:="booleen"; --permet de créer la chaine "booleen"
  			type_boolean:=createchaine(type_booleen);
- 			type_chaine:="chaine";
+ 			type_chaine:="chaine"; --permet de créer la chaine "chaine"
  			type_string:=createchaine(type_chaine);
- 			type_reel:="reel";
+ 			type_reel:="reel"; --permet de créer la chaine "reel"
  			type_float:=createchaine(type_reel);
- 			type_entier:="entier";
+ 			type_entier:="entier"; --permet de créer la chaine "entier"
  			type_integer:=createchaine(type_entier);
 			While (not estVide(liste_lexique)) loop
 				ligne_courante:=donne_tete(liste_lexique);
+				--traduction en Ada en fonction du type de la ligne (fonction,variable,table...)
 				if (ligne_courante.Forme=Variable) then
 					ligne_convertie:=ligne_courante.nom+':';
+					--permet de changer les mots "booleen" en "boolean", "chaine" en "string", "reel" en "float" et "entier" en "integer"
 					if (ligne_courante.leType=type_boolean) then
 						ligne_convertie:=ligne_convertie+"boolean;";
 					elsif (ligne_courante.leType=type_string) then
@@ -148,6 +154,7 @@ package body entetelexique is
 					ligne_convertie:=("type "+ligne_courante.nom);
 					ligne_convertie:=ligne_convertie+" is record  ";
 					ligne_convertie:=ligne_convertie+retour_ligne;
+					--permet de changer les mots "booleen" en "boolean", "chaine" en "string", "reel" en "float" et "entier" en "integer"
 					while ((contient_type_booleen) or (contient_type_chaine) or (contient_type_entier) or (contient_type_reel)) loop
 					if (contient_type_booleen) then
 						ligne_courante.ensElement:=replaceStr(ligne_courante.ensElement,"booleen","boolean");
@@ -177,6 +184,8 @@ package body entetelexique is
 					
 
 
+					
+					
 		function donneListeNom(ligneCourante: chaine) return T_Tab_Chaine is
 			liste: T_Tab_Chaine;
 			ligne:chaine:=ligneCourante+",";
@@ -198,13 +207,15 @@ package body entetelexique is
 				end loop;
 				return liste;
 		end donneListeNom;
-
+		
+		
+		
 		
 		
 		procedure variableExiste(listedesvariables:T_tab_Lexique; variable:chaine; existe:out boolean; type_variable: out chaine)is
 		se_trouve:boolean:=false;
 		liste_ligne:T_Tab_Lexique:=listedesvariables;
-		element_a_analyser:ligne;
+		element_a_analyser:ligne; --ligne courante de la liste des variables
 		pas_trouve:chaine:=createchaine("variable non trouve");
 		begin
 			element_a_analyser:=donne_tete(liste_ligne);
@@ -235,13 +246,18 @@ package body entetelexique is
 			return ligne;
 	end donneNom;
 		
+		
+		
+		
+		
 	function donneTypeLigne(ligneCourante: chaine) return T_typeline is
 		typeLigne: T_typeline;
 		i,j:integer;
 		ligne:chaine:=ligneCourante;
 		begin
 			i:=strpos(ligne, '(');
-			ligne:=substring(ligne,i+1,length(ligne));
+			ligne:=substring(ligne,i+1,length(ligne)); --réduit tout la partie de la ligne située avant la parenthèse
+			-- regarde le premier mot de la ligne et en fonction de ce mot, dis le type de la ligne
 			if (startWith(ligne, "cste")) then
 				typeLigne:=constante;
 			elsif (startWith(ligne, "fonction")) then
@@ -262,6 +278,10 @@ package body entetelexique is
 			return typeLigne;
 	end donneTypeLigne;
 
+	
+	
+	
+	
 	function donneCommentaire(ligneCourante: chaine) return chaine is
 		i:integer;
 		ligne:chaine:=ligneCourante;
@@ -269,6 +289,7 @@ package body entetelexique is
 		pas_de_com:string:=" ";
 		begin
 			type_ligne:=donneTypeLigne(ligne);
+			--donne le commentaire en fonction du type de la ligne
 			if (type_ligne=structure) then
 				i:=strpos(ligne, '=');
 				ligne:=substring(ligne,i+1,length(ligne));
@@ -291,6 +312,10 @@ package body entetelexique is
 			return ligne;
 	end donneCommentaire;
 			
+			
+			
+			
+			
 	function donneType(ligneCourante: chaine) return chaine is
 		c: chaine;
 		ligne:chaine:=ligneCourante;
@@ -300,17 +325,21 @@ package body entetelexique is
 		begin
  			i:=strpos(ligne, '(');
  			ligne:=substring(ligne, i+1, length(ligne));
-			if (startWith(ligne, "fonction")) then
+			if (startWith(ligne, "fonction")) then --donne le type de retour de la fonction
  				k:=strpos(ligne, '/');
  				j:=strpos(ligne, ')');
 				c:=substring(ligne,k+1,j-1);
-			elsif (startWith(ligne, "cste")) then
+			elsif (startWith(ligne, "cste")) then -- donne le type de la constante
 				k:=strpos(ligne, '/');
 				j:=strpos(ligne, '=');
 				c:=substring(ligne,k+1,j-1);
 			end if;
 			return c;
 	end donneType;
+			
+			
+			
+			
 			
 	function donneTypeEltDeTable(ligneCourante: chaine) return chaine is
 		c: chaine;
@@ -327,6 +356,10 @@ package body entetelexique is
 			return c;
 	end donneTypeEltDeTable;
 	
+	
+	
+	
+	
 	function donneEnsDefinition(ligneCourante: chaine) return chaine is
 		c: chaine;
 		i,j:integer;
@@ -337,6 +370,10 @@ package body entetelexique is
 			c:=substring(ligne,i+1,j-1);
 			return c;
 	end donneEnsDefinition;
+	
+	
+	
+	
 	
 	function donneEltStructure(ligneCourante: chaine) return chaine is
 		c:chaine;
@@ -353,6 +390,8 @@ package body entetelexique is
 	
 	
 	
+	
+	
 	function donneTypeVariable(ligneCourante: chaine) return chaine is
 		c: chaine;
 		i,j:integer;
@@ -363,6 +402,10 @@ package body entetelexique is
 			c:=substring(ligne, i+1,j-1);
 			return c;
 	end donneTypeVariable;
+	
+	
+	
+	
 	
 	function donneValeurConstante(ligneCourante: chaine) return chaine is
 		c: chaine;
@@ -375,6 +418,10 @@ package body entetelexique is
 			return c;
 	end donneValeurConstante;
 
+	
+	
+	
+	
 	function donnerFonction(nom, commentaire, typeRetour: chaine) return ligne is
 		l: ligne(fonction);
 		
@@ -385,6 +432,10 @@ package body entetelexique is
 			return l;
 	end donnerFonction;
 
+	
+	
+	
+	
 	function donnerModule(nom, commentaire: chaine) return ligne is
 		l: ligne(module);
 		
@@ -394,6 +445,10 @@ package body entetelexique is
 			return l;
 	end donnerModule;
 	
+	
+	
+	
+	
 	function donnerVariable(nom, commentaire, typeValeur: chaine) return ligne is
 		l: ligne(variable);
 		
@@ -401,9 +456,11 @@ package body entetelexique is
 			l.nom:=nom;
 			l.commentaire:=commentaire;
 			l.leType:=typeValeur;
-		
 			return l;
 	end donnerVariable;
+	
+	
+	
 	
 	
 	function donnerConstante(nom, commentaire, typeValeur, valeur: chaine) return ligne is
@@ -417,6 +474,10 @@ package body entetelexique is
 			return l;
 	end donnerConstante;
 	
+	
+	
+	
+	
 	function donnerTable(nom, commentaire, intervalle, typeElement: chaine) return ligne is
 		l: ligne(table);
 		
@@ -428,6 +489,10 @@ package body entetelexique is
 			return l;
 	end donnerTable;
 	
+	
+	
+	
+	
 	function donnerStructure(nom, commentaire, ensElement: chaine) return ligne is
 		l: ligne(structure);
 		
@@ -437,5 +502,9 @@ package body entetelexique is
 			l.ensElement:=ensElement;		
 			return l;
 	end donnerStructure;
+	
+	
+	
+	
 	
 end entetelexique;
