@@ -17,9 +17,10 @@ WITH Ada.Finalization ; USE Ada.Finalization ;
 --WITH Ada.Finalization ; USE Ada.Finalization ;
 
 PACKAGE BODY P_Page IS
-	PROCEDURE Initialize(P : IN OUT T_Page) IS
-		
-	BEGIN	
+	PROCEDURE Initialize(P : IN OUT T_Page) IS	
+	BEGIN
+	--i
+		P.i := 1;	
 	--Couleur
 		Set_Rgb(P.couleur,0,0,0);
 		Set_Rgb(P.couleur2,15129,15376,19600);
@@ -27,8 +28,12 @@ PACKAGE BODY P_Page IS
 		Gtk_New(P.onglet);
 		modify_bg(P.onglet,State_Normal,P.couleur2);	
 		FOR I in 1..5 LOOP
+	--Onglet Dispo
+		P.ongletDispo(i) := TRUE;
 	--table Principale
-		Gtk_New(P.Table(i),20,32,True);
+		Gtk_New(P.Table(i),16,12,True);
+	--Box
+		Gtk_New_HBox(P.Boite(i),false,2) ;
 	--Barre de défilement
 		Gtk_New(P.ajust,1.0,1.0,1.0,1.0,1.0,0.0);
 		Gtk_New(P.barre1,null,P.ajust);
@@ -36,7 +41,7 @@ PACKAGE BODY P_Page IS
 		Gtk_New(P.barre3,null,P.ajust);
 		Gtk_New(P.barre4,null,P.ajust);
 	--Separateur
-		Gtk_New_Vseparator(P.separateur(i));
+                Gtk_New_Vseparator(P.separateur(i));
 	--Zone de saisie
 		Gtk_New(P.zoneCode(i));
 		Gtk_New(P.zoneVariable(i));
@@ -71,11 +76,11 @@ PACKAGE BODY P_Page IS
 		Add_With_Viewport(P.barre4,P.zoneDebug(i));
 		Set_Editable(P.zoneAda(i),FALSE);
 		Set_Editable(P.zoneDebug(i),FALSE);
-		P.Table(i).attach(P.barre1,1,15,1,15);
-		P.Table(i).attach(P.barre2,16,20,1,15);
-		P.Table(i).attach(P.separateur(i),20,22,1,19);
-		P.Table(i).attach(P.barre3,22,31,1,15);
-		P.Table(i).attach(P.barre4,1,20,16,19);
+		P.Table(i).attach(P.barre1,0,4,1,12);
+		P.Table(i).attach(P.barre2,4,6,1,12);
+		P.Table(i).attach(P.barre3,8,12,1,13);
+		P.Table(i).attach(P.separateur(i),6,8,0,16);
+		P.Table(i).attach(P.barre4,0,6,13,16);
 	--label d'info
 		Gtk_New(P.labelCode(i),"<span foreground = 'white'>Algorithme</span>");
 		Gtk_New(P.labelVariable(i),"<span foreground = 'white'>Variables</span>");
@@ -85,10 +90,10 @@ PACKAGE BODY P_Page IS
 		Set_Use_Markup(P.labelVariable(i),TRUE);
 		Set_Use_Markup(P.labelAda(i),TRUE);
 		Set_Use_Markup(P.labelDebug(i),TRUE);
-		P.Table(i).attach(P.labelCode(i),1,15,15,16);
-		P.Table(i).attach(P.labelVariable(i),16,20,15,16);
-		P.Table(i).attach(P.labelAda(i),22,31,15,16);
-		P.Table(i).attach(P.labelDebug(i),1,4,15,16);		
+		P.Table(i).attach(P.labelCode(i),0,4,0,1);
+		P.Table(i).attach(P.labelVariable(i),4,6,0,1);
+		P.Table(i).attach(P.labelAda(i),8,12,0,1);
+		P.Table(i).attach(P.labelDebug(i),0,2,12,13);		
 	--Label
 		Gtk_New(P.labelTitre(i),"<span foreground = 'black'>Nouveau"& Integer'Image(i) & ".alg</span>");
 		Set_Use_Markup(P.labelTitre(i),TRUE);
@@ -96,9 +101,22 @@ PACKAGE BODY P_Page IS
 		Gtk_New(P.btnFermer(i));
 		Gtk_New(P.imageFermer,"logo/croixFermer.png");
 		Set_Image(P.btnFermer(i),P.imageFermer);
-		P.Table(i).attach(P.btnFermer(i),31,32,0,1);
-		END LOOP;	
-		Append_Page(P.onglet,P.Table(1),P.labelTitre(1));
-		Append_Page(P.onglet,P.Table(2),P.labelTitre(2));
-	END Initialize;	
+		Set_Size_Request(P.btnFermer(i),20,20);
+		Set_Relief(P.btnFermer(i),Relief_None);
+	--Bouton ada
+		Gtk_New(P.btnAdaEnregistrer(i),"Enregistrer");
+		P.Table(i).attach(P.btnAdaEnregistrer(i),9,11,14,15);
+	--T_Label Onglet
+		P.Boite(i).Pack_Start(P.labelTitre(i)) ;
+   		P.Boite(i).Pack_Start(P.btnFermer(i)) ; 
+		show_all(P.Boite(i));
+	--Ajout des onglets
+		Append_Page(P.onglet,P.Table(i),P.Boite(i));
+		Set_No_Show_All(P.Table(i),TRUE);
+		Set_No_Show_All(P.Boite(i),TRUE);		
+		END LOOP;
+		Set_No_Show_All(P.Table(1),FALSE);
+		Set_No_Show_All(P.Boite(1),FALSE);
+		P.ongletDispo(1) := FALSE;	
+	END Initialize;
 END P_Page;
