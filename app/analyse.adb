@@ -148,7 +148,7 @@ package body analyse is
 
                 --on rappel analyse code sur l'interieure de la boucle
                 Analyse_Code(tab, ListeInterne);
-                put_line(condition);
+
                 --on ajout en mémoire la boucle
                 ajoutPour(Res, condition, ListeInterne);
         
@@ -286,7 +286,7 @@ package body analyse is
                 L_courant := trimRight(L_courant);
                 
                 L_courant := substring(L_courant, 4, length(L_courant));
-                L_courant := substring(L_courant, 1, length(L_courant)-7);
+                L_courant := substring(L_courant, 1, length(L_courant)-6);
                 Variable := L_courant;
 
                 

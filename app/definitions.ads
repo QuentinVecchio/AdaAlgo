@@ -22,7 +22,7 @@ package definitions is
 	--
         type T_elmt is (si, sinonsi, sinon, pour, tq, repeter, affectation, module, commentaire, blocCond, blocCase, defaut, BlocIntCase);
 
-        type T_type_ligne is(commentaire,affectation, module, pour, tq, repeter, cond, jqa, fpour, ftq, sinonsi, sinon, fsi, testcase, lignecas, inconnu);
+        type T_type_ligne is(commentaire,affectation, module, pour, tq, repeter, cond, jqa, fpour, ftq, sinonsi, sinon, fsi, testcase, lignecas, fcas, inconnu);
    
 	--
 	--	Le type T_Tab_Ligne est une liste de chaine permettant de manipuler le contenu reçu de l'utilisateur
