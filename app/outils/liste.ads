@@ -104,6 +104,8 @@ package liste is
 	--	@param L, La liste a manipuler
 	--
 	procedure donne_suivant(L: in out T_PTR_LISTE);
+
+	function donne_suivant(L: T_PTR_LISTE) return T_PTR_LISTE;
 	
 	private
 		type T_Liste;
