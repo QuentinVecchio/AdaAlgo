@@ -148,7 +148,7 @@ package body analyse is
 
                 --on rappel analyse code sur l'interieure de la boucle
                 Analyse_Code(tab, ListeInterne);
-                put_line(condition);
+
                 --on ajout en mémoire la boucle
                 ajoutPour(Res, condition, ListeInterne);
         
