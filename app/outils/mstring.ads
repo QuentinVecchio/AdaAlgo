@@ -169,6 +169,17 @@ package mstring is
 	--
 	function strpos(c: chaine; motif: character) return indice_chaine;
 
+	--
+	--	Renvoit la position du début de la première occurencé d'un string dans une chaine
+	--	@param c, la chaine a tester
+	--	@param motif, le motif a rechercher
+	--	@return 0, si le motif n'a pas été trouvé
+	--	@return indice_chaine, l'indice du début de la premiere occurence
+	--
+	function strpos(c: chaine; motif: string) return indice_chaine;
+
+	function strpos(c: chaine; motif: chaine) return indice_chaine;
+
 
 	--
 	-- Renvoit la position de la DERNIERE occurence d'un caractère dans une chaine

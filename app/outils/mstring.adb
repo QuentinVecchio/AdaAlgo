@@ -240,6 +240,23 @@ package body mstring is
 		return pos;
 	end strpos;
 
+	function strpos(c: chaine; motif: string) return indice_chaine is
+	begin
+			for I in 1 .. c.L-motif'length+1 loop
+					if(c.text(I..I+motif'length-1) = motif)then
+							return I;
+					end if;
+			end loop;
+
+		return 0;
+	end strpos;
+
+	function strpos(c: chaine; motif: chaine) return indice_chaine is
+	begin
+			return strpos(c, motif.text(1..motif.L));
+	end strpos;
+
+
 	function strlastpos(c: chaine; motif: character) return indice_chaine is
 		pos: indice_chaine := 0;
 		i:l_chaine := c.L-1;
