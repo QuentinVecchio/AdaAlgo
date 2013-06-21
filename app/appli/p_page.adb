@@ -136,6 +136,10 @@ PACKAGE BODY P_Page IS
 		--Label
 			Gtk_New(P.labelTitre(i),"<span foreground = 'black'>Nouveau"& Integer'Image(i) & ".alg</span>");
 			Set_Use_Markup(P.labelTitre(i),TRUE);
+		--Label ligne
+			Gtk_New(P.labelNbLigne(i),"<span foreground = 'white'>Lignes 0</span>");
+			Set_Use_Markup(P.labelNbLigne(i),TRUE);
+			P.Table(i).attach(P.labelNbLigne(i),3,4,7,8);
 		--Bouton IN OUT
 			Gtk_New(P.btnIn(i),"↓");
 			Gtk_New(P.btnOut(i),"↑");
@@ -148,9 +152,12 @@ PACKAGE BODY P_Page IS
 			Set_Image(P.btnFermer(i),P.imageFermer);
 			Set_Size_Request(P.btnFermer(i),20,20);
 			Set_Relief(P.btnFermer(i),Relief_None);
-		--Bouton ada
+		--Bouton ada Enregistrer
 			Gtk_New(P.btnAdaEnregistrer(i),"Enregistrer");
-			P.Table(i).attach(P.btnAdaEnregistrer(i),8,11,8,9);
+			P.Table(i).attach(P.btnAdaEnregistrer(i),10,11,8,9);
+		--Bouton ada compiler
+			Gtk_New(P.btnCompilerAda(i),"Compiler");
+			P.Table(i).attach(P.btnCompilerAda(i),8,10,8,9);	
 		--T_Label Onglet
 			P.Boite(i).Pack_Start(P.labelTitre(i)) ;
    			P.Boite(i).Pack_Start(P.btnFermer(i)) ; 

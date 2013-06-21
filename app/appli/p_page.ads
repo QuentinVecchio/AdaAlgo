@@ -71,11 +71,13 @@ PACKAGE P_Page IS
 		--label			
 			labelTitre : tab_label;
 			labelAda,labelDebug: tab_label;
+			labelNbLigne : tab_label;
 		--bouton 
 			btnFermer : tab_btn;
 			btnAdaEnregistrer : tab_btn;	
 			btnIn : tab_btn;
 			btnOut : tab_btn;
+			btnCompilerAda : tab_btn;
 		--Barre de défilement
 			barre1,barre2,barre3,barre4, barre5 : Gtk_Scrolled_Window;
 		--Ajustement

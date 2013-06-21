@@ -30,13 +30,15 @@ PACKAGE P_barreOutil IS
 			imageEnregistrer : Gtk_Image; 
 			imageOuvrir : Gtk_Image;
 			imageCompiler : Gtk_Image;
+			imageEcran : Gtk_Image;
+			imageNormal : Gtk_Image;
 		--Boutons		
 			btnNouveau : Gtk_Button;
 			btnEnregistrer : Gtk_Button; 
 			btnOuvrir : Gtk_Button;
 			btnCompiler : Gtk_Button;
-		--Chargement
-			chargement : Gtk_Progress_Bar;
+			btnEcran : Gtk_Button;
+			btnNormal : Gtk_Button;
 		--Couleur
 			couleurBarreOutil : Gdk_Color;
 		--aide
