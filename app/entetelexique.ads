@@ -55,7 +55,16 @@ package entetelexique is
 	
 	type T_Tab_Chaine is new listeChaine.T_PTR_LISTE;
 	
-
+	-- Fonction qui permet de changer les appelations des différents types.
+	-- par exemple, dans le langage algorithmique, "chaine" se traduit "string" en Ada.
+	--@param ligneEntree, la ligne à analyser
+	--@return chaine, cette meme ligne mais convertie en Ada.
+	function ChangementdeType(ligneEntree:chaine) return chaine;
+	
+	--
+	-- Procedure qui convertie l'en-tête d'une fonction ou d'un module en Ada.
+	-- Elle prend en entrée la ligne a étudiée (donc l'en-tête) qui est en langage algorithmique, puis elle récupère sa traduction en langage Ada.
+	procedure conversionEntete(ligneCourante:chaine;ligneConvertie: out chaine);
 	
 	--
 	-- Procedure qui analyse le lexique sous forme algorithmique et le stocke en mémoire.
