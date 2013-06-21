@@ -78,11 +78,16 @@ PROCEDURE application IS
 	--Image et icone
 		image : Gtk_Image;
 		icone : Boolean;
-	--Barre de chargement
-		chargement : Gtk_Progress_Bar;
+	--Btn pour passer
+		btnPasser : Gtk_Button;
 	--Label
 		nom1,nom2,nom3,nom4, nomProg : Gtk_Label;
 --TYPES
+		--Stocke les deux fenetres pour l'initialisation
+		type InitFenetre is record
+			fenDemarrage : Gtk_Window;
+			fenPrincipal : Gtk_Window;
+		end record;
 		--Stocke quels onglets sont libre : TRUE = Libre
 		type tab_bool is array(1..5) of Boolean; 
 		--Structure Permettant	de stocker le nécessaire pour enregistrer un fichier	
@@ -125,6 +130,7 @@ PROCEDURE application IS
 		sauvegarde : tab_bool;
 		pageSauv : T_PageSauv;
 		GestionOnglet : T_GestionOnglet;
+		initFen :InitFenetre;
 --***************Déclaration package pour les signaux**************************-
 	--Package pour la fonction Quitter	
 	PACKAGE P_Callback IS NEW Gtk.Handlers.Callback(Gtk_Widget_Record) ;
@@ -168,6 +174,10 @@ PROCEDURE application IS
 	--Package pour les fonctions sur les fenetres
 	PACKAGE P_CallbackWin  IS NEW Gtk.Handlers.User_Callback(Gtk_Widget_Record,Gtk_window) ;
 	USE P_CallbackWin;
+
+	--Package pour les fonctions sur l'initialisation des fenetres
+	PACKAGE P_Callbackinit  IS NEW Gtk.Handlers.User_Callback(Gtk_Widget_Record,InitFenetre) ;
+	USE P_Callbackinit;
 
 --************************Création des signaux, fonction executer par les boutons***********************--
 	
@@ -220,6 +230,15 @@ PROCEDURE application IS
    			win.fullscreen;
 		END modeEcran;
 
+	--Fonction mode plein ecran
+	--prend la fenetre en parametre
+	--met la fenetre en fullscreen
+		PROCEDURE EnleverFenetre(Emetteur : access Gtk_Widget_Record'class;GroupeFenetre : InitFenetre ) IS
+   			PRAGMA Unreferenced (Emetteur);
+		BEGIN
+   			Destroy(GroupeFenetre.fenDemarrage);
+			GroupeFenetre.fenPrincipal.Show_All;
+		END EnleverFenetre;
 --Fonctions qui agit sur les zones d'algo
 	--Fonction Ajout Si
 	--Prend en parametre la page
@@ -230,8 +249,8 @@ PROCEDURE application IS
 		BEGIN
 			Gtk_New(buffer);
 			buffer := Get_Buffer(page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
-			Insert_At_Cursor(buffer,ASCII.LF &"si  alors"& ASCII.LF);
-			Insert_At_Cursor(buffer,ASCII.LF & "fsi"& ASCII.LF);
+			Insert_At_Cursor(buffer,"si  alors"& ASCII.LF & ASCII.LF);
+			Insert_At_Cursor(buffer,"fsi"& ASCII.LF);
 			Grab_Focus(page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
 		END AjoutSi;
 
@@ -244,7 +263,7 @@ PROCEDURE application IS
 		BEGIN
 			Gtk_New(buffer);
 			buffer := Get_Buffer(page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
-			Insert_At_Cursor(buffer,ASCII.LF &"sinon si  alors"& ASCII.LF);
+			Insert_At_Cursor(buffer,"sinon si  alors"& ASCII.LF & ASCII.LF);
 			Grab_Focus(page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
 		END AjoutSinonSi;
 
@@ -257,7 +276,7 @@ PROCEDURE application IS
 		BEGIN
 			Gtk_New(buffer);
 			buffer := Get_Buffer(page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
-			Insert_At_Cursor(buffer,ASCII.LF &"sinon");
+			Insert_At_Cursor(buffer,"sinon" & ASCII.LF & ASCII.LF);
 			Grab_Focus(page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
 		END AjoutSinon;
 
@@ -270,8 +289,8 @@ PROCEDURE application IS
 		BEGIN
 			Gtk_New(buffer);
 			buffer := Get_Buffer(page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
-			Insert_At_Cursor(buffer,ASCII.LF &"pour  <-  a  faire"& ASCII.LF);
-			Insert_At_Cursor(buffer,ASCII.LF & "fpour"& ASCII.LF);
+			Insert_At_Cursor(buffer,"pour  <-  a  faire"& ASCII.LF & ASCII.LF);
+			Insert_At_Cursor(buffer,"fpour"& ASCII.LF);
 			Grab_Focus(page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
 		END AjoutPour;
 
@@ -284,8 +303,8 @@ PROCEDURE application IS
 		BEGIN
 			Gtk_New(buffer);
 			buffer := Get_Buffer(page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
-			Insert_At_Cursor(buffer,ASCII.LF &"tq faire"& ASCII.LF);
-			Insert_At_Cursor(buffer,ASCII.LF & "ftq"& ASCII.LF);
+			Insert_At_Cursor(buffer,"tq faire"& ASCII.LF & ASCII.LF & ASCII.LF);
+			Insert_At_Cursor(buffer,"ftq"& ASCII.LF);
 			Grab_Focus(page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
 		END AjoutTantQue;
 
@@ -298,8 +317,8 @@ PROCEDURE application IS
 		BEGIN
 			Gtk_New(buffer);
 			buffer := Get_Buffer(page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
-			Insert_At_Cursor(buffer,ASCII.LF &"repeter"& ASCII.LF);
-			Insert_At_Cursor(buffer,ASCII.LF & "jqa "& ASCII.LF);
+			Insert_At_Cursor(buffer,"repeter"& ASCII.LF & ASCII.LF);
+			Insert_At_Cursor(buffer,"jqa "& ASCII.LF);
 			Grab_Focus(page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
 		END AjoutRepeter;
 
@@ -312,7 +331,7 @@ PROCEDURE application IS
 		BEGIN
 			Gtk_New(buffer);
 			buffer := Get_Buffer(page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
-			Insert_At_Cursor(buffer,ASCII.LF &"ecrire()"& ASCII.LF);
+			Insert_At_Cursor(buffer,"ecrire()"& ASCII.LF);
 			Grab_Focus(page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
 		END AjoutEcrire;
 
@@ -325,7 +344,7 @@ PROCEDURE application IS
 		BEGIN
 			Gtk_New(buffer);
 			buffer := Get_Buffer(page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
-			Insert_At_Cursor(buffer,ASCII.LF &"lire()"& ASCII.LF);
+			Insert_At_Cursor(buffer,"lire()"& ASCII.LF);
 			Grab_Focus(page.zoneCode(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
 		END AjoutLire;
 
@@ -339,7 +358,7 @@ PROCEDURE application IS
 		BEGIN
 			Gtk_New(buffer);
 			buffer := Get_Buffer(page.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
-			Insert_At_Cursor(buffer," (entier) : "& ASCII.LF);
+			Insert_At_Cursor(buffer,ASCII.LF & "(entier) : ");
 			Grab_Focus(page.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
 		END AjoutEntier;
 
@@ -352,7 +371,7 @@ PROCEDURE application IS
 		BEGIN
 			Gtk_New(buffer);
 			buffer := Get_Buffer(page.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
-			Insert_At_Cursor(buffer," (Reel) : "& ASCII.LF);
+			Insert_At_Cursor(buffer,ASCII.LF & "(Reel) : ");
 			Grab_Focus(page.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
 		END AjoutReel;
 
@@ -365,7 +384,7 @@ PROCEDURE application IS
 		BEGIN
 			Gtk_New(buffer);
 			buffer := Get_Buffer(page.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
-			Insert_At_Cursor(buffer," (Caractere) : "& ASCII.LF);
+			Insert_At_Cursor(buffer,ASCII.LF & "(Caractere) : ");
 			Grab_Focus(page.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
 		END AjoutCaractere;
 
@@ -378,7 +397,7 @@ PROCEDURE application IS
 		BEGIN
 			Gtk_New(buffer);
 			buffer := Get_Buffer(page.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
-			Insert_At_Cursor(buffer," (Chaine) : "& ASCII.LF);
+			Insert_At_Cursor(buffer,ASCII.LF & "(Chaine) : ");
 			Grab_Focus(page.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
 		END AjoutChaine;
 
@@ -391,7 +410,7 @@ PROCEDURE application IS
 		BEGIN
 			Gtk_New(buffer);
 			buffer := Get_Buffer(page.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
-			Insert_At_Cursor(buffer," (Booleen) : "& ASCII.LF);
+			Insert_At_Cursor(buffer,ASCII.LF & "(Booleen) : ");
 			Grab_Focus(page.zoneVariable(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
 		END AjoutBool;
 
@@ -423,13 +442,15 @@ PROCEDURE application IS
 		END AjoutOut;
 
 --Fonctions logiciels qui agit sur l'application et/ou sur l'ordinateur
-	--Nouveau Fichier
+	--Nouvel Onglet
 	--Prend en parametre une structure T_GestionOnglet
 	--Ajoute un onglet à la page
 		PROCEDURE NouveauFichier(Emetteur :  access Gtk_Widget_Record'class; GestionOnglet : T_GestionOnglet) IS
 			PRAGMA Unreferenced (Emetteur);
-			n : Integer := 0;		
+			n : Integer := 0;
+			nb : Integer;
 		BEGIN	
+			nb := Integer'Value(Gint'Image(Get_Current_Page(GestionOnglet.page.onglet)))+1;
 			FOR I in 1..5 LOOP
 				if(GestionOnglet.pointeur(i) = TRUE AND n = 0) then
 					n := I;
@@ -441,7 +462,19 @@ PROCEDURE application IS
 				Show_All(GestionOnglet.page.Table(n));
 				Show_all(GestionOnglet.page.Boite(n));
 				GestionOnglet.pointeur(n) := NOT GestionOnglet.pointeur(n);
-				Grab_Focus(GestionOnglet.page.zoneFct(n));
+				if n<nb then
+					for I in 0..(nb-n-1) loop
+						Prev_Page(GestionOnglet.page.onglet);
+					end loop;
+				else
+					for I in 0..(n-nb) loop
+						 Next_Page(GestionOnglet.page.onglet);
+					end loop;
+				end if;
+				FOR I in 1..5 LOOP
+					Hide(GestionOnglet.page.btnFermer(I));			
+				END LOOP;
+				Show_all(GestionOnglet.page.btnFermer(n));
 			end if;
 		END NouveauFichier;
 
@@ -496,6 +529,14 @@ PROCEDURE application IS
 				Set_No_Show_All(GestionOnglet.page.Boite(n),TRUE);
 				Hide(GestionOnglet.page.Table(n));
 				Hide(GestionOnglet.page.Boite(n));
+				FOR I in 1..5 LOOP
+					Hide(GestionOnglet.page.btnFermer(n));			
+				END LOOP;
+				if n /= 5 then
+					Show_all(GestionOnglet.page.btnFermer(n+1));	
+				else
+					Show_all(GestionOnglet.page.btnFermer(n-1));	
+				end if;
 			end if;		
 		END FermerFichier;
 
@@ -667,7 +708,9 @@ PROCEDURE application IS
 				s : String(1..100);
 				fct : String(1..1000);
 				lS : Integer;
+				nb : Integer;
 			BEGIN
+				nb := Integer'Value(Gint'Image(Get_Current_Page(GestionOnglet.page.onglet)))+1;
 				--Recuperation d'un onglet libre
 				FOR I in 1..5 LOOP
 					if(Ouvrir.GestionOnglet.pointeur(i) = TRUE AND n = 0) then
@@ -706,6 +749,19 @@ PROCEDURE application IS
 					toString(subString(ch3,strlastpos(ch3,'/')+1,length(ch3)),s,l);
 					Set_Label(Ouvrir.page.labelTitre(n),"<span foreground = 'black'>" & s(1..l) & "</span>");
 					Set_Use_Markup(Ouvrir.page.labelTitre(n),TRUE);
+					if n<nb then
+						for I in 0..(nb-n-1) loop
+							Prev_Page(Ouvrir.page.onglet);
+						end loop;
+					else
+						for I in 0..(n-nb) loop
+							Next_Page(Ouvrir.page.onglet);
+						end loop;
+					end if;
+					FOR I in 1..5 LOOP
+						Hide(Ouvrir.page.btnFermer(I));			
+					END LOOP;
+						Show_all(Ouvrir.page.btnFermer(Integer'Value(Gint'Image(Get_Current_Page(Ouvrir.page.onglet)))+1));
 					Grab_Focus(Ouvrir.page.labelTitre(n));			
 			END OuvrirFichier;
 
@@ -749,30 +805,31 @@ PROCEDURE application IS
 		PROCEDURE Compiler(Emetteur :  access Gtk_Widget_Record'class; page : T_Page) IS
 			PRAGMA Unreferenced (Emetteur);
 			buffer : Gtk_Text_Buffer;
-			bufferAda, bufferLexique, bufferErreur : Gtk_Text_Buffer;
-			start_iter, start_iterLexique , startDebug: Gtk_Text_Iter;
+			bufferAda, bufferFonction,bufferLexique, bufferErreur : Gtk_Text_Buffer;
+			start_iter, start_iterFonction,start_iterLexique , startDebug: Gtk_Text_Iter;
 			start_iterAda : Gtk_Text_Iter;
-			end_IterAda , end_iterLexique, endDebug: Gtk_Text_Iter;
+			end_IterAda , end_iterFonction,end_iterLexique, endDebug: Gtk_Text_Iter;
 			end_iter : Gtk_Text_Iter;
-			i : Integer;
-			result : chaine;
+			i : Integer;		
 			resultString : string(1..100000);
 			l_result : integer;
 			resBloc: T_Tab_Bloc;
 			listeLigne : T_TAB_LIGNE;
-			code :chaine;			
 			monCode: T_Tab_ligne;
-
 			aReussi : boolean;
 			resultat:chaine;
 		BEGIN
 			i := Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1;
 			Gtk_New(buffer);
+			Gtk_New(bufferAda);
+			Gtk_New(bufferLexique);
+			Gtk_New(bufferErreur);
+			Gtk_New(bufferFonction);
 			buffer := Get_Buffer(page.zoneCode(i));
 			bufferAda := Get_Buffer(page.zoneAda(i));
 			bufferLexique := Get_Buffer(page.zoneVariable(i));
 			bufferErreur:= Get_Buffer(page.zoneDebug(i));
-
+			bufferFonction := Get_Buffer(page.zoneFct(i));
 
 			Get_Start_Iter(bufferLexique,start_iterLexique);
 			Get_End_Iter(bufferLexique,end_iterLexique);
@@ -785,23 +842,36 @@ PROCEDURE application IS
 			Get_Start_Iter(bufferAda,start_iterAda);
 			Get_End_Iter(bufferada,end_iterAda);
 
-			generer("Juste un test(", Get_Text(bufferLexique,start_iterLexique,end_iterLexique,TRUE),Get_Text(buffer,start_iter,end_iter,TRUE),resultat, aReussi);
-
-		toString(resultat, resultString, l_result);
-
-			Set_Text(bufferErreur," ");
-			Set_Text(bufferAda," ");
-			if (aReussi) then
-				Set_Text(bufferAda,resultString(1..l_result));
-			else
-				Set_Text(bufferErreur,resultString(1..l_result));
+			Get_Start_Iter(bufferFonction,start_iterFonction);
+			Get_End_Iter(bufferFonction,end_iterFonction);			
+			if Get_Text(bufferFonction,start_iterFonction,end_iterFonction,TRUE) /= "" AND Get_Text(bufferLexique,start_iterLexique,end_iterLexique,TRUE) /= "" AND Get_Text(buffer,start_iter,end_iter,TRUE) /= "" then
+				generer(Get_Text(bufferFonction,start_iterFonction,end_iterFonction,TRUE), Get_Text(bufferLexique,start_iterLexique,end_iterLexique,TRUE),Get_Text(buffer,start_iter,end_iter,TRUE),resultat, aReussi);
+				toString(resultat, resultString, l_result);
+				Set_Text(bufferErreur," ");
+				Set_Text(bufferAda," ");
+				if (aReussi) then
+					Set_Text(bufferAda,resultString(1..l_result));
+				else
+					Set_Text(bufferErreur,resultString(1..l_result));
+				end if;
 			end if;
 		END Compiler;
-	
+--Fonction sur les onglets
+	--Fonction changementOnglet
+	--prend en parametre la page
+	--Permet de bloquer les boutons
+	PROCEDURE changementOnglet(Emetteur :  access Gtk_Widget_Record'class; page : T_Page) IS
+			PRAGMA Unreferenced (Emetteur);
+		BEGIN
+			FOR I in 1..5 LOOP
+				Hide(page.btnFermer(I));			
+			END LOOP;
+			Show_all(page.btnFermer(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
+		END changementOnglet;
 	
 --*****************CODE SOURCE DU PROGRAMME*****************--
 BEGIN 
-Init ; -- Initialisation de la gtk
+Init; -- Initialisation de la gtk
 --Initialisation de tab sauvegarde
 	for I in 1..5  loop
 		sauvegarde(i) := FALSE;
@@ -839,24 +909,15 @@ Init ; -- Initialisation de la gtk
 	--Image
 	Gtk_New(image,"logo/logo.png");
 	TableDemarrage.attach(image,1,5,2,5);
-	--Barre chargement
-	--Gtk_New(btnPasser,"Lancer le programme");
+	--Btn passer
+	Gtk_New(btnPasser,"Lancer le programme");
+	TableDemarrage.attach(btnPasser,1,10,7,8);
 	--Affichage de la fenetre demarrage		
 	tps := Clock;
 	n := Second(tps);
 	t := -1;
 	--Lancement du programme 		
- 	--while Get_Fraction(chargement) /= 0.2 loop		
-		--if Second(tps) /= n+5 then
-			--tps := Clock;
-			--if t /= Second(tps) then
-				--t:= Second(tps);
-				--Set_Text(chargement,Integer'Image((Second(tps)-n+1)*20) & "%");		
-				--Set_Fraction(chargement,Get_Fraction(chargement) + 0.2);				
-			--end if;
-		--end if;
-	--end loop;
-	--fenetreDemarrage.Show_all;
+	fenetreDemarrage.Show_all;
 --Initialisation de la fenetre principale
 	--Initialisation de la structure pour fermer l'appli
    	Gtk_New(fenetrePrincipale,Window_Toplevel);
@@ -881,12 +942,14 @@ Init ; -- Initialisation de la gtk
 		table.attach(OutilAlgo.barreOutil,0,1,2,18);
 	--Zone central						
 		Table.attach(page.onglet,1,16,1,17);
+--Initialisation de la structure d'init fenetre
+	initFen.fenDemarrage := fenetreDemarrage;
+	initFen.fenPrincipal := fenetrePrincipale;
 --Initialisations des fonctions de boutons	
 	--Bouton de la barre d'outil
 	Connect(Outil.btnNouveau, "clicked",NouveauFichier'ACCESS, GestionOnglet);
 	Connect(Outil.btnEnregistrer, "clicked",Enregistrer'ACCESS, pageSauv);
 	Connect(Outil.btnOuvrir, "clicked",Ouvrir'ACCESS,GestionOnglet);
-
 	--bouton page
 	FOR I in 1..5 LOOP	
 		Connect(page.btnFermer(I), "clicked",FermerFichier'ACCESS,GestionOnglet);
@@ -894,7 +957,8 @@ Init ; -- Initialisation de la gtk
 		Connect(page.btnOut(I), "clicked",AjoutOut'ACCESS,page);
 		Connect(page.btnAdaEnregistrer(I), "clicked",EnregistrerAda'ACCESS,page);
 	END LOOP;
-
+	--bouton fenetre démarrage
+	Connect(btnPasser, "clicked",EnleverFenetre'ACCESS,initFen);
 	--Bouton de la barre d'aide algo
 	Connect(Outil.btnCompiler, "clicked",Compiler'ACCESS,page);
 	Connect(OutilAlgo.btnSi, "clicked",AjoutSi'ACCESS,page);
@@ -920,8 +984,10 @@ Init ; -- Initialisation de la gtk
 	Connect(menu.m_aPropos, "activate",AProposDE'ACCESS);
 	Connect(menu.m_modeNormal, "activate",modeNormal'ACCESS,fenetrePrincipale);
 	Connect(menu.m_modeEcran, "activate",modeEcran'ACCESS,fenetrePrincipale);
+	--Notebook
+	Connect(page.onglet,"grab_focus",changementOnglet'ACCESS,page);
 --Affichage de la fenetre principale
-	fenetrePrincipale.Show_All;
+	--fenetrePrincipale.Show_All;
 	Main;
 	
 

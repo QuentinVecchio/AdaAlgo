@@ -79,7 +79,7 @@ PACKAGE P_Page IS
 		--Barre de défilement
 			barre1,barre2,barre3,barre4, barre5 : Gtk_Scrolled_Window;
 		--Ajustement
-			ajust : Gtk_Adjustment;		
+			ajust1,ajust2,ajust3,ajust4,ajust5 : Gtk_Adjustment;		
 		--table & Boite	
 			Table : tab_Table;
 			TableBouton : tab_Table;
