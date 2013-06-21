@@ -1,3 +1,12 @@
+--******************************************************************************--
+--	Code source Application AlgoAda Projet Universitaire IUT de Metz	--
+--	Developpeur : Quentin Vecchio Date modif : 20 juin 2013			--
+--	Spécification p_barreOutil.adb	 Gere la barre d'outil			--
+--	Package									--
+--******************************************************************************--
+
+--Importations des packages
+--Package Gtk
 WITH Gtk.ToolBar;	USE Gtk.ToolBar;
 WITH Gtk.Image;		USE Gtk.Image;
 WITH Gtk.Button ;       USE Gtk.Button ;
@@ -9,8 +18,10 @@ WITH Gtk.Progress_Bar;	USE Gtk.Progress_Bar;
 WITH  Gtk.Tooltips;	USE  Gtk.Tooltips;
 WITH Ada.Finalization ; USE Ada.Finalization ;
 
+--Déclaration du package
 PACKAGE P_barreOutil IS
---Déclaration du type
+
+--Déclaration de la structure BarreOutil
 	TYPE T_BarreOutil IS NEW Controlled WITH RECORD
 		--Barre Outils		
 			barreOutil : Gtk_ToolBar;
@@ -31,6 +42,7 @@ PACKAGE P_barreOutil IS
 		--aide
 			aide : Gtk_Tooltips;
 	END RECORD;
---Fonctions	
+
+--Constructeur de la structure
 	PROCEDURE Initialize(B : IN OUT T_BarreOutil);	
 END p_barreOutil;
