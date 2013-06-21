@@ -199,7 +199,7 @@ end debug_Pour;
 function debug_repeter(L : in chaine; descr: in out T_Tab_Ligne) return boolean is
 begin
 	-- Verifier la présence du 'faire'
-	return False;
+	return true;
 end debug_repeter;
 
 function debug_tq(L : in chaine; descr: in out T_Tab_Ligne) return boolean is

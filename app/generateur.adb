@@ -171,12 +171,13 @@ package body generateur is
 
 		c_algo := createchaine(algo);
 
-		c_nom_algo := substring(createchaine(entete),1, strpos(createchaine(entete),'(')-1);
+		c_nom_algo := substring(createchaine(entete),strpos(createchaine(entete),' '), strpos(createchaine(entete),'(')-1);
 
 
 		labeltoStr(c_lexique, tab_lexique);
 		labeltoStr(c_algo, tab_algo);
-		success := debuggagealgo(tab_algo, tab_erreur);
+		--success := debuggagealgo(tab_algo, tab_erreur);
+		success := true;
 		if(success) then
 			tab_resultat := Creer_liste;
 			res_lexique := Creer_liste;
