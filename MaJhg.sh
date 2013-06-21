@@ -1,0 +1,1 @@
+/home/nicolas/Script/MaJhg.sh
