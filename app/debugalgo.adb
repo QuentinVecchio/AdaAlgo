@@ -5,7 +5,6 @@ package body debugalgo is
 		type_ligne: T_type_ligne;
 		tmp : T_tab_ligne := tab;
 		ok, ok2 : boolean := True;
-		nbLigne : integer := 0;
 
 	begin
 		
@@ -15,7 +14,6 @@ package body debugalgo is
 				if length(trimLeft(trimRight(donne_tete(tmp)))) > 2 then
 
 					ok2 := True;
-					nbLigne := nbLigne + 1;
 				        type_ligne := GetType(donne_tete(tmp));
 
 					
@@ -264,24 +262,28 @@ end;
 
 function estUneVariable(ch: chaine) return boolean is
 	ok : boolean := True;
+	var : chaine := ch;
 	Subtype T_CaractMaj is character range 'A'..'Z';
 	SubType T_caractMin is character range 'a'..'z';
 	i : integer := 2;
 	s : string(1..100); l:positive;
 begin
-	tostring(ch, s, l);
+	var := trimLeft(var); var := trimRight(var);
+	tostring(var, s, l);
 	if NOT(s(1) in T_CaractMaj OR s(1) in T_caractMin) then
 		ok := False AND ok;
+		
 	end if;
 
-	while i <= l  and ok loop
+	while i <= l  AND ok loop
+		
 		if NOT(s(i) in T_CaractMaj OR s(i) in T_caractMin OR s(i) = '_') then
-			ok := False AND ok;
+			ok := False AND ok;	
 		else
-			ok := True AND ok;			
-		end if;
+			ok := True AND ok;	
+		end if;	
 		i := i +1;
-	end loop;
+	end loop;		
 	return ok;
 end estUneVariable;
 
