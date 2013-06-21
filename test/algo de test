@@ -1,0 +1,20 @@
+discr <- (b * b) - (4 * a * c)
+c: mon premier commentaire
+si discr < 0 alors
+discr<-discr+1
+sinon si discr = 0 alors
+res <- (-b)/(2 * a)
+sinon
+racine <- sqrt(discr)
+res1 <- (-b + racine)/(2 * a)
+res2 <- (-b - racine)/(2 * a)
+fsi
+pour i de 1 a 15 faire
+fpour
+tq i < 10 faire
+ftq
+repeter
+ecrire("igloo igloo, glou glou", toneau, "blabla")
+jqa i > 10
+
+
