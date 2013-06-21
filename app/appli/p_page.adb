@@ -59,12 +59,16 @@ PACKAGE BODY P_Page IS
 		--Box
 			Gtk_New_HBox(P.Boite(i),false,2) ;
 		--Barre de défilement
-			Gtk_New(P.ajust,1.0,1.0,1.0,1.0,1.0,0.0);
-			Gtk_New(P.barre1,null,P.ajust);
-			Gtk_New(P.barre2,null,P.ajust);
-			Gtk_New(P.barre3,null,P.ajust);
-			Gtk_New(P.barre4,null,P.ajust);
-			Gtk_New(P.barre5,null,P.ajust);
+			Gtk_New(P.ajust1,1.0,1.0,1.0,1.0,1.0,0.0);
+			Gtk_New(P.ajust2,1.0,1.0,1.0,1.0,1.0,0.0);
+			Gtk_New(P.ajust3,1.0,1.0,1.0,1.0,1.0,0.0);
+			Gtk_New(P.ajust4,1.0,1.0,1.0,1.0,1.0,0.0);
+			Gtk_New(P.ajust5,1.0,1.0,1.0,1.0,1.0,0.0);
+			Gtk_New(P.barre1,null,P.ajust1);
+			Gtk_New(P.barre2,null,P.ajust2);
+			Gtk_New(P.barre3,null,P.ajust3);
+			Gtk_New(P.barre4,null,P.ajust4);
+			Gtk_New(P.barre5,null,P.ajust5);
 		--Separateur
         	        Gtk_New_Vseparator(P.separateur(i));
 		--Zone de saisie
