@@ -1,11 +1,22 @@
+--******************************************************************************--
+--	Code source Application AlgoAda Projet Universitaire IUT de Metz	--
+--	Developpeur : Quentin Vecchio Date modif : 20 juin 2013			--
+--	Code Source p_aidealgo.adb	 Gere la barre d'outil	algo		--
+--	Package									--
+--******************************************************************************--
+
+--Importations des packages
+--Package Gtk
 WITH Gtk.ToolBar;	USE Gtk.ToolBar;
 WITH Gtk.Image;		USE Gtk.Image;
 WITH Gtk.Button ;       USE Gtk.Button ;
 WITH  Gtk.Tooltips;	USE  Gtk.Tooltips;
 WITH Gdk.Color;		USE Gdk.Color;
 
+--Déclaration du paquetage
 PACKAGE BODY P_aideAlgo IS
 	
+--Fonction constructeur de la structure
 	PROCEDURE Initialize(B : IN OUT T_BarreAideAlgo) IS
 	BEGIN
 	--aide
