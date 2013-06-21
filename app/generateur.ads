@@ -39,7 +39,7 @@ package generateur is
 	--
 	--
 	--
-	procedure generer(entete, lexique, algo: in string; resultat: out string; success: out boolean);
+	procedure generer(entete, lexique, algo: in string; resultat: out chaine; success: out boolean);
 
 	procedure strtolabel(entree: in out T_Tab_ligne; sortie: in out chaine);
 

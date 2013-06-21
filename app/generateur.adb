@@ -149,43 +149,55 @@ package body generateur is
 		text_io.close(fic);
 	end ouvrir;
 
-	procedure generer(entete, lexique, algo: in string; resultat: out string; success: out boolean) is
+	procedure generer(entete, lexique, algo: in string; resultat: out chaine; success: out boolean) is
 		c_entete : chaine ;
 		c_lexique : chaine ;
 		c_algo : chaine ;
 		c_nom_algo : chaine;
 		tab_lexique, tab_algo, tab_erreur: T_Tab_ligne := Creer_liste;		
-		res_lexique :T_tab_Lexique;
+		res_lexique , tmp_lexique:T_tab_Lexique;
 		res_algo: T_tab_bloc;
 
 		tab_resultat: T_Tab_ligne;
 		c_res: chaine;
 		s_res : string (1..10000);
 		l_res: integer;
+
+		parcours :ligne;
+		res : boolean;
 	begin
 
 		c_entete := createchaine(entete);
 		c_lexique := createchaine(lexique);
 
 		c_algo := createchaine(algo);
-		put_line("oui"+ "oui");
+
 		c_nom_algo := substring(createchaine(entete),1, strpos(createchaine(entete),'(')-1);
 
 
 		labeltoStr(c_lexique, tab_lexique);
 		labeltoStr(c_algo, tab_algo);
-
 		success := debuggage(tab_algo, tab_erreur);
-
 		if(success) then
 			tab_resultat := Creer_liste;
 			res_lexique := Creer_liste;
 			Ajout_queue(tab_resultat, createchaine("with simple_io; use simple_io;"&ASCII.LF));
 
 			analyseLexique(tab_lexique, res_lexique);
+			tmp_lexique := res_lexique;
+			while (not estvide(tmp_lexique))loop
+				 donne_tete(tmp_lexique, parcours);
+					if(parcours.Forme = fonction or else parcours.Forme = module)then
+						donneSousProgramme(trimLeft(parcours.nom)+".alg",tab_resultat, res);						
+						put_line(trimLeft(parcours.nom)+".alg");
+					end if;
+
+				donne_suivant(tmp_lexique);
+			end loop;			
+
 			conversionLexique(res_lexique, tab_resultat);
 			
-			
+
 
 			Ajout_queue(tab_resultat, createchaine(ASCII.LF&"begin"&ASCII.LF));
 
@@ -197,12 +209,9 @@ package body generateur is
 		else
 			tab_resultat := tab_erreur;
 		end if;
-			
-		strtolabel(tab_resultat, c_res);
+			affiche_liste(tab_resultat);
+		strtolabel(tab_resultat, resultat);
 
-		toString(c_res, s_res, l_res);
-
-		resultat := s_res(1..l_res);
 
 	end generer;
 
