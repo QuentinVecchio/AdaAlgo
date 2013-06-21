@@ -117,7 +117,7 @@ package body entetelexique is
 		
 		
 		
-		procedure analyseLexique(listeLexique: T_Tab_ligne; resLexique: out T_tab_Lexique) is
+		procedure analyseLexique(listeLexique: T_Tab_ligne; resLexique: in out T_tab_Lexique) is
 			liste_ligne:T_Tab_ligne:=listeLexique;
 			ligne_courant: chaine:=donne_tete(listeLexique); --ligne courante à étudier
 			Forme_ligne:T_typeline:=donneTypeLigne(ligne_courant); --type de la ligne courante (fonction,variable,table...)
