@@ -19,7 +19,8 @@ with definitions; use definitions;
 with gestionbloc; use gestionbloc;
 with analyse; use analyse;
 with conversion; use conversion;
-with debug; use debug;
+with debugalgo; use debugalgo;
+--with debuglexique; use debuglexique;
 
 PROCEDURE appli_test IS
 --*****************INITIALISATIONS DES VARIABLES ET SS-PGMES*****************--
@@ -158,11 +159,11 @@ PROCEDURE appli_test IS
 			put_line(code);
 
 			labeltoStr(code, monCode);
-			ok := debuggage(monCode, descrErreurs);
+			ok := debugggageLexique(monCode);
 			if ok then
 				put_line(CreateChaine("C'est OK"));
-				Analyse_Code(monCode, resBloc);
-				conversionAda(resBloc, listeLigne);
+				--Analyse_Code(monCode, resBloc);
+				--conversionAda(resBloc, listeLigne);
 			else
 				put_line(CreateChaine("C'est pas OK"));
 			end if;

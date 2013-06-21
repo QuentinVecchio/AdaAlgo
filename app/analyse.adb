@@ -1,5 +1,5 @@
 with definitions; use definitions;
-with debug; use debug;
+with debugAlgo; use debugAlgo;
 package body analyse is
         
         -------------------------
