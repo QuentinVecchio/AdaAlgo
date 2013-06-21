@@ -1,5 +1,187 @@
 package body entetelexique is
 
+		function ChangementdeType(ligneEntree:chaine) return chaine is
+		existe_changement:boolean:=true;
+		ligne_convertie:chaine:=ligneEntree;
+		begin
+			while (existe_changement) loop
+				if (contains(ligne_convertie,"entier")) then
+					ligne_convertie:=replaceStr(ligne_convertie,"entier","integer");
+				elsif (contains(ligne_convertie,"booleen")) then
+					ligne_convertie:=replaceStr(ligne_convertie,"booleen","boolean");
+				elsif (contains(ligne_convertie,"reel")) then
+					ligne_convertie:=replaceStr(ligne_convertie,"reel","float");
+				elsif (contains(ligne_convertie,"chaine")) then
+					ligne_convertie:=replaceStr(ligne_convertie,"chaine","string");
+				elsif (contains(ligne_convertie,"caractere")) then
+					ligne_convertie:=replaceStr(ligne_convertie,"caractere","character");
+				else
+						existe_changement:=false;
+				end if;
+				end loop;
+				return ligne_convertie;
+		end ChangementdeType;
+
+
+		procedure conversionEntete(ligneCourante:chaine; ligneConvertie: out chaine)is
+		copieligneCourante:chaine:=ligneCourante;
+		copieligneConvertie:chaine;
+		copieligneConvertie_1:chaine;
+		nom:chaine;
+		variables:chaine;
+		parametres:chaine;
+		i,j,k:integer;
+		existe_fleche:boolean:=true;
+		type_retour:chaine;
+		liste_variables:T_Tab_Chaine;
+		liste_variables_converties:T_Tab_Chaine;
+		ligne_courante:chaine;
+		nom_param:chaine; --nom d'un paramètre
+		reste:chaine; -- chaine 
+		ligne_courante_convertie:chaine; --chaine représentant tous les paramètres converties en Ada
+		begin
+			if (startWith(ligneCourante,"module")) then
+					i:=strpos(ligneCourante,'(');
+					j:=strpos(ligneCourante,' ');
+					nom:=substring(copieligneCourante,j+1,i-1);
+					k:=strpos(ligneCourante,')');
+					variables:=substring(copieligneCourante,i+1,k-1);
+					copieligneConvertie:=CreateChaine("procedure ");
+					copieligneConvertie:=(copieligneConvertie+nom)+'(';
+					variables:=ChangementdeType(variables);
+					liste_variables:=donneListeNom(variables);
+					-- cette boucle permet à la fois de convertir les types, mais aussi de déplacer le "in" et le "out" après les deux points
+						while (not estVide(liste_variables)) loop
+							ligne_courante:=donne_tete(liste_variables);
+							--remplace ↓ ↑ par in out
+								if (contains(ligne_courante,"↓ ↑")) then
+									ligne_courante:=replaceStr(ligne_courante,"↓ ↑","in out ");
+									enleve_enTete(liste_variables);
+									i:=strpos(ligne_courante,"in out");
+									j:=strpos(ligne_courante,':');
+									nom_param:=substring(ligne_courante,i+6,j-1);		
+									reste:=substring(ligne_courante,j+1,length(ligne_courante));
+									--permet de changer la postion du in out
+									ligne_courante:=(((nom_param+':')+"in out ")+reste)+';';
+									Ajout_queue(liste_variables_converties,ligne_courante);
+									--remplace le ↑ par out
+								elsif (contains(ligne_courante,"↑")) then
+									ligne_courante:=replaceStr(ligne_courante,"↑","out ");
+									enleve_enTete(liste_variables);
+									i:=strpos(ligne_courante,"out ");
+									j:=strpos(ligne_courante,':');
+									nom_param:=substring(ligne_courante,i+3,j-1);		
+									reste:=substring(ligne_courante,j+1,length(ligne_courante));
+									--change la position du out
+									ligne_courante:=(((nom_param+':')+"out ")+reste)+';';
+									--remplace le ↓ par in
+									Ajout_queue(liste_variables_converties,ligne_courante);
+								elsif (contains(ligne_courante,"↓")) then
+									ligne_courante:=replaceStr(ligne_courante,"↓","in ");
+									enleve_enTete(liste_variables);
+									i:=strpos(ligne_courante,"in ");
+									j:=strpos(ligne_courante,':');
+									nom_param:=substring(ligne_courante,i+2,j-1);		
+									reste:=substring(ligne_courante,j+1,length(ligne_courante));
+									--change la position du in
+									ligne_courante:=(((nom_param+':')+"in ")+reste)+';';
+									Ajout_queue(liste_variables_converties,ligne_courante);
+
+								else
+									enleve_enTete(liste_variables);
+								end if;
+							end loop;
+					parametres:=createchaine(' ');
+					-- cette boucle permet de convertir la liste qu'on a obtenu en une chaine
+						While (not estVide(liste_variables_converties)) loop
+							ligne_courante_convertie:=donne_tete(liste_variables_converties);
+							parametres:=parametres+ligne_courante_convertie;
+							enleve_enTete(liste_variables_converties);
+						end loop;
+					-- on ajout un à un les différents élements à copieligneConvertie;
+					copieligneConvertie:=copieligneConvertie+parametres;
+					copieligneConvertie:=copieligneConvertie+')';
+					-- le i permet d'obtenir la postion de ")", afin de supprimer le dernier ;
+					i:=strpos(copieligneConvertie,')');
+					copieligneConvertie:=substring(copieligneConvertie,1,i-2);
+					copieligneConvertie:=copieligneConvertie+')';
+					
+			elsif (startWith(ligneCourante,"fonction")) then
+					i:=strpos(ligneCourante,'(');
+					j:=strpos(ligneCourante,' ');
+					nom:=substring(copieligneCourante,j+1,i-1);
+					k:=strpos(ligneCourante,')');
+					variables:=substring(copieligneCourante,i+1,k-1);
+					copieligneConvertie:=CreateChaine("function ");
+					copieligneConvertie:=(copieligneConvertie+nom)+'(';
+					variables:=ChangementdeType(variables);
+					liste_variables:=donneListeNom(variables);
+					-- cette boucle permet à la fois de convertir les types, mais aussi de déplacer le "in" et le "out" après les deux points
+						while (not estVide(liste_variables)) loop
+							ligne_courante:=donne_tete(liste_variables);
+							--remplace ↓ ↑ par in out
+								if (contains(ligne_courante,"↓ ↑")) then
+									ligne_courante:=replaceStr(ligne_courante,"↓ ↑","in out ");
+									enleve_enTete(liste_variables);
+									i:=strpos(ligne_courante,"in out");
+									j:=strpos(ligne_courante,':');
+									nom_param:=substring(ligne_courante,i+5,j-1);		
+									reste:=substring(ligne_courante,j+1,length(ligne_courante));
+									--change la position du in out
+									ligne_courante:=(((nom_param+':')+"in out ")+reste)+';';
+									Ajout_queue(liste_variables_converties,ligne_courante);
+									--remplace le ↑ par out
+								elsif (contains(ligne_courante,"↑")) then
+									ligne_courante:=replaceStr(ligne_courante,"↑","out ");
+									enleve_enTete(liste_variables);
+									i:=strpos(ligne_courante,"out ");
+									j:=strpos(ligne_courante,':');
+									nom_param:=substring(ligne_courante,i+3,j-1);		
+									reste:=substring(ligne_courante,j+1,length(ligne_courante));
+									-- change la position du out
+									ligne_courante:=(((nom_param+':')+"out ")+reste)+';';
+									Ajout_queue(liste_variables_converties,ligne_courante);
+									-- remplace les ↓ par in
+								elsif (contains(ligne_courante,"↓")) then
+									ligne_courante:=replaceStr(ligne_courante,"↓","in ");
+									enleve_enTete(liste_variables);
+									i:=strpos(ligne_courante,"in ");
+									j:=strpos(ligne_courante,':');
+									nom_param:=substring(ligne_courante,i+2,j-1);		
+									reste:=substring(ligne_courante,j+1,length(ligne_courante));
+									-- change la place du in
+									ligne_courante:=(((nom_param+':')+"in ")+reste)+';';
+									Ajout_queue(liste_variables_converties,ligne_courante);
+								else
+									enleve_enTete(liste_variables);
+								end if;
+							end loop;
+					parametres:=createchaine(' ');
+					-- cette boucle permet de convertir la liste qu'on a obtenu en une chaine
+						While (not estVide(liste_variables_converties)) loop
+							ligne_courante_convertie:=donne_tete(liste_variables_converties);
+							parametres:=parametres+ligne_courante_convertie;
+							enleve_enTete(liste_variables_converties);
+						end loop;
+					-- on ajout un à un les différents élements à copieligneConvertie;
+					type_retour:=substring(copieligneCourante,k+2,length(copieligneCourante));
+					type_retour:=ChangementdeType(type_retour);
+					copieligneConvertie:=copieligneConvertie+parametres;
+					copieligneConvertie:=copieligneConvertie+')';
+					-- le i permet d'obtenir la postion de ")", afin de supprimer le dernier ;
+					i:=strpos(copieligneConvertie,')');
+					copieligneConvertie_1:=substring(copieligneConvertie,1,i-2);
+					-- on rajoute le return à la fin:
+					copieligneConvertie:=(copieligneConvertie_1+")return ")+type_retour;
+			end if;
+				ligneConvertie:=copieligneConvertie;
+		end conversionEntete;
+	
+	
+	
+	
+	
+
 		procedure affiche(elt: ligne)is		
 		begin
 				put_line("type de variable: "&T_typeline'image(elt.Forme));
@@ -32,7 +214,7 @@ package body entetelexique is
 		
 		
 		
-		procedure analyseLexique(listeLexique: T_Tab_ligne; resLexique: out T_tab_Lexique) is
+		procedure analyseLexique(listeLexique: T_Tab_ligne; resLexique: in out T_tab_Lexique) is
 			liste_ligne:T_Tab_ligne:=listeLexique;
 			ligne_courant: chaine:=donne_tete(listeLexique); --ligne courante à étudier
 			Forme_ligne:T_typeline:=donneTypeLigne(ligne_courant); --type de la ligne courante (fonction,variable,table...)
@@ -73,106 +255,38 @@ package body entetelexique is
 		ligne_convertie:chaine;
 		retour_ligne:string(1..1);
 		liste_ligne_convertie:T_tab_ligne;
-		type_booleen:string(1..7);
-		type_boolean:chaine;
-		type_chaine:string(1..6);
-		type_string:chaine;
-		type_reel:string(1..4);
-		type_float:chaine;
-		type_entier:string(1..6);
-		type_integer:chaine;
-		--booleen qui permet de voir si la ligne courante contient un certain type
-		contient_type_booleen:boolean:=false;
-		contient_type_reel:boolean:=false;
-		contient_type_entier:boolean:=false;
-		contient_type_chaine:boolean:=false;
 				
 		begin
 			retour_ligne(1):=ASCII.LF;
  			resultat_conv:=Creer_liste;
- 			type_booleen:="booleen"; --permet de créer la chaine "booleen"
- 			type_boolean:=createchaine(type_booleen);
- 			type_chaine:="chaine"; --permet de créer la chaine "chaine"
- 			type_string:=createchaine(type_chaine);
- 			type_reel:="reel"; --permet de créer la chaine "reel"
- 			type_float:=createchaine(type_reel);
- 			type_entier:="entier"; --permet de créer la chaine "entier"
- 			type_integer:=createchaine(type_entier);
 			While (not estVide(liste_lexique)) loop
 				ligne_courante:=donne_tete(liste_lexique);
 				--traduction en Ada en fonction du type de la ligne (fonction,variable,table...)
 				if (ligne_courante.Forme=Variable) then
 					ligne_convertie:=ligne_courante.nom+':';
-					--permet de changer les mots "booleen" en "boolean", "chaine" en "string", "reel" en "float" et "entier" en "integer"
-					if (ligne_courante.leType=type_boolean) then
-						ligne_convertie:=ligne_convertie+"boolean;";
-					elsif (ligne_courante.leType=type_string) then
-						ligne_convertie:=ligne_convertie+"string;";
-					elsif (ligne_courante.leType=type_float) then
-						ligne_convertie:=ligne_convertie+"float;";
-					elsif (ligne_courante.leType=type_integer) then
-						ligne_convertie:=ligne_convertie+"integer;";
-					else
-						ligne_convertie:=ligne_convertie+ligne_courante.leType;
-					end if;
-					ligne_convertie:=ligne_convertie+(" --"+ligne_courante.commentaire);
+					ligne_convertie:=ligne_convertie+ChangementdeType(ligne_courante.leType);
+					
 				elsif (ligne_courante.Forme=constante) then
 					ligne_convertie:=ligne_courante.nom+":constant ";
-					if (ligne_courante.leType=type_boolean) then
-						ligne_convertie:=ligne_convertie+"boolean:=";
-					elsif (ligne_courante.leType=type_string) then
-						ligne_convertie:=ligne_convertie+"string;";
-					elsif (ligne_courante.leType=type_float) then
-						ligne_convertie:=ligne_convertie+"float:=";
-					elsif (ligne_courante.leType=type_integer) then
-						ligne_convertie:=ligne_convertie+"integer:=";
-					else
-						ligne_convertie:=ligne_convertie+(ligne_courante.leType+":=");
-					end if;
+					ligne_convertie:=(ligne_convertie+ChangementdeType(ligne_courante.leType))+":=";
 					ligne_convertie:=ligne_convertie+(ligne_courante.valeur+';');
-					ligne_convertie:=ligne_convertie+(" --"+ligne_courante.commentaire);
+
 				elsif (ligne_courante.Forme=table) then
 					ligne_convertie:=("type "+ligne_courante.nom);
 					ligne_convertie:=ligne_convertie+(" is array("+ligne_courante.intervalle);
-					if (ligne_courante.typeElement=type_boolean) then
-						ligne_convertie:=ligne_convertie+") of boolean;";
-					elsif (ligne_courante.typeElement=type_string) then
-						ligne_convertie:=ligne_convertie+") of string;";
-					elsif (ligne_courante.typeElement=type_float) then
-						ligne_convertie:=ligne_convertie+") of float;";
-					elsif (ligne_courante.typeElement=type_integer) then
-						ligne_convertie:=ligne_convertie+") of integer;";
-					else
-						ligne_convertie:=ligne_convertie+(") of "+ligne_courante.typeElement);
-					end if;
-					ligne_convertie:=ligne_convertie+(" --"+ligne_courante.commentaire);
+					ligne_convertie:=((ligne_convertie+") of ")+ChangementdeType(ligne_courante.typeElement));
+
 				elsif (ligne_courante.Forme=structure) then
-					contient_type_booleen:=contains(ligne_courante.ensElement,"booleen");
-					contient_type_chaine:=contains(ligne_courante.ensElement,"chaine");
-					contient_type_entier:=contains(ligne_courante.ensElement,"entier");
-					contient_type_reel:=contains(ligne_courante.ensElement,"reel");
 					ligne_convertie:=("type "+ligne_courante.nom);
 					ligne_convertie:=ligne_convertie+" is record  ";
 					ligne_convertie:=ligne_convertie+retour_ligne;
-					--permet de changer les mots "booleen" en "boolean", "chaine" en "string", "reel" en "float" et "entier" en "integer"
-					while ((contient_type_booleen) or (contient_type_chaine) or (contient_type_entier) or (contient_type_reel)) loop
-					if (contient_type_booleen) then
-						ligne_courante.ensElement:=replaceStr(ligne_courante.ensElement,"booleen","boolean");
-						contient_type_booleen:=false;
-					elsif (contient_type_chaine) then
-						ligne_courante.ensElement:=replaceStr(ligne_courante.ensElement,"chaine","string");
-						contient_type_chaine:=false;
-					elsif (contient_type_entier) then
-						ligne_courante.ensElement:=replaceStr(ligne_courante.ensElement,"entier","integer");
-						contient_type_entier:=false;
-					elsif (contient_type_reel) then
-						ligne_courante.ensElement:=replaceStr(ligne_courante.ensElement,"reel","float");
-						contient_type_reel:=false;
-					end if;
-					end loop;
-					ligne_convertie:=ligne_convertie+ligne_courante.ensElement;
+					ligne_convertie:=ligne_convertie+ChangementdeType(ligne_courante.ensElement);
 					ligne_convertie:=ligne_convertie+';';
 					ligne_convertie:=ligne_convertie+(retour_ligne+"end record;");
+
+				end if;
+				
+				if (length(ligne_courante.commentaire)>1) then
 					ligne_convertie:=ligne_convertie+(" --"+ligne_courante.commentaire);
 				end if;
  				Ajout_queue(liste_ligne_convertie,ligne_convertie);
@@ -188,14 +302,14 @@ package body entetelexique is
 					
 		function donneListeNom(ligneCourante: chaine) return T_Tab_Chaine is
 			liste: T_Tab_Chaine;
-			ligne:chaine:=ligneCourante+",";
+			ligne:chaine:=ligneCourante+";";
 			i: integer;
 			existe_apres:boolean:=true;
 			
 			begin
 				liste:=Creer_liste;	
 				while (existe_apres) loop
-				i := strpos(ligne, ',');
+				i := strpos(ligne, ';');
 				if (i=length(ligne)) then
 				existe_apres:=false;
 				Ajout_queue(liste,substring(ligne,1,i-1));
