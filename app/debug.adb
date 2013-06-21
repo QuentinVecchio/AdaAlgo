@@ -50,6 +50,7 @@ package body debug is
 
 	function GetType(ligne: chaine)return T_type_ligne is
                 typeligne : T_type_ligne;
+		i : integer;
         begin
                 if(startWith(ligne, "c:"))then
                         typeligne:= commentaire;
@@ -69,8 +70,6 @@ package body debug is
                         typeligne:= cond;
                 elsif(startWith(ligne, "fsi"))then
                         typeligne:= fsi;
-                elsif(startWith(ligne, "lire") or else startWith(ligne, "ecrire"))then
-                        typeligne:= module;
                 elsif(startWith(ligne, "fpour"))then
                         typeligne:= fpour;
                 elsif(startWith(ligne, "ftq"))then
@@ -86,7 +85,15 @@ package body debug is
                 elsif(startWith(ligne, "fcas"))then
                         typeligne:= fcas;
 		else
-			typeligne:= inconnu;
+			i := strpos(ligne, '(');
+			if i > 0 AND THEN strpos(ligne,')') > 0 then
+				if estUneVariable(substring(ligne, 1, i-1)) then
+					typeligne := module;
+				end if;
+			else
+				typeligne:= inconnu;
+			end if;
+			
                 end if;
                 
                 return typeligne;
@@ -262,16 +269,15 @@ function estUneVariable(ch: chaine) return boolean is
 	s : string(1..100); l:positive;
 begin
 	tostring(ch, s, l);
-	
-	if s(1) in T_CaractMaj OR s(1) in T_caractMin then
+	if NOT(s(1) in T_CaractMaj OR s(1) in T_caractMin) then
 		ok := False AND ok;
 	end if;
 
 	while i <= l  and ok loop
-		if s(i) in T_CaractMaj OR s(i) in T_caractMin OR s(i) = '_' then
+		if NOT(s(i) in T_CaractMaj OR s(i) in T_caractMin OR s(i) = '_') then
 			ok := False AND ok;
 		else
-			ok := False AND ok;			
+			ok := True AND ok;			
 		end if;
 		i := i +1;
 	end loop;

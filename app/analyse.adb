@@ -1,4 +1,5 @@
 with definitions; use definitions;
+with debug; use debug;
 package body analyse is
         
         -------------------------
@@ -31,7 +32,7 @@ package body analyse is
         function GetType(ligne: chaine)return T_type_ligne is
         
                 typeligne : T_type_ligne;
-        
+        	i : integer;
                 begin
         
                         if(startWith(ligne, "c:"))then
@@ -52,9 +53,6 @@ package body analyse is
                                 typeligne:= cond;
                         elsif(startWith(ligne, "fsi"))then
                                 typeligne:= fsi;
-                        elsif(startWith(ligne, "lire") or else startWith(ligne, "ecrire"))then
-                                typeligne:= module;
-
                         elsif(startWith(ligne, "fpour"))then
                                 typeligne:= fpour;
                         elsif(startWith(ligne, "ftq"))then
@@ -68,7 +66,13 @@ package body analyse is
                         elsif(startWith(ligne, "cas"))then
                                 typeligne:= testcase;
 			else
-				NULL;
+				
+				i := strpos(ligne, '(');
+				if i > 0 AND THEN strpos(ligne,')') > 0 then
+					if estUneVariable(substring(ligne, 1, i-1)) then
+						typeligne := module;
+					end if;
+				end if;
                         end if;
                         
                         return typeligne;
