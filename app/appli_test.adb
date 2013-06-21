@@ -159,11 +159,11 @@ PROCEDURE appli_test IS
 			put_line(code);
 
 			labeltoStr(code, monCode);
-			ok := debugggageLexique(monCode, descrErreurs);
+			ok := debuggagealgo(monCode, descrErreurs);
 			if ok then
 				put_line(CreateChaine("C'est OK"));
-				--Analyse_Code(monCode, resBloc);
-				--conversionAda(resBloc, listeLigne);
+				Analyse_Code(monCode, resBloc);
+				conversionAda(resBloc, listeLigne);
 			else
 				put_line(CreateChaine("C'est pas OK"));
 			end if;
