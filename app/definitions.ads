@@ -32,5 +32,5 @@ package definitions is
 	use listeChaine;
 	
 	type T_Tab_Ligne is new listeChaine.T_PTR_LISTE;
-
+	lienFichierDefaut : constant String := "~/Bureau";
 end definitions;
