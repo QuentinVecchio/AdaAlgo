@@ -14,7 +14,7 @@ package body entetelexique is
 				elsif (contains(ligne_convertie,"chaine")) then
 					ligne_convertie:=replaceStr(ligne_convertie,"chaine","string");
 				elsif (contains(ligne_convertie,"caractere")) then
-					ligne_convertie:=replaceStr(ligne_convertie,"caractere","char");
+					ligne_convertie:=replaceStr(ligne_convertie,"caractere","character");
 				else
 						existe_changement:=false;
 				end if;
@@ -26,56 +26,153 @@ package body entetelexique is
 		procedure conversionEntete(ligneCourante:chaine; ligneConvertie: out chaine)is
 		copieligneCourante:chaine:=ligneCourante;
 		copieligneConvertie:chaine;
+		copieligneConvertie_1:chaine;
 		nom:chaine;
 		variables:chaine;
+		parametres:chaine;
 		i,j,k:integer;
-		fleche_haut:string:="↑";
-		fleche_bas:string:="↓";
 		existe_fleche:boolean:=true;
 		type_retour:chaine;
+		liste_variables:T_Tab_Chaine;
+		liste_variables_converties:T_Tab_Chaine;
+		ligne_courante:chaine;
+		nom_param:chaine; --nom d'un paramètre
+		reste:chaine; -- chaine 
+		ligne_courante_convertie:chaine; --chaine représentant tous les paramètres converties en Ada
 		begin
 			if (startWith(ligneCourante,"module")) then
-				i:=strpos(ligneCourante,'(');
-				j:=strpos(ligneCourante,' ');
-				nom:=substring(copieligneCourante,j+1,i-1);
-				k:=strpos(ligneCourante,')');
-				variables:=substring(copieligneCourante,i+1,k-1);
-				copieligneConvertie:=CreateChaine("procedure ");
-				copieligneConvertie:=(copieligneConvertie+nom)+'(';
-				variables:=ChangementdeType(variables);
-				while (existe_fleche) loop
-					if (contains(copieligneCourante,fleche_haut)) then
-						variables:=replaceStr(variables,fleche_haut,"out ");
-					elsif (contains(copieligneCourante,fleche_bas)) then
-						variables:=replaceStr(variables,fleche_bas,"in ");
-					else
-						existe_fleche:=false;
-					end if;
-				end loop;
-				copieligneConvertie:=copieligneConvertie+variables;
-				copieligneConvertie:=copieligneConvertie+')';
+					i:=strpos(ligneCourante,'(');
+					j:=strpos(ligneCourante,' ');
+					nom:=substring(copieligneCourante,j+1,i-1);
+					k:=strpos(ligneCourante,')');
+					variables:=substring(copieligneCourante,i+1,k-1);
+					copieligneConvertie:=CreateChaine("procedure ");
+					copieligneConvertie:=(copieligneConvertie+nom)+'(';
+					variables:=ChangementdeType(variables);
+					liste_variables:=donneListeNom(variables);
+					-- cette boucle permet à la fois de convertir les types, mais aussi de déplacer le "in" et le "out" après les deux points
+						while (not estVide(liste_variables)) loop
+							ligne_courante:=donne_tete(liste_variables);
+							--remplace ↓ ↑ par in out
+								if (contains(ligne_courante,"↓ ↑")) then
+									ligne_courante:=replaceStr(ligne_courante,"↓ ↑","in out ");
+									enleve_enTete(liste_variables);
+									i:=strpos(ligne_courante,"in out");
+									j:=strpos(ligne_courante,':');
+									nom_param:=substring(ligne_courante,i+6,j-1);		
+									reste:=substring(ligne_courante,j+1,length(ligne_courante));
+									--permet de changer la postion du in out
+									ligne_courante:=(((nom_param+':')+"in out ")+reste)+';';
+									Ajout_queue(liste_variables_converties,ligne_courante);
+									--remplace le ↑ par out
+								elsif (contains(ligne_courante,"↑")) then
+									ligne_courante:=replaceStr(ligne_courante,"↑","out ");
+									enleve_enTete(liste_variables);
+									i:=strpos(ligne_courante,"out ");
+									j:=strpos(ligne_courante,':');
+									nom_param:=substring(ligne_courante,i+3,j-1);		
+									reste:=substring(ligne_courante,j+1,length(ligne_courante));
+									--change la position du out
+									ligne_courante:=(((nom_param+':')+"out ")+reste)+';';
+									--remplace le ↓ par in
+									Ajout_queue(liste_variables_converties,ligne_courante);
+								elsif (contains(ligne_courante,"↓")) then
+									ligne_courante:=replaceStr(ligne_courante,"↓","in ");
+									enleve_enTete(liste_variables);
+									i:=strpos(ligne_courante,"in ");
+									j:=strpos(ligne_courante,':');
+									nom_param:=substring(ligne_courante,i+2,j-1);		
+									reste:=substring(ligne_courante,j+1,length(ligne_courante));
+									--change la position du in
+									ligne_courante:=(((nom_param+':')+"in ")+reste)+';';
+									Ajout_queue(liste_variables_converties,ligne_courante);
+
+								else
+									enleve_enTete(liste_variables);
+								end if;
+							end loop;
+					parametres:=createchaine(' ');
+					-- cette boucle permet de convertir la liste qu'on a obtenu en une chaine
+						While (not estVide(liste_variables_converties)) loop
+							ligne_courante_convertie:=donne_tete(liste_variables_converties);
+							parametres:=parametres+ligne_courante_convertie;
+							enleve_enTete(liste_variables_converties);
+						end loop;
+					-- on ajout un à un les différents élements à copieligneConvertie;
+					copieligneConvertie:=copieligneConvertie+parametres;
+					copieligneConvertie:=copieligneConvertie+')';
+					-- le i permet d'obtenir la postion de ")", afin de supprimer le dernier ;
+					i:=strpos(copieligneConvertie,')');
+					copieligneConvertie:=substring(copieligneConvertie,1,i-2);
+					copieligneConvertie:=copieligneConvertie+')';
+					
 			elsif (startWith(ligneCourante,"fonction")) then
-				i:=strpos(ligneCourante,'(');
-				j:=strpos(ligneCourante,' ');
-				nom:=substring(copieligneCourante,j+1,i-1);
-				k:=strpos(ligneCourante,')');
-				variables:=substring(copieligneCourante,i+1,k-1);
-				copieligneConvertie:=CreateChaine("function ");
-				copieligneConvertie:=(copieligneConvertie+nom)+'(';
-				variables:=ChangementdeType(variables);
-				while (existe_fleche) loop
-					if (contains(copieligneCourante,fleche_haut)) then
-						variables:=replaceStr(variables,fleche_haut,"out ");
-					elsif (contains(copieligneCourante,fleche_bas)) then
-						variables:=replaceStr(variables,fleche_bas,"in ");
-					else
-						existe_fleche:=false;
-					end if;
-				end loop;
-				type_retour:=substring(copieligneCourante,k+1,length(copieligneCourante));
-				copieligneConvertie:=copieligneConvertie+variables;
-				copieligneConvertie:=copieligneConvertie+')';
-				copieligneConvertie:=copieligneConvertie+type_retour;
+					i:=strpos(ligneCourante,'(');
+					j:=strpos(ligneCourante,' ');
+					nom:=substring(copieligneCourante,j+1,i-1);
+					k:=strpos(ligneCourante,')');
+					variables:=substring(copieligneCourante,i+1,k-1);
+					copieligneConvertie:=CreateChaine("function ");
+					copieligneConvertie:=(copieligneConvertie+nom)+'(';
+					variables:=ChangementdeType(variables);
+					liste_variables:=donneListeNom(variables);
+					-- cette boucle permet à la fois de convertir les types, mais aussi de déplacer le "in" et le "out" après les deux points
+						while (not estVide(liste_variables)) loop
+							ligne_courante:=donne_tete(liste_variables);
+							--remplace ↓ ↑ par in out
+								if (contains(ligne_courante,"↓ ↑")) then
+									ligne_courante:=replaceStr(ligne_courante,"↓ ↑","in out ");
+									enleve_enTete(liste_variables);
+									i:=strpos(ligne_courante,"in out");
+									j:=strpos(ligne_courante,':');
+									nom_param:=substring(ligne_courante,i+5,j-1);		
+									reste:=substring(ligne_courante,j+1,length(ligne_courante));
+									--change la position du in out
+									ligne_courante:=(((nom_param+':')+"in out ")+reste)+';';
+									Ajout_queue(liste_variables_converties,ligne_courante);
+									--remplace le ↑ par out
+								elsif (contains(ligne_courante,"↑")) then
+									ligne_courante:=replaceStr(ligne_courante,"↑","out ");
+									enleve_enTete(liste_variables);
+									i:=strpos(ligne_courante,"out ");
+									j:=strpos(ligne_courante,':');
+									nom_param:=substring(ligne_courante,i+3,j-1);		
+									reste:=substring(ligne_courante,j+1,length(ligne_courante));
+									-- change la position du out
+									ligne_courante:=(((nom_param+':')+"out ")+reste)+';';
+									Ajout_queue(liste_variables_converties,ligne_courante);
+									-- remplace les ↓ par in
+								elsif (contains(ligne_courante,"↓")) then
+									ligne_courante:=replaceStr(ligne_courante,"↓","in ");
+									enleve_enTete(liste_variables);
+									i:=strpos(ligne_courante,"in ");
+									j:=strpos(ligne_courante,':');
+									nom_param:=substring(ligne_courante,i+2,j-1);		
+									reste:=substring(ligne_courante,j+1,length(ligne_courante));
+									-- change la place du in
+									ligne_courante:=(((nom_param+':')+"in ")+reste)+';';
+									Ajout_queue(liste_variables_converties,ligne_courante);
+								else
+									enleve_enTete(liste_variables);
+								end if;
+							end loop;
+					parametres:=createchaine(' ');
+					-- cette boucle permet de convertir la liste qu'on a obtenu en une chaine
+						While (not estVide(liste_variables_converties)) loop
+							ligne_courante_convertie:=donne_tete(liste_variables_converties);
+							parametres:=parametres+ligne_courante_convertie;
+							enleve_enTete(liste_variables_converties);
+						end loop;
+					-- on ajout un à un les différents élements à copieligneConvertie;
+					type_retour:=substring(copieligneCourante,k+2,length(copieligneCourante));
+					type_retour:=ChangementdeType(type_retour);
+					copieligneConvertie:=copieligneConvertie+parametres;
+					copieligneConvertie:=copieligneConvertie+')';
+					-- le i permet d'obtenir la postion de ")", afin de supprimer le dernier ;
+					i:=strpos(copieligneConvertie,')');
+					copieligneConvertie_1:=substring(copieligneConvertie,1,i-2);
+					-- on rajoute le return à la fin:
+					copieligneConvertie:=(copieligneConvertie_1+")return ")+type_retour;
 			end if;
 				ligneConvertie:=copieligneConvertie;
 		end conversionEntete;
