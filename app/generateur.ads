@@ -11,8 +11,8 @@
 --		@date 22-06-2013
 --
 -----------------------------------------------------------------------------------------
-with mstring, simple_io, text_io, definitions,debug, analyse, gestionbloc,entetelexique, conversion;
-use mstring, simple_io,definitions,debug, analyse, gestionbloc,entetelexique, conversion;
+with mstring, simple_io, text_io, definitions,debugalgo, analyse, gestionbloc,entetelexique, conversion, entetelexique;
+use mstring, simple_io,definitions,debugalgo, analyse, gestionbloc,entetelexique, conversion, entetelexique;
 
 package generateur is
 

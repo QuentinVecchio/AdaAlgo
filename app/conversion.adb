@@ -18,7 +18,7 @@ package body conversion is
                                 when sinon=> conversionSinon(elt,listeLigne);
                                 when blocCase => conversionCasParmi(elt, ListeLigne);
                                 when BlocIntCase => conversionCasParmisInt(elt, ListeLigne);
-                                when others =>null;
+                                when others =>exit;
                         end case;
                         enleveTete(listeBloc);
                 end loop;

@@ -167,7 +167,6 @@ package body generateur is
 		res : boolean;
 	begin
 
-		c_entete := createchaine(entete);
 		c_lexique := createchaine(lexique);
 
 		c_algo := createchaine(algo);
@@ -177,12 +176,15 @@ package body generateur is
 
 		labeltoStr(c_lexique, tab_lexique);
 		labeltoStr(c_algo, tab_algo);
-		success := debuggage(tab_algo, tab_erreur);
+		success := debuggagealgo(tab_algo, tab_erreur);
 		if(success) then
 			tab_resultat := Creer_liste;
 			res_lexique := Creer_liste;
 			Ajout_queue(tab_resultat, createchaine("with simple_io; use simple_io;"&ASCII.LF));
 
+			conversionEntete(createchaine(entete),c_entete);
+			put_line("JE" + "PASSE");
+			Ajout_queue(tab_resultat,c_entete + " is "+ASCII.LF);
 			analyseLexique(tab_lexique, res_lexique);
 			tmp_lexique := res_lexique;
 			while (not estvide(tmp_lexique))loop
@@ -229,7 +231,7 @@ package body generateur is
 		toString(cheminSousProgramme,chemin, l_chaine);
 		ouvrir(chemin(1..l_chaine), entete, algo, variable);
 
-		success := debuggage(algo, tab_erreur);
+		success := debuggagealgo(algo, tab_erreur);
 
 		if(success) then
 			resultat := Creer_liste;
@@ -249,7 +251,7 @@ package body generateur is
 			Analyse_Code(tab_algo, res_algo);
 			conversionAda(res_algo, resultat);
 
-			Ajout_queue(resultat, ASCII.LF&"end "+substring(entete,1, strpos(entete,'('))+";"+ ASCII.LF);
+			Ajout_queue(resultat, ASCII.LF&"end "+substring(entete,strpos(entete,' '), strpos(entete,'('))+";"+ ASCII.LF);
 
 		else
 			resultat := tab_erreur;
@@ -263,11 +265,11 @@ package body generateur is
 		tmp: chaine := entree;	
 	begin
 		sortie := Creer_liste;
-		while(contains(entree, ASCII.LF&ASCII.LF)) loop
-				entree := replaceStr(entree, createchaine(ASCII.LF&ASCII.LF), createChaine(ASCII.LF));
+		while(contains(tmp, ASCII.LF&ASCII.LF)) loop
+				tmp := replaceStr(tmp, createchaine(ASCII.LF&ASCII.LF), createChaine(ASCII.LF));
 		end loop;
-		while(strpos(entree, ASCII.HT) /=0) loop
-				entree := replaceStr(entree, createchaine(ASCII.HT), createChaine(' '));
+		while(strpos(tmp, ASCII.HT) /=0) loop
+				tmp := replaceStr(tmp, createchaine(ASCII.HT), createChaine(' '));
 		end loop;
 		loop
 			i := strpos(tmp, ASCII.LF);

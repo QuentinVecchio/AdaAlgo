@@ -248,8 +248,7 @@ package body entetelexique is
 		
 		
 		
-		procedure conversionLexique(Lexique: T_tab_Lexique; resultat: out T_tab_ligne) is
-		resultat_conv:T_tab_ligne;
+		procedure conversionLexique(Lexique: T_tab_Lexique; resultat: in out T_tab_ligne) is
 		liste_lexique:T_tab_Lexique:=Lexique;
 		ligne_courante:ligne:=donne_tete(Lexique);
 		ligne_convertie:chaine;
@@ -258,7 +257,7 @@ package body entetelexique is
 				
 		begin
 			retour_ligne(1):=ASCII.LF;
- 			resultat_conv:=Creer_liste;
+
 			While (not estVide(liste_lexique)) loop
 				ligne_courante:=donne_tete(liste_lexique);
 				--traduction en Ada en fonction du type de la ligne (fonction,variable,table...)
@@ -289,10 +288,9 @@ package body entetelexique is
 				if (length(ligne_courante.commentaire)>1) then
 					ligne_convertie:=ligne_convertie+(" --"+ligne_courante.commentaire);
 				end if;
- 				Ajout_queue(liste_ligne_convertie,ligne_convertie);
+ 				Ajout_queue(resultat,ligne_convertie);
  				enleve_enTete(liste_lexique);
  			end loop;
- 			resultat:=liste_ligne_convertie;
 				
 		end conversionLexique;
 					

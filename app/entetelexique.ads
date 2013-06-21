@@ -77,7 +77,7 @@ package entetelexique is
 	-- Procedure qui convertie le lexique sous forme algorithme en déclarations Ada.
 	-- Elle prend en entrée la liste stockée en mémoire sous forme algorithmique (liste résultat de la procédure "analyseLexique". 
 	-- Elle retourne une liste de déclarations Ada. C'est la traduction en Ada du Lexique de l'algorithme.
-	procedure conversionLexique(Lexique: T_tab_Lexique; resultat: out T_tab_ligne);
+	procedure conversionLexique(Lexique: T_tab_Lexique; resultat: in out T_tab_ligne);
 	
 	--
 	--	Fonction qui permet d'extraire la liste des noms d'une ligne donnée
