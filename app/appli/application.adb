@@ -20,6 +20,8 @@ WITH Gtk.Table;		USE Gtk.Table;
 WITH Gtk.Button; 	USE Gtk.Button;
 WITH Gtk.Box;		USE Gtk.Box;
 WITH Gtk.Bin ;          USE Gtk.Bin ;
+WITH Pango.Enums;	USE Pango.Enums;
+WITH Gtk.Status_Bar;	USE Gtk.Status_Bar;
 WITH Gtk.Text_View;	USE Gtk.Text_View;
 WITH Gtk.Text_Buffer;	USE Gtk.Text_Buffer;
 WITH Gtk.Text_Iter; 	USE Gtk.Text_Iter;
@@ -27,7 +29,8 @@ WITH Gtk.Widget ;     	USE Gtk.Widget ;
 WITH Gdk.Color;		USE Gdk.Color;
 WITH Gdk.Pixbuf;	USE Gdk.Pixbuf;
 WITH Gdk.Visual;	USE Gdk.Visual;
-WITh Glib.Error;	USE Glib.Error;
+WITH Glib.Error;	USE Glib.Error;
+WITH Gtk.Text_Tag;	USE Gtk.Text_Tag;
 WITH Gdk.Screen;	USE Gdk.Screen;
 WITH Gtk.File_Chooser_Dialog;	USE Gtk.File_Chooser_Dialog;
 WITH Gtk.File_Chooser;	USE Gtk.File_Chooser;
@@ -37,7 +40,7 @@ WITH Gtk.Notebook;	USE Gtk.Notebook;
 WITH Glib;		USE Glib;
 WITH Gtk.Progress_Bar;	USE Gtk.Progress_Bar;
 WITH Gtk.Handlers;	USE Gtk.Handlers;
-WITh Gtk.File_Filter;	USE Gtk.File_Filter;
+WITH Gtk.File_Filter;	USE Gtk.File_Filter;
 WITH Gtk.About_Dialog;	USE Gtk.About_Dialog;
 --Mes Packages
 WITH P_Menu;		USE P_Menu;
@@ -82,14 +85,34 @@ PROCEDURE application IS
 		btnPasser : Gtk_Button;
 	--Label
 		nom1,nom2,nom3,nom4, nomProg : Gtk_Label;
+	--Barre de statut
+		barreStat :  Gtk_Status_Bar;
 --TYPES
 		--Stocke les deux fenetres pour l'initialisation
 		type InitFenetre is record
 			fenDemarrage : Gtk_Window;
 			fenPrincipal : Gtk_Window;
 		end record;
+
+		--Structure Permettant	la compilation d'un programme Ada
+		--Structure qui stocke un lien
+		type T_Lien is record
+			S :String(1..1000);
+			L : Integer := 0;
+		end record;
+		--Tableau qui va stocker tous les liens des fichiers	
+		type T_TabLien is array(1..5) of T_Lien;
+		--Pointeur sur tableau
+		Type T_pointeurLien is access T_TabLien;
+		--Structure qui gère la compilation Ada
+		type T_CompilationAda is record
+			page : T_Page;
+			pointeurLien : T_pointeurLien;		
+		end record;
+
 		--Stocke quels onglets sont libre : TRUE = Libre
 		type tab_bool is array(1..5) of Boolean; 
+
 		--Structure Permettant	de stocker le nécessaire pour enregistrer un fichier	
 		type T_EnregFic is record
 			texte : String(1..100000);
@@ -99,8 +122,10 @@ PROCEDURE application IS
 			Chr : GTK_File_Chooser;
 			page : T_Page;	
 		end record;
+
 		--Pointeur permettant de modifier le tableau des onglets ouvert
 		Type T_Pointeur is access tab_bool;
+
 		--Structure permettant de gerer les onglets dans les callback		
 		type T_GestionOnglet is record
 			page : T_Page;
@@ -108,29 +133,38 @@ PROCEDURE application IS
 			pointeurSauv : T_Pointeur;
 			btn : Gtk_Button;
 		end record;
+
 		--Structure permettant de stocker le nécessaire pour ouvrir un fichier dans un nouvel onglet
 		type T_OuvrirFic is record
 			page : T_Page;
 			Chr : GTK_File_Chooser;
 			GestionOnglet : T_GestionOnglet;	
 		end record;
+
 		--Structure Permettant	de stocker le nécessaire pour enregistrer un fichier Ada	
 		type T_EnregFicAda is record
 			texte : String(1..100000);
-			Chr : GTK_File_Chooser; 	
+			Chr : GTK_File_Chooser; 
+			n : Integer;
+			compilationAda : T_CompilationAda;	
 		end record;
+
 		--Structure Permettant	de stocker le nécessaire pour enregistrer un fichier et gerer les sauvegardes	
 		type T_PageSauv is record
 			page : T_Page;
 			pointeurSauv : T_Pointeur;
 			pointeurDejaSauv : T_Pointeur;		
 		end record;
+
+
 	--Variable utilisant les nouveau types
 		ongletDispo : tab_bool;
 		sauvegarde : tab_bool;
 		pageSauv : T_PageSauv;
 		GestionOnglet : T_GestionOnglet;
 		initFen :InitFenetre;
+		TLien : T_TabLien;
+		compilationAda : T_CompilationAda;
 --***************Déclaration package pour les signaux**************************-
 	--Package pour la fonction Quitter	
 	PACKAGE P_Callback IS NEW Gtk.Handlers.Callback(Gtk_Widget_Record) ;
@@ -178,6 +212,10 @@ PROCEDURE application IS
 	--Package pour les fonctions sur l'initialisation des fenetres
 	PACKAGE P_Callbackinit  IS NEW Gtk.Handlers.User_Callback(Gtk_Widget_Record,InitFenetre) ;
 	USE P_Callbackinit;
+	
+	--Package pour la fonction de conversion Ada
+	PACKAGE P_CallbackCompilAda  IS NEW Gtk.Handlers.User_Callback(Gtk_Widget_Record,T_CompilationAda) ;
+	USE P_CallbackCompilAda;
 
 --************************Création des signaux, fonction executer par les boutons***********************--
 	
@@ -230,9 +268,9 @@ PROCEDURE application IS
    			win.fullscreen;
 		END modeEcran;
 
-	--Fonction mode plein ecran
+	--Fonction Init Application
 	--prend la fenetre en parametre
-	--met la fenetre en fullscreen
+	--Enleve la fenetre de démarrage
 		PROCEDURE EnleverFenetre(Emetteur : access Gtk_Widget_Record'class;GroupeFenetre : InitFenetre ) IS
    			PRAGMA Unreferenced (Emetteur);
 		BEGIN
@@ -440,7 +478,26 @@ PROCEDURE application IS
 			Insert_At_Cursor(buffer," ↑");
 			Grab_Focus(page.zoneFct(Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1));
 		END AjoutOut;
-
+--Fonctions d'info
+	--Nombre de ligne
+	--Prend en parametre une page
+	--Renvoie le nombre de ligne
+		PROCEDURE nbLigne(Emetteur :  access Gtk_Widget_Record'class; page : T_Page) IS
+			PRAGMA Unreferenced (Emetteur);
+			buffer : Gtk_Text_Buffer;
+			start_iter : Gtk_Text_Iter;
+			end_iter : Gtk_Text_Iter;
+			n : Integer;
+			nbL : Integer;
+		BEGIN	
+			n := Integer'Value(Gint'Image(Get_Current_Page(GestionOnglet.page.onglet)))+1;
+			Gtk_New(buffer);
+			buffer := Get_Buffer(page.zoneCode(n));
+			Get_Start_Iter(buffer,start_iter);
+			Get_End_Iter(buffer,end_iter);
+			nbL := Integer'Value(Gint'Image(Get_Line_Count(buffer)));
+			Set_Label(page.labelNbLigne(n),"<span foreground = 'white'>Lignes" & Integer'Image(nbL) & "</span>");
+		END nbLigne;
 --Fonctions logiciels qui agit sur l'application et/ou sur l'ordinateur
 	--Nouvel Onglet
 	--Prend en parametre une structure T_GestionOnglet
@@ -553,7 +610,7 @@ PROCEDURE application IS
 				l : Integer;
 				s : String(1..100);
 			BEGIN
-				if Enreg.iCode /= 0 and Enreg.iVariable /= 0 then
+				if Enreg.iCode /= 0 and Enreg.iVariable /= 0 and Enreg.iFonction /= 0 then
 					ch1 := createChaine(Enreg.texte(1..Enreg.iCode));
 					ch2 := createChaine(Enreg.variable(1..Enreg.iVariable));
 					Put_line(ch1);
@@ -621,7 +678,7 @@ PROCEDURE application IS
 				EnregFic.iVariable := Integer'Value(Gint'Image(Get_Char_Count(bufferVariable)));
 				EnregFic.variable(1..EnregFic.iVariable) := Get_Text(bufferVariable,start_IterVariable,end_IterVariable,TRUE);
 				EnregFic.iFonction := Integer'Value(Gint'Image(Get_Char_Count(bufferFonction)));
-				EnregFic.fonction(1..EnregFic.iFonction) := Get_Text(bufferFonction,start_IterFonction,end_IterFonction,TRUE);
+				EnregFic.fonction(1..Integer'Value(Gint'Image(Get_Char_Count(bufferFonction)))) := Get_Text(bufferFonction,start_IterFonction,end_IterFonction);
 			--Initialisation de la boite de dialogue
 				Gtk_New(btnEnregistrer,"Enregistrer"); 						
 				Gtk_New(Win,Window_Toplevel);
@@ -645,16 +702,23 @@ PROCEDURE application IS
 	--Enregistre le fichier sur le disque
 			PROCEDURE EnregistrerFichierAda(Emetteur :  access Gtk_Widget_Record'class; Enreg : T_EnregFicAda) IS
 				PRAGMA Unreferenced (Emetteur);
+				fic: file_type;
+				n : Integer;
 			BEGIN
-				--if Enreg.iCode /= 0 and Enreg.iVariable /= 0 then
-				NULL;	
-				--end if;
+				n := Integer'Value(Gint'Image(Get_Current_Page(Enreg.compilationAda.page.onglet)))+1;
+				if Enreg.n /= 0 then
+					create(fic,out_file,Get_Filename(Enreg.Chr));
+					put(fic,Enreg.texte(1..Enreg.n));
+					close(fic);
+					Enreg.compilationAda.pointeurLien(n).L := Get_Filename(Enreg.Chr)'LENGTH;
+					Enreg.compilationAda.pointeurLien(n).S(1..Get_Filename(Enreg.Chr)'LENGTH) := Get_Filename(Enreg.Chr);			
+				end if;
 			END EnregistrerFichierAda;
 
 	--Enregistrer ada
 	--Prend en parametre une page
 	--Invite l'utilisateur à choisir un emplacement de sauvegarde
-		PROCEDURE EnregistrerAda(Emetteur :  access Gtk_Widget_Record'class; page : T_Page) IS
+		PROCEDURE EnregistrerAda(Emetteur :  access Gtk_Widget_Record'class; compilAda : T_CompilationAda) IS
 			PRAGMA Unreferenced (Emetteur);
 			buffer : Gtk_Text_Buffer;
 			start_iter : Gtk_Text_Iter;
@@ -666,14 +730,18 @@ PROCEDURE application IS
 			EnregFicAda : T_EnregFicAda;
 			n : Integer;
 		BEGIN
-			n := Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1;
+			n := Integer'Value(Gint'Image(Get_Current_Page(compilAda.page.onglet)))+1;
 			--Recuperation du code ada
 				Gtk_New(buffer);
-				buffer := Get_Buffer(page.zoneAda(n));
+				buffer := Get_Buffer(compilAda.page.zoneAda(n));
 				Get_Start_Iter(buffer,start_iter);
 				Get_End_Iter(buffer,end_iter);
 			--Initialisation de la structure
-				EnregFicAda.texte(1..Integer'Value(Gint'Image(Get_Char_Count(buffer)))) := Get_Text(buffer,start_Iter,end_Iter,TRUE);
+				EnregFicAda.n := Integer'Value(Gint'Image(Get_Char_Count(buffer)));
+				EnregFicAda.texte(1..EnregFicAda.n) := Get_Text(buffer,start_Iter,end_Iter,TRUE);
+				PUT("test");
+				PUT(EnregFicAda.texte(1..EnregFicAda.n));
+				EnregFicAda.compilationAda := compilAda;
 			--Initialisation de la boite de dialogue
 				Gtk_New(btnEnregistrer,"Enregistrer"); 						
 				Gtk_New(Win,Window_Toplevel);
@@ -806,9 +874,9 @@ PROCEDURE application IS
 			PRAGMA Unreferenced (Emetteur);
 			buffer : Gtk_Text_Buffer;
 			bufferAda, bufferFonction,bufferLexique, bufferErreur : Gtk_Text_Buffer;
-			start_iter, start_iterFonction,start_iterLexique , startDebug: Gtk_Text_Iter;
+			start_iter, start_iterFonction,start_iterLexique , startDebug,start_iterErreur: Gtk_Text_Iter;
 			start_iterAda : Gtk_Text_Iter;
-			end_IterAda , end_iterFonction,end_iterLexique, endDebug: Gtk_Text_Iter;
+			end_IterAda , end_iterFonction,end_iterLexique, endDebug, end_iterErreur: Gtk_Text_Iter;
 			end_iter : Gtk_Text_Iter;
 			i : Integer;		
 			resultString : string(1..100000);
@@ -818,6 +886,7 @@ PROCEDURE application IS
 			monCode: T_Tab_ligne;
 			aReussi : boolean;
 			resultat:chaine;
+			tagDeboger  : GTK_Text_Tag; --Tag qui permet de surligner en rouge le texte 
 		BEGIN
 			i := Integer'Value(Gint'Image(Get_Current_Page(page.onglet)))+1;
 			Gtk_New(buffer);
@@ -843,7 +912,8 @@ PROCEDURE application IS
 			Get_End_Iter(bufferada,end_iterAda);
 
 			Get_Start_Iter(bufferFonction,start_iterFonction);
-			Get_End_Iter(bufferFonction,end_iterFonction);			
+			Get_End_Iter(bufferFonction,end_iterFonction);
+		
 			if Get_Text(bufferFonction,start_iterFonction,end_iterFonction,TRUE) /= "" AND Get_Text(bufferLexique,start_iterLexique,end_iterLexique,TRUE) /= "" AND Get_Text(buffer,start_iter,end_iter,TRUE) /= "" then
 				generer(Get_Text(bufferFonction,start_iterFonction,end_iterFonction,TRUE), Get_Text(bufferLexique,start_iterLexique,end_iterLexique,TRUE),Get_Text(buffer,start_iter,end_iter,TRUE),resultat, aReussi);
 				toString(resultat, resultString, l_result);
@@ -851,11 +921,63 @@ PROCEDURE application IS
 				Set_Text(bufferAda," ");
 				if (aReussi) then
 					Set_Text(bufferAda,resultString(1..l_result));
-				else
-					Set_Text(bufferErreur,resultString(1..l_result));
+				--else
+					gtk_new(tagDeboger) ;
+   					Set_Property(tagDeboger, Underline_Property, Pango_Underline_Error) ;
+   					tagDeboger := bufferErreur.Create_Tag("surligne") ;
+					Set_Text(bufferErreur,"test");--resultString(1..l_result)
+					Get_Start_Iter(bufferErreur,start_iterErreur);
+					Get_End_Iter(bufferErreur,end_iterErreur);
+					Apply_Tag(bufferErreur,tagDeboger,start_iterErreur,end_iterErreur);
 				end if;
 			end if;
 		END Compiler;
+
+	--Compilation code source Ada
+	--Prend en parametre une page
+	--Permet de compileret d'afficher le code source Ada
+		PROCEDURE CompilerAda(Emetteur :  access Gtk_Widget_Record'class; compilAda : T_CompilationAda) IS
+			PRAGMA Unreferenced (Emetteur);
+			buffer : Gtk_Text_Buffer;
+			start_iter : Gtk_Text_Iter;
+			end_iter : Gtk_Text_Iter;
+			function System(cmd : in string)return integer;
+			PRAGMA Import(C,System, "system");
+			deroulement : Integer;
+			n : integer;
+			strLien: String(1..1000);
+			lLien : integer;
+			MonFichier : file_type ;
+			resultat : String(1..1000);
+			win : Gtk_Window;
+			label: Gtk_Label;
+			C : character;
+			nbL : Integer := 0;
+		BEGIN
+			n := Integer'Value(Gint'Image(Get_Current_Page(compilAda.page.onglet)))+1;
+			lLien := compilAda.pointeurLien(n).L;--Longueur du lien
+			strLien(1..lLien) := compilAda.pointeurLien(n).S(1..lLien);--Lien
+			Gtk_New(buffer);
+			buffer := Get_Buffer(compilAda.page.zoneCode(n));--Code ada
+			Get_Start_Iter(buffer,start_iter);
+			Get_End_Iter(buffer,end_iter);
+			if Get_Text(buffer,start_iter,end_iter,TRUE) /= "" then
+				deroulement := System("./compilation.sh " & strLien(1..lLien));--Lancement du programme
+					open(MonFichier, In_File, "resultat.txt");
+					while End_Of_File(MonFichier) /= FALSE loop
+						Get(MonFichier,C);
+						nbL := nbL + 1;
+					end loop;  
+					Get(MonFichier,resultat(1..nbL));
+					--Delete(MonFichier);
+					Gtk_New(win,Window_Toplevel);
+   					win.Set_Title("Resultat");
+					icone := win.Set_Icon_From_File("logo/logo.png");
+   					win.set_default_size(400,250);
+					Gtk_New(label,resultat(1..nbL));
+					win.add(label);
+			end if;
+		END CompilerAda;
 --Fonction sur les onglets
 	--Fonction changementOnglet
 	--prend en parametre la page
@@ -872,6 +994,10 @@ PROCEDURE application IS
 --*****************CODE SOURCE DU PROGRAMME*****************--
 BEGIN 
 Init; -- Initialisation de la gtk
+--Initialisation de compilAda
+--Tous les liens sont nuls
+compilationAda.page := page;
+compilationAda.pointeurLien := new T_TabLien'(TLien);--Pointeur sur la tab sauvegarde
 --Initialisation de tab sauvegarde
 	for I in 1..5  loop
 		sauvegarde(i) := FALSE;
@@ -930,18 +1056,18 @@ Init; -- Initialisation de la gtk
 --Initialisation de la table
 	Gtk_New(Table,18,16,True);--Table de stockage des différentes parties
 	fenetrePrincipale.Add(table);
-
 --Ajout du menu
 	table.attach(Menu.barreMenu,0,16,0,1);
-
 --Ajout de la barre de tache
 	table.attach(Outil.barreOutil,0,16,0,1);
-	
 --Ajout du box Central
 	--Création de la barre Aide
 		table.attach(OutilAlgo.barreOutil,0,1,2,18);
 	--Zone central						
 		Table.attach(page.onglet,1,16,1,17);
+--Initialisation de la barre de statut
+	Gtk_New(barreStat);
+	Table.attach(page.onglet,0,16,17,18);
 --Initialisation de la structure d'init fenetre
 	initFen.fenDemarrage := fenetreDemarrage;
 	initFen.fenPrincipal := fenetrePrincipale;
@@ -950,17 +1076,24 @@ Init; -- Initialisation de la gtk
 	Connect(Outil.btnNouveau, "clicked",NouveauFichier'ACCESS, GestionOnglet);
 	Connect(Outil.btnEnregistrer, "clicked",Enregistrer'ACCESS, pageSauv);
 	Connect(Outil.btnOuvrir, "clicked",Ouvrir'ACCESS,GestionOnglet);
+	Connect(Outil.btnCompiler, "clicked",Compiler'ACCESS,page);
+	Connect(Outil.btnEcran, "clicked",modeEcran'ACCESS,fenetrePrincipale);
+	Connect(Outil.btnNormal, "clicked",modeNormal'ACCESS,fenetrePrincipale);
 	--bouton page
 	FOR I in 1..5 LOOP	
 		Connect(page.btnFermer(I), "clicked",FermerFichier'ACCESS,GestionOnglet);
 		Connect(page.btnIn(I), "clicked",AjoutIn'ACCESS,page);
 		Connect(page.btnOut(I), "clicked",AjoutOut'ACCESS,page);
-		Connect(page.btnAdaEnregistrer(I), "clicked",EnregistrerAda'ACCESS,page);
+		Connect(page.btnAdaEnregistrer(I), "clicked",EnregistrerAda'ACCESS,compilationAda);
+		Connect(page.zoneCode(I), "backspace",nbLigne'ACCESS,page);
+		Connect(page.zoneCode(I), "copy_clipboard",nbLigne'ACCESS,page);
+		Connect(page.zoneCode(I), "select_all",nbLigne'ACCESS,page);
+		Connect(page.zoneCode(I), "set_scroll_adjustments",nbLigne'ACCESS,page);
+		Connect(page.btnCompilerAda(I), "clicked",compilerAda'ACCESS,compilationAda);
 	END LOOP;
 	--bouton fenetre démarrage
 	Connect(btnPasser, "clicked",EnleverFenetre'ACCESS,initFen);
 	--Bouton de la barre d'aide algo
-	Connect(Outil.btnCompiler, "clicked",Compiler'ACCESS,page);
 	Connect(OutilAlgo.btnSi, "clicked",AjoutSi'ACCESS,page);
 	Connect(OutilAlgo.btnSinonSi, "clicked",AjoutSinonSi'ACCESS,page);
 	Connect(OutilAlgo.btnSinon, "clicked",AjoutSinon'ACCESS,page);

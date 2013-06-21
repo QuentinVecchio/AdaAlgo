@@ -59,6 +59,21 @@ PACKAGE BODY P_barreOutil IS
 		Set_Relief(B.btnCompiler,Relief_None);
 		Append_Widget(B.barreOutil,B.btnCompiler);		
 		Append_Space(B.barreOutil);
+	--Création du bouton fullscreen
+		Gtk_New(B.btnEcran);
+		Gtk_New(B.imageEcran,"logo/fullscreen.png");
+		Set_Image(B.btnEcran,B.imageEcran);
+		Set_Tip(B.aide,B.btnEcran,"Passer en mode plein ecran");
+		Set_Relief(B.btnEcran,Relief_None);
+		Append_Widget(B.barreOutil,B.btnEcran);
+	--Création du bouton unfullscreen
+		Gtk_New(B.btnNormal);
+		Gtk_New(B.imageNormal,"logo/unfullscreen.png");
+		Set_Image(B.btnNormal,B.imageNormal);
+		Set_Tip(B.aide,B.btnNormal,"Passer en mode normal");
+		Set_Relief(B.btnNormal,Relief_None);
+		Append_Widget(B.barreOutil,B.btnNormal);		
+		Append_Space(B.barreOutil);
 	--Création de la barre de chargement
 		--Gtk_New(B.chargement);
 		--Set_Text(B.chargement,"0%");
