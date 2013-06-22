@@ -45,10 +45,10 @@ package body conversion is
         begin
 		guillemet(1) := character'val(34);
                 if(StartWith(m_bloc.MonMod,"lire")) then --On teste si c'est le module lire
-                      L_courant := substring(m_bloc.MonMod, 5, length(m_bloc.MonMod)-1)+",";
+                      L_courant := substring(m_bloc.MonMod, strpos(m_bloc.MonMod,'(')+1, length(m_bloc.MonMod)-1)+",";
 			Module := CreateChaine("get");
                 elsif(startWith(m_bloc.MonMod,"ecrire")) then -- On teste si c'est le module ecrire
-                        L_courant := substring(m_bloc.MonMod, 8, length(m_bloc.MonMod)-1)+",";
+                        L_courant := substring(m_bloc.MonMod, strpos(m_bloc.MonMod,'(')+1, length(m_bloc.MonMod)-1)+",";
 			Module := CreateChaine("put");
 		else
 			Module := substring(m_bloc.MonMod, 1, strpos(m_bloc.MonMod, '(')-1);
