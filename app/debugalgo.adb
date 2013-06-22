@@ -15,7 +15,7 @@ package body debugalgo is
 
 					ok2 := True;
 				        type_ligne := GetType(donne_tete(tmp));
-
+							put_line("traitement boucle de:" + donne_tete(tmp));
 					
 
 					if type_ligne = inconnu then
@@ -61,7 +61,7 @@ package body debugalgo is
                 elsif(startWith(ligne, "sinonsi"))then
                         typeligne := sinonsi;
                 elsif(startWith(ligne, "fcas"))then
-                        typeligne := sinonsi;
+                        typeligne := fcas;
                 elsif(startWith(ligne, "sinon"))then
                         typeligne := sinon;
                 elsif(startWith(ligne, "si"))then
@@ -177,17 +177,19 @@ begin
 
 		bi := substring(L, strpos(L, "<-")+2, strpos(L, 'a')-1);
 		put_line(bi);
+
 		bs := substring(L, strpos(L, 'a')+1, length(L)-5);
 		bi := trimLeft(bi); bs := trimLeft(bs);
 		bi := trimRight(bi); bs := trimRight(bs);
 
 		toString(bi, binf, m);
 		tostring(bs, bsup, n);	
-	
+
 		inf := integer'Value(binf(1..m));
 		sup := integer'Value(bsup(1..n));
 
 		if inf >= sup then
+			put_line("erreur:"+ L);
 			Ajout_queue(descr, "Intervalle mal defini : "+ L);
 			ok := False AND ok;
 		end if;
@@ -243,17 +245,21 @@ function analyseInclusionBloc(L : in T_Tab_ligne; descr: in out T_Tab_Ligne) ret
 begin
 	while NOT estVide(tmp) loop
 		type_ligne := GetType(donne_tete(tmp));
-		if Type_Ligne in cond | lignecas | pour | tq | repeter then
-			Ajout_queue(pile_elt, type_ligne);
+		put_line("traitement de la ligne:"+ donne_tete(tmp));
+		if Type_Ligne in cond |  pour | tq | repeter then
+			Ajout_enTete(pile_elt, type_ligne);
 		end if;
 
 		if Type_Ligne in fsi | jqa | fpour | ftq then
-			enleve_queue(pile_elt);
+			put_line("j'enleve ! "+"aie");
+			enleve_enTete(pile_elt);
 		end if;
 
 		donne_suivant(tmp);
 	end loop;
 	if NOT estVide(pile_elt) then
+		put_line("ERREUR:" + T_type_ligne'image(GetType(donne_tete(tmp))));
+		put_line(donne_tete(tmp));
 		Ajout_queue(descr, CreateChaine("il manque des fermetures de bloc"));
 		ok := False;
 	end if;

@@ -13,7 +13,7 @@
 -----------------------------------------------------------------------------------------
 
 
-with Ada.Unchecked_Deallocation;
+with Ada.Unchecked_Deallocation,simple_io; use simple_io;
 generic
 
 -- Le type des éléments de la liste

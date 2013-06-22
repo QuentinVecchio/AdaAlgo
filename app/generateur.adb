@@ -170,9 +170,10 @@ package body generateur is
 
 		labeltoStr(c_lexique, tab_lexique);
 		labeltoStr(c_algo, tab_algo);
-		--success := debuggagealgo(tab_algo, tab_erreur);
-		success := true;
+		success := debuggagealgo(tab_algo, tab_erreur);
+		--success := true;
 		if(success) then
+			put_line("SUCCESS !!!!!!!!!!!!!!!");
 			tab_resultat := Creer_liste;
 			res_lexique := Creer_liste;
 			Ajout_queue(tab_resultat, createchaine("with simple_io; use simple_io;"&ASCII.LF));
