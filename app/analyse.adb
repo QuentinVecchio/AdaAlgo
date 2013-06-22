@@ -46,7 +46,7 @@ package body analyse is
                         elsif(startWith(ligne, "sinonsi"))then
                                 typeligne := sinonsi;
                         elsif(startWith(ligne, "fcas"))then
-                                typeligne := sinonsi;
+                                typeligne := fcas;
                         elsif(startWith(ligne, "sinon"))then
                                 typeligne := sinon;
                         elsif(startWith(ligne, "si"))then

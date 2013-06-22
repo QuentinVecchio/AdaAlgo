@@ -159,12 +159,6 @@ package body generateur is
 		res_algo: T_tab_bloc;
 
 		tab_resultat: T_Tab_ligne;
-		c_res: chaine;
-		s_res : string (1..10000);
-		l_res: integer;
-
-		parcours :ligne;
-		res : boolean;
 	begin
 
 		c_lexique := createchaine(lexique);
@@ -176,15 +170,14 @@ package body generateur is
 
 		labeltoStr(c_lexique, tab_lexique);
 		labeltoStr(c_algo, tab_algo);
-		success := debuggagealgo(tab_algo, tab_erreur);
-		--success := true;
+		--success := debuggagealgo(tab_algo, tab_erreur);
+		success := true;
 		if(success) then
 			tab_resultat := Creer_liste;
 			res_lexique := Creer_liste;
 			Ajout_queue(tab_resultat, createchaine("with simple_io; use simple_io;"&ASCII.LF));
 
 			conversionEntete(createchaine(entete),c_entete);
-			put_line("JE" + "PASSE");
 			Ajout_queue(tab_resultat,c_entete + " is "+ASCII.LF);
 			analyseLexique(tab_lexique, res_lexique);
 			tmp_lexique := res_lexique;
