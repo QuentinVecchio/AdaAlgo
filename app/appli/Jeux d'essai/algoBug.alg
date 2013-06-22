@@ -5,13 +5,11 @@ module test()
 valeur(entier):test
 </var>
 <algo>
-valeur <- 1
- tq valeur < 10 
-  ecrire("couc
- ftq
- si jesuisici alors
- ecrire ("coucou")
-sinon
- ecrire("A demai
-   
+ecrire("bonjour")
+pour  i <- 10  a  8 faire
+ ecrire(i)
+   si jesuisla alors
+    ecrire("bonjour")
+   tq jesuisla 
+  monModule
 </algo>

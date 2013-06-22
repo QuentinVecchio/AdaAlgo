@@ -128,6 +128,7 @@ package body conversion is
         begin
 		L_courant := replaceStr(L_courant, " ou ", " or ");
 		L_courant := replaceStr(L_courant, " et ", " and ");
+		L_courant := replaceStr(L_courant, " mod ", " rem ");
                 Ajout_queue(Ligne,"while "+L_courant+" loop");
                 conversionAda(m_bloc.Tab_Bloc, Ligne);
                 Ajout_queue(Ligne,CreateChaine("end loop;"));
@@ -139,6 +140,7 @@ package body conversion is
         begin
 		L_courant := replaceStr(L_courant, " ou ", " or ");
 		L_courant := replaceStr(L_courant, " et ", " and ");
+		L_courant := replaceStr(L_courant, " mod ", " rem ");
                 Ajout_queue(Ligne,CreateChaine("loop"));
                 conversionAda(m_bloc.Tab_Bloc, Ligne);
                 Ajout_queue(Ligne,"exit when "+ L_courant +";");

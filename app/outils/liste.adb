@@ -87,6 +87,7 @@ package body liste is
 
 		tmp: T_PTR_LISTE;
 		begin
+	put_line("appel :!:!");
 			if(NOT estVide(L)) then
 				if(estVide(L.all.suivant)) then
 					tmp := L;

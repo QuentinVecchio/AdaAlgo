@@ -57,9 +57,10 @@ package body mstring is
       st: string(s'First..s'First + c.L -1 ) := c.text;
       
       begin
+		put_line("d:"+integer'image(st'first) +"f:"+integer'image(st'last)+ "calcul:"+integer'image(s'First + c.L -1) );
 	    s(st'Range) := st(st'Range);
+
 	    l := c.L;
-      
   end toString;
   
   procedure concat(c: in out chaine; s: in string) is
