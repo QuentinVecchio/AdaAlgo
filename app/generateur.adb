@@ -176,8 +176,8 @@ package body generateur is
 
 		labeltoStr(c_lexique, tab_lexique);
 		labeltoStr(c_algo, tab_algo);
-		--success := debuggagealgo(tab_algo, tab_erreur);
-		success := true;
+		success := debuggagealgo(tab_algo, tab_erreur);
+		--success := true;
 		if(success) then
 			tab_resultat := Creer_liste;
 			res_lexique := Creer_liste;
@@ -188,15 +188,15 @@ package body generateur is
 			Ajout_queue(tab_resultat,c_entete + " is "+ASCII.LF);
 			analyseLexique(tab_lexique, res_lexique);
 			tmp_lexique := res_lexique;
-			while (not estvide(tmp_lexique))loop
-				 donne_tete(tmp_lexique, parcours);
-					if(parcours.Forme = fonction or else parcours.Forme = module)then
-						donneSousProgramme(trimLeft(parcours.nom)+".alg",tab_resultat, res);						
-						put_line(trimLeft(parcours.nom)+".alg");
-					end if;
+			--while (not estvide(tmp_lexique))loop
+			--	 donne_tete(tmp_lexique, parcours);
+			--		if(parcours.Forme = fonction or else parcours.Forme = module)then
+			--			donneSousProgramme(trimLeft(parcours.nom)+".alg",tab_resultat, res);						
+			--			put_line(trimLeft(parcours.nom)+".alg");
+		--			end if;
 
-				donne_suivant(tmp_lexique);
-			end loop;			
+			--	donne_suivant(tmp_lexique);
+			--end loop;			
 
 			conversionLexique(res_lexique, tab_resultat);
 			

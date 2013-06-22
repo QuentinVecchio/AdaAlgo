@@ -921,11 +921,11 @@ PROCEDURE application IS
 				Set_Text(bufferAda," ");
 				if (aReussi) then
 					Set_Text(bufferAda,resultString(1..l_result));
-				--else
+				else
 					gtk_new(tagDeboger) ;
    					Set_Property(tagDeboger, Underline_Property, Pango_Underline_Error) ;
    					tagDeboger := bufferErreur.Create_Tag("surligne") ;
-					Set_Text(bufferErreur,"test");--resultString(1..l_result)
+					Set_Text(bufferErreur,resultString(1..l_result));--resultString(1..l_result)
 					Get_Start_Iter(bufferErreur,start_iterErreur);
 					Get_End_Iter(bufferErreur,end_iterErreur);
 					Apply_Tag(bufferErreur,tagDeboger,start_iterErreur,end_iterErreur);

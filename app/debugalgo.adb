@@ -254,7 +254,7 @@ begin
 		donne_suivant(tmp);
 	end loop;
 	if NOT estVide(pile_elt) then
-		Ajout_queue(descr, CreateChaine("il manque des fermeture de bloque"));
+		Ajout_queue(descr, CreateChaine("il manque des fermetures de bloc"));
 		ok := False;
 	end if;
 	return ok;
@@ -299,18 +299,18 @@ begin
 end afficheErrors;
 
 procedure SplitChaine(c : in out Chaine; chaineSplit : in out T_Tab_Ligne) is
-	i : integer;
+        i : integer;
 begin
-	c := trimLeft(c); c:= trimRight(c);
-	c := c+' ';
-	if length(c) > 0 then
-		i := strpos(c, ' ');
-		Ajout_queue(chaineSplit, substring(c, 1, i -1));
-		if i < length(c) then
-			c := substring(c, i+1, length(c));
-			SplitChaine(c, chaineSplit);
-		end if;
-	end if;
+        c := trimLeft(c); c:= trimRight(c);
+        c := c+' ';
+        if length(c) > 0 then
+                i := strpos(c, ' ');
+                Ajout_queue(chaineSplit, substring(c, 1, i -1));
+                if i < length(c) then
+                        c := substring(c, i+1, length(c));
+                        SplitChaine(c, chaineSplit);
+                end if;
+        end if;
 end SplitChaine;
 
 
