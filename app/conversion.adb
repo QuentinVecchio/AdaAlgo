@@ -168,7 +168,7 @@ package body conversion is
         begin
 		L_courant := replaceStr(L_courant, " ou ", " or ");
 		L_courant := replaceStr(L_courant, " et ", " and ");
-                Ajout_queue(Ligne, "if "+L_courant+" then");
+                Ajout_queue(Ligne, "elsif "+L_courant+" then");
                 conversionAda(m_bloc.Liste, Ligne);
         end conversionSinonSi;
         

@@ -263,7 +263,7 @@ package body entetelexique is
 				--traduction en Ada en fonction du type de la ligne (fonction,variable,table...)
 				if (ligne_courante.Forme=Variable) then
 					ligne_convertie:=ligne_courante.nom+':';
-					ligne_convertie:=ligne_convertie+ChangementdeType(ligne_courante.leType);
+					ligne_convertie:=ligne_convertie+ChangementdeType(ligne_courante.leType)+';';
 					
 				elsif (ligne_courante.Forme=constante) then
 					ligne_convertie:=ligne_courante.nom+":constant ";
@@ -273,7 +273,7 @@ package body entetelexique is
 				elsif (ligne_courante.Forme=table) then
 					ligne_convertie:=("type "+ligne_courante.nom);
 					ligne_convertie:=ligne_convertie+(" is array("+ligne_courante.intervalle);
-					ligne_convertie:=((ligne_convertie+") of ")+ChangementdeType(ligne_courante.typeElement));
+					ligne_convertie:=((ligne_convertie+") of ")+ChangementdeType(ligne_courante.typeElement)+';');
 
 				elsif (ligne_courante.Forme=structure) then
 					ligne_convertie:=("type "+ligne_courante.nom);
