@@ -188,7 +188,8 @@ package body conversion is
         procedure conversionCasParmisInt(m_bloc : in out Bloc; Ligne : in out T_TAB_LIGNE) is 
         
         begin
-                Ajout_queue(Ligne, "when "+m_bloc.condCase+" => ");
+					m_bloc.condCase := replaceStr(m_bloc.condCase, "autres", "others");
+                Ajout_queue(Ligne, "when "+ replaceChar(m_bloc.condCase,',','|')+" => ");
                 conversionAda(m_bloc.instructCase, Ligne);
         end conversionCasParmisInt;
 
